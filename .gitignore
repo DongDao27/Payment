@@ -1,0 +1,17 @@
+/.runtime/
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.testing.example
+!**/.env.*.example
+**/vendor/
+**/node_modules/
+**/.phpunit.cache/
+**/.phpunit.result.cache
+**/database/*.sqlite*
+*.log
+/.idea/
+/.vscode/
+/.playwright-cli/
+/output/
+/thu-thanh-figma-clicon/xem-truoc/*.svg

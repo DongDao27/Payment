@@ -1,0 +1,766 @@
+{
+  "archive": "D:\\ThuThanh-Archives\\thu-thanh-legacy-20261023-185819.zip",
+  "archive_sha256": "38485bd152569141c042692fd6dfcce899539e4348c8600d181fce3d8e732753",
+  "crc": "passed",
+  "all_original_bytes_verified": true,
+  "files": 149,
+  "original_bytes": 183666923,
+  "archive_bytes": 161856580,
+  "removed_after_verified_backup": [
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/AGENTS.md",
+      "bytes": 4685,
+      "sha256": "309f471ee36974dff565c2d0dbe9e791344dcf8b2cc25bedc2bc6dceb402acfb"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/README.md",
+      "bytes": 2945,
+      "sha256": "0a9beb10bcee2e6ee27e4494d7a71ed09136d9a719fc33588d73d0ceed7235df"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/START-HERE.md",
+      "bytes": 2439,
+      "sha256": "23e0c07ca9c5e7ebbc76fceaeca1de7914be644f9d75df93908f90d28e1941a7"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/API.md",
+      "bytes": 6969,
+      "sha256": "3df4176186afc97657aa8ea1041502ff8ec17d39957ed31fd1f759aaa0a018c5"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/ARCHITECTURE.md",
+      "bytes": 4118,
+      "sha256": "764e14cbd4dc21468207fa19f6530b63839f93579a94c1d0098ad11efe1cc09f"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/DATABASE.md",
+      "bytes": 7591,
+      "sha256": "439617af0bd70000f7689c21c07905e4112d59abc6e3bf322c4630378473087d"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/DECISIONS.md",
+      "bytes": 3196,
+      "sha256": "f79c9a15b9d11d035c9896d52385acab4d48b25617d0ecfd5118c153804a2905"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/DOMAIN-RULES.md",
+      "bytes": 9052,
+      "sha256": "0eaa51bc71c8a21c752e675a014f07ebcdfcaf2f3a219e28f96be2199f45d97c"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/FIGMA-HANDOFF.md",
+      "bytes": 3493,
+      "sha256": "c8da10d867b91972b18e3dfa0367d41d3490ba97b6b1ea611123a805b74d46e5"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/HANDOFF.md",
+      "bytes": 1827,
+      "sha256": "e988a47722dca5c4f1c4b5c6f2f3316b65dd80069a31353aaff95e8bd48e1000"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/KNOWN-LIMITATIONS.md",
+      "bytes": 1237,
+      "sha256": "584926d39204d991fb58f7c3f535cebcbd44f5bbaef1d104760915f7a2a9cb81"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/LAB-TO-PROJECT.md",
+      "bytes": 2005,
+      "sha256": "9a0889aa99c1975b614cd0fe567a2668887dd19a5437d18a844d0eabee970ac7"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/openapi.json",
+      "bytes": 180148,
+      "sha256": "5273070b4a8bbc38e5e64bff8d13c9c263292e2f45039e431687749fc2530277"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/OPERATIONS.md",
+      "bytes": 4571,
+      "sha256": "69804e28ed4b9ea05959b6fcd23cc195d2496859ef373ad76f521fde24b0874c"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/PRD.md",
+      "bytes": 5416,
+      "sha256": "0e75235dbc865bcb8b82b368970c81cd1284ded5d13a38166a51946c35212bc8"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/PROGRESS.md",
+      "bytes": 576,
+      "sha256": "24593332e3d654d80a0a51e7899be6ca4e712aebc16aff897081b2a7849b9405"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/SECURITY.md",
+      "bytes": 2609,
+      "sha256": "166af6ecc1215f2b40158cc196d8e9c0604ddf546007e4fb299d312fafdedba5"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/SOURCES.md",
+      "bytes": 1864,
+      "sha256": "5fbc6c93adc1e27fe3596e4d3258615a40f05ebf7751be01ed78b7db9940dedb"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/STATUS.json",
+      "bytes": 829,
+      "sha256": "c8dc34fd221fdaba3fac1e5e6f2ef2d210cd615815ddacfd19000f45a65a1063"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/TASKS.json",
+      "bytes": 13618,
+      "sha256": "104bd54c2b13390861b98e263558f92f848eb0f0cbb8af55cf248beb5f791b0f"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/test-cases.csv",
+      "bytes": 8708,
+      "sha256": "a5a6a5792f9082b5b0fde799c72915cd4d2ab2a4d2d77ebec8af0c4046fad9bb"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/TEST-PLAN.md",
+      "bytes": 3258,
+      "sha256": "6380b8c1cb99aae6c594856ca17ac41d1470b6f39afed23b64717067dfb2bf1d"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/docs/TRACEABILITY.md",
+      "bytes": 1312,
+      "sha256": "48dc7857a5d36abd1d16b0e3bceb22cea9aa70287a00033a5a1958111ad6cce3"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/prompts/RESUME.md",
+      "bytes": 594,
+      "sha256": "9b28e2f837df8b817fa4eea5fe6a9b8fc6947a65904f8e64b36ed70d7248bf1f"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/prompts/START-BACKEND.md",
+      "bytes": 1212,
+      "sha256": "2ac6d7753157b48c75a8ab7858edd3a8546c18a6b020d1e55ea3ab57960933b5"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/scripts/check_pack.py",
+      "bytes": 4108,
+      "sha256": "988e3d97e9ad13416cf450263a297facbbf9e37b9bf5932e093722e603e0413a"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/templates/backend.env.example",
+      "bytes": 1356,
+      "sha256": "9fc055caf0f82516276f2a19eee620375c2490681dd7e586728a3529cad24308"
+    },
+    {
+      "path": "Thu-Thanh-AI-Build-Pack/templates/frontend.env.example",
+      "bytes": 322,
+      "sha256": "de62621edee4a0d62fb8eac530d2163a4f89c9c08a461435ae76481592203d9c"
+    },
+    {
+      "path": "frontend/src/app/storefront-v22.css",
+      "bytes": 4680,
+      "sha256": "64a4c0d93ac6e4e77080658b5435853e7a89127c075f2cfc2fe69b1d7f37696b"
+    },
+    {
+      "path": "frontend/src/app/storefront-v23.css",
+      "bytes": 4316,
+      "sha256": "3d20886fd9b338635514d9570857a308294ea32332df719f232dc2c528d8dc17"
+    },
+    {
+      "path": "output/figma/figma22-quick-desktop.png",
+      "bytes": 87147,
+      "sha256": "b89423efbd618d5fc37249095cd8c34e68c1537ac5784541ebb4e4d26e08226b"
+    },
+    {
+      "path": "output/figma/figma22-quick-mobile.png",
+      "bytes": 71986,
+      "sha256": "c9c09e78a72029d968da03f5f8201fa3b7d7bb9d78a54b5d8cc1587f9319fd2c"
+    },
+    {
+      "path": "output/figma/figma23-landing.png",
+      "bytes": 432551,
+      "sha256": "d0885738f1d3706fc73043c9243f1c8c35d56e0a756c6cd6c3a9e41ca293448d"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/build.py",
+      "bytes": 564,
+      "sha256": "5b5b178061053c769d7315e63b996d87d53f7b7faca85d50d6bc79ddbf7850e6"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/code.js",
+      "bytes": 13568582,
+      "sha256": "b0650985f72f60c64d7b8a4c342cd41604a2099ecb814e3a09a9576702f424ef"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/HUONG-DAN.md",
+      "bytes": 4682,
+      "sha256": "8ce6d68873d4dcbe22e7c5d0e8f382c621498b5f0700fa7ca86d17a07230fb33"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/ICONS-LICENSE.txt",
+      "bytes": 1318,
+      "sha256": "504e2d5631c0b53ba8f65149bb460558cd0ad1462dffa6058b8d597be349c3ef"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/LUONG-THIET-KE.json",
+      "bytes": 18835,
+      "sha256": "ac972acb67b5a7f3a15e08ade66e115042fc8f3b5ad799ff8bc2a9cb39dfcc54"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/manifest.json",
+      "bytes": 398,
+      "sha256": "72d1d04446bef09c12a42ecb7939fcf4646ab20469db2397ce9103cbc56b6046"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/ui.html",
+      "bytes": 5410,
+      "sha256": "0a6ad6e780585cfc3422362de7e09ad815764bb774453fea25c2506627f46298"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/src/data.json",
+      "bytes": 13493708,
+      "sha256": "37ed3e218338e6e999c7974fa3f1f96d10f7d098e775f6a702474dba3496796c"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/src/plugin.js",
+      "bytes": 74872,
+      "sha256": "a131f66407485b3c81afdb29ddf56b1446222b1790206f4a650c4465e8627aff"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-adminDashboard.svg",
+      "bytes": 31519,
+      "sha256": "9baf9cf76bd825df64f9d4028186b8d40d90d83c296364207a2e4e66432ff7ca"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-adminInventory.svg",
+      "bytes": 1543644,
+      "sha256": "d9a77f13fe7ec3d32b827568d2e7cda00763c9b0179f735094f7b384ee96e606"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-adminLogin.svg",
+      "bytes": 22981,
+      "sha256": "a7d85728fafd6356f3d7b106599edc4a39ee7c3f076a9e205bae81d48e638cb3"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-adminProducts.svg",
+      "bytes": 1542442,
+      "sha256": "71bfe02fba53ca34e837760965738472fcbf0a9b45b49e7354d2e843cad35110"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-cart.svg",
+      "bytes": 655090,
+      "sha256": "68cf88b53c08794fb6c8e2e24adedabf2d3e6ce2d98702b71a624ffe58a5cff6"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-catalog.svg",
+      "bytes": 1545098,
+      "sha256": "d0f2a55d59b29b1fe3192259b1de882f83e284f2787a727ef4d59c2e90a9b73a"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-delivery.svg",
+      "bytes": 343478,
+      "sha256": "f9a7d80732a32f7105b03cc04fffaaf2ecbad6ec105963c1822846dda290d900"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-detail.svg",
+      "bytes": 1087023,
+      "sha256": "b4c02457875d8119ac6543a71688f079eefa550b14225823d74316e4ca6f89fa"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-home.svg",
+      "bytes": 15842502,
+      "sha256": "da44c25781ac86547ffbe89c5afbe92a118f0332f3da10255354343a4711a877"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-orders.svg",
+      "bytes": 23264,
+      "sha256": "2dcc0f06d27edae94d97abd477b266edd94f7c2a6845b60c39b90a35d1b98ce9"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-ordersPaid.svg",
+      "bytes": 23262,
+      "sha256": "bbc9d4f8562d2d10cfd86ccb6fdfc387bf8b1a86e3434f6115a02fad1d21e5ef"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paidFuture.svg",
+      "bytes": 20355,
+      "sha256": "705091a83cde1b0e13a5e441823cd0c90e6bf47aaf89393318ba3ee7c6708e03"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paidOrder.svg",
+      "bytes": 345975,
+      "sha256": "1141556a3d108dec9a9bdba2481b08b239d60aadebc9b5c3945a21b210351077"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paidOrderTwo.svg",
+      "bytes": 345990,
+      "sha256": "dbc650fe89e73f4b3e288629731e25648e255affddbe96734783a79142034f0d"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paidPickupOrder.svg",
+      "bytes": 346017,
+      "sha256": "d73f4f4ca69108ebe6c1aca528f89164d732a5130d518d5bfe6f903c27dceb60"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paymentExpired.svg",
+      "bytes": 20101,
+      "sha256": "f89c73ba9fb8c8f2eb5275426e5afcbd275e7dad93e384a1fc6710092cfee9d7"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paymentFailed.svg",
+      "bytes": 20165,
+      "sha256": "2a5e865aeb8c332855429891b1a1406cdcf6bc548bcaf7cbbf509e7f30b1a968"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paymentPending.svg",
+      "bytes": 20349,
+      "sha256": "d97baef46fa07617dea1acb21e82e090cf1476a7c6f96ffb66f4c03a7892642c"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paymentQr.svg",
+      "bytes": 31946,
+      "sha256": "0d6aff73014df513693286413150409a1b4172f8831ea9fd04f21d3010c319d7"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paymentQrTwo.svg",
+      "bytes": 35304,
+      "sha256": "c12b97dd52200671ca7489eb4b25e1165045dcedd97592e8e5d55d29ff91446f"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-paymentReview.svg",
+      "bytes": 20485,
+      "sha256": "8d42b0a96269fbc64136ce84ab76716815687068047ff0579dd6bb33f76f871c"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-pickup.svg",
+      "bytes": 343593,
+      "sha256": "461ddbe82b6d174f2c78b2c59ec925a7176478aca0e8af2aec706ed4c6291d08"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-pickupPaymentQr.svg",
+      "bytes": 32105,
+      "sha256": "71ad950ef281f2c9405d000d48626d3e6d0be7d3a2a1bf32b8bc951326fb8afb"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-quick.svg",
+      "bytes": 317782,
+      "sha256": "adeb81556ef005c71881c55a4c81388ab4be62e931b5dc82bef8921cc0c82364"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-quickSigned.svg",
+      "bytes": 317782,
+      "sha256": "73f75e4793d04a1ed6c38e690765849af52e014ce0954c836b888e5eeb8f3cbb"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-quickSignedTwo.svg",
+      "bytes": 317782,
+      "sha256": "976106666b3d174fdacd37534c1d5d711052c295e5d41aa60e40c2df9d227f56"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-quickTwo.svg",
+      "bytes": 317782,
+      "sha256": "1947dd05a24f2c671b047998d8e82ac3a74fda67dea88d4fd596815df2ebff23"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/dien-thoai-uiStates.svg",
+      "bytes": 30575,
+      "sha256": "cdd71dfaad2e4e00b478bca1ceaedc459c314ca948342508ec32e6ee37a2ac59"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/index.html",
+      "bytes": 8303,
+      "sha256": "d0b5d1c3b5f605f1868c0d7d6861c6a1bd48e42b7ae539f2aa2e8208b22c5274"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-adminDashboard.svg",
+      "bytes": 43603,
+      "sha256": "29641bbc4ddf9e192310776db201ac929236a2adec234f127477025ae1441403"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-adminInventory.svg",
+      "bytes": 2329527,
+      "sha256": "b48a7fce2a5e56efac91712e8881863da9dd90eb024d78535396891c3b9ca615"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-adminLogin.svg",
+      "bytes": 28030,
+      "sha256": "d4c7bcd5323de1b3de310a2d6acf64e9ae178328cc2d127bf7fa9966b7cfb976"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-adminProducts.svg",
+      "bytes": 2328281,
+      "sha256": "2a3eb3fe0b8bf8f964cbc8b845a402844bb536bee2533270675cbe6f20ea4fa6"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-cart.svg",
+      "bytes": 661356,
+      "sha256": "edb457940d85f1e5b005504bd1966911a0bdd793087928a90cded189c465ffc2"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-catalog.svg",
+      "bytes": 1560144,
+      "sha256": "43e3048f8323f81f98d620e97ef49c207ea9e55f4c842a1f50bd4ee06252d729"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-delivery.svg",
+      "bytes": 348555,
+      "sha256": "db3d440f0db06be45ae0ff7b653061671cfc46cb46b5be9815c787f3d40db5d5"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-detail.svg",
+      "bytes": 2179835,
+      "sha256": "c662d75edb6f99e92b0d4e8c6e5ea3c0690b131be310675498edc19af805f002"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-home.svg",
+      "bytes": 19032103,
+      "sha256": "3bf00edde318c2e94736a8f3f376a4a5fc12c08b8a4efe91e228dfe675e847a4"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-orders.svg",
+      "bytes": 34405,
+      "sha256": "279b661b6653430845e70e6ce39fe0b14a7a76e007abd0d31b73cd45c59bd8af"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-ordersPaid.svg",
+      "bytes": 34403,
+      "sha256": "06b01f7802c52739bcf5f31f2277d0a284e10efb365c0827c21cc88a12e4eb92"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paidFuture.svg",
+      "bytes": 25406,
+      "sha256": "9936202bb16b87302134b29515a899b1376e7d27cfc44d128614ada1d266e01b"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paidOrder.svg",
+      "bytes": 354731,
+      "sha256": "1797e3bb2972906e595a3177eb4d9c3eeb55182b1abbab716872d8e6074cd7cc"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paidOrderTwo.svg",
+      "bytes": 354746,
+      "sha256": "19f042a59c64716ced15cc81751efd4c06437bf9a8a750ed248a9a4d384d35c9"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paidPickupOrder.svg",
+      "bytes": 354773,
+      "sha256": "11ac5baeaef236319b7f0c63af8d9488a22bb57a7927e5e07f31b3f607720d7d"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paymentExpired.svg",
+      "bytes": 25125,
+      "sha256": "1a57b97fd42099ea4db51c5dc9046f1746b646c6d36b0133af24f502669f7044"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paymentFailed.svg",
+      "bytes": 25162,
+      "sha256": "4cee584cbb2e40a73e278fb76cd2b2a2e032766462308a43f85a8405d60f90a0"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paymentPending.svg",
+      "bytes": 25400,
+      "sha256": "fb4b69df7106f7e35570895908a63fae8eeb04e0446b137162ae4bb876e0262f"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paymentQr.svg",
+      "bytes": 36996,
+      "sha256": "fc9c92a002e6eb7d7d8d069bd07d24e39415a3233f425424059ce2c897a9dbde"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paymentQrTwo.svg",
+      "bytes": 40354,
+      "sha256": "88e585ec69122c76d29f86d095555f4de5400d56ce497e136bfd0e1a7953f343"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-paymentReview.svg",
+      "bytes": 25482,
+      "sha256": "2dd9071e321bfd35dbdebe930d226c8e834164f275c5c85bbf8633bf82eafc18"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-pickup.svg",
+      "bytes": 348638,
+      "sha256": "218607043f178e2cbe84b15383c747879d6de4b64f60eda36cb1f86851a704ef"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-pickupPaymentQr.svg",
+      "bytes": 37155,
+      "sha256": "d4deedb9b9c17a75302135b8c5f0a238d71628fbbac03145191dfc82a7c880c8"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-quick.svg",
+      "bytes": 317785,
+      "sha256": "26688f9faa2a45168d98a751e27ec62071a8826c551719237b77970cdf7eb085"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-quickSigned.svg",
+      "bytes": 317785,
+      "sha256": "585068e35a362d49c16e9096cc527062227b0d316f12e526b7220ca7e253d8ef"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-quickSignedTwo.svg",
+      "bytes": 317785,
+      "sha256": "c6dccdb60216a38af66bb2cac936fda12fd144cfc29e47e7c1c5cc1b31801d5c"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-quickTwo.svg",
+      "bytes": 317785,
+      "sha256": "9144baf3bf7653cb444caffbb03e10604f8c23fc3a460c27ee66ad1a287122f6"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23/xem-truoc/may-tinh-uiStates.svg",
+      "bytes": 35570,
+      "sha256": "8079ac35600c6c4d36ed7af2cf7b7c0c95dd5fbabc288e0fb0a45469af445484"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v21-2026-10-23.zip",
+      "bytes": 62859154,
+      "sha256": "af9abd739b9272732d727d0d4f4fe89c929d2e907728936b6c08cd9330513afe"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v22-2026-10-23.zip",
+      "bytes": 11692697,
+      "sha256": "603d7ab450b6454e44a9d3a75103737ccb59490c47622dd9506e7861d7403bfe"
+    },
+    {
+      "path": "output/figma/thuthanh-figma-clicon-v23-2026-10-23.zip",
+      "bytes": 11693426,
+      "sha256": "abeb07d8b5dd56dfe5559d7753b51e212ff21cf67a3605546cc4d08176200d63"
+    },
+    {
+      "path": "output/figma/v19-payment-mobile.png",
+      "bytes": 89960,
+      "sha256": "10136a5eb94024246939f3a60ea2d429bfdf11ef4c40435534b31185806003e4"
+    },
+    {
+      "path": "output/figma/v19-qr-desktop.png",
+      "bytes": 55613,
+      "sha256": "a0709bbcfa6209a4fb505dfde6d35f2a1d8ab0d74cd516e0e7dccbd98b4f12eb"
+    },
+    {
+      "path": "output/figma/v19-web-footer-desktop.png",
+      "bytes": 265152,
+      "sha256": "555eda95161295c14c7f10d9c91b8f76bd43868510186c6add67ed0a66e8dbbe"
+    },
+    {
+      "path": "output/figma/v19-web-footer-mobile.png",
+      "bytes": 26399,
+      "sha256": "607350411afbd68e9a8a478c1392888ee7e5f7980afeedf09060e9fca17e5496"
+    },
+    {
+      "path": "output/figma/v20-admin-mobile.png",
+      "bytes": 95711,
+      "sha256": "fab3c11a11f2253c9cb7282f71b8e628f29bf1dca4baf48db488da62499b0234"
+    },
+    {
+      "path": "output/figma/v20-login-mobile.png",
+      "bytes": 76815,
+      "sha256": "d24af02d5cbf665ea73087a515d2b3193a88d1f31300469364faf7188dae0eb2"
+    },
+    {
+      "path": "output/figma/v20-paid-order.png",
+      "bytes": 69472,
+      "sha256": "b49f105aee02696d6df38f202ba058f3b7fb18f6452cbe76e6b117c133cafd37"
+    },
+    {
+      "path": "output/figma/v20-web-mobile.png",
+      "bytes": 131235,
+      "sha256": "7661751a8599f4996fe6056fc60e5cac1650c4a56f95a9864b8e6d3b0c804f81"
+    },
+    {
+      "path": "output/figma/v21-package.json",
+      "bytes": 297,
+      "sha256": "0b4543015e6e5b7407fe54046bd5c5885bb5d6d1b2f6a6dbb3618187c17895aa"
+    },
+    {
+      "path": "output/figma/v21-validation.json",
+      "bytes": 596,
+      "sha256": "51461b3de473b0f35b840151fdf8b61c83c10295622dfa3b4d9e458d6f5e7415"
+    },
+    {
+      "path": "output/figma/v22-package.json",
+      "bytes": 327,
+      "sha256": "d667da2ddb01771506d3e53c379dfd08cd89dd8638be21924ed2a8d67473eb7e"
+    },
+    {
+      "path": "output/figma/v22-validation.json",
+      "bytes": 713,
+      "sha256": "b5abe8534a41be240cc1251fdbed339bdb5ac4d2832eb056365dbe35ceaeae0d"
+    },
+    {
+      "path": "output/figma/v23-package.json",
+      "bytes": 327,
+      "sha256": "58d2e01ad9a7ea920524710b55c1cee6dfae4a7d44fc2e92c24d921ab26a3a2b"
+    },
+    {
+      "path": "output/figma/web-v22-banners.png",
+      "bytes": 1736100,
+      "sha256": "f78d57f127c054ec5066d54713aad74e001d27e9e9ec60c13469e74dab9f4596"
+    },
+    {
+      "path": "output/figma/web-v22-footer.png",
+      "bytes": 96016,
+      "sha256": "4a5e4a526987c223f5e481e2536a5c98a7e82c05a8f8abf7125c38ec6cdd0b51"
+    },
+    {
+      "path": "output/figma/web21-admin-1440.png",
+      "bytes": 45416,
+      "sha256": "b2a471ae471f7c7890cc281fa80c1a338f80958700a7fbb7a76a901fa29412d5"
+    },
+    {
+      "path": "output/figma/web21-admin-390.png",
+      "bytes": 35181,
+      "sha256": "46a6735d7ab03d96d1157c6632ee8a8529107c57f7d8b217cf432af9583c7ce4"
+    },
+    {
+      "path": "output/figma/web21-admin-overflow.png",
+      "bytes": 36301,
+      "sha256": "02d499857b49409c9786204a637d65e1382628c44c28525dad15f3e6082e34e3"
+    },
+    {
+      "path": "output/figma/web21-catalog-mobile.png",
+      "bytes": 35846,
+      "sha256": "f5202f6202ece4d89d538e4d08916a62c818a97a05edd0e4a4651c1a391f102d"
+    },
+    {
+      "path": "output/figma/web21-checkout-1440.png",
+      "bytes": 54064,
+      "sha256": "6cc11155fa0c291ab77e5853b1e9d83d17ec370b66367bc2af6754a5b100dbd1"
+    },
+    {
+      "path": "output/figma/web21-checkout-390.png",
+      "bytes": 28533,
+      "sha256": "822e0810c9b64a4a9bb8bd782111cf11050b4e495d66f47680e9ee7bd07515a0"
+    },
+    {
+      "path": "output/figma/web21-home-desktop.png",
+      "bytes": 404948,
+      "sha256": "43496371b2f808b7b992eb549f709aca18413093240e962f8bf771339b4da790"
+    },
+    {
+      "path": "output/figma/web21-home-mobile.png",
+      "bytes": 73323,
+      "sha256": "e0ff4b4a64b7a114ba44f8795890abd48a8eb2634a481e6781c598d2c5941bee"
+    },
+    {
+      "path": "output/figma/web22-checkout.png",
+      "bytes": 59278,
+      "sha256": "5ed0009650d85ba5ec9bc4dbe182e9136326ac1ad59c07065367a45d5827585a"
+    },
+    {
+      "path": "output/figma/web22-home-1440.png",
+      "bytes": 607791,
+      "sha256": "d90803b9fbd78815af39ba68669f5cf44a9f11997ca7d45eade6afe3c8ed6267"
+    },
+    {
+      "path": "output/figma/web22-home-320.png",
+      "bytes": 108996,
+      "sha256": "2f189ce1db2379d4e75284d08d22f4502d49f6976ab2333917bb9c6d43056817"
+    },
+    {
+      "path": "output/figma/web22-home-390.png",
+      "bytes": 109318,
+      "sha256": "2d3bfbe9e17bc6562466eb6828580114fd741418633d35d0e022e889acc27a5e"
+    },
+    {
+      "path": "output/figma/web22-initial.png",
+      "bytes": 825493,
+      "sha256": "587a620b33afb2974cae80f4e6915311de66ce3e39727609164a96f45f0846a9"
+    },
+    {
+      "path": "output/figma/web22-quick-1440.png",
+      "bytes": 576552,
+      "sha256": "4c772db1106397fb360f893524faea3171543dcb849a34497e27e3a8c8770e0f"
+    },
+    {
+      "path": "output/figma/web22-quick-320.png",
+      "bytes": 91633,
+      "sha256": "27f4cb03a130704dfd1dbbdffee858576b085c578fa63f7adc550bd650f98e86"
+    },
+    {
+      "path": "output/figma/web22-quick-390.png",
+      "bytes": 93312,
+      "sha256": "e9a39b0d3f62739df9bff2b3a722893e5079535ac00c6786cf067a206b375520"
+    },
+    {
+      "path": "output/figma/web22-quick-debug.png",
+      "bytes": 91633,
+      "sha256": "27f4cb03a130704dfd1dbbdffee858576b085c578fa63f7adc550bd650f98e86"
+    },
+    {
+      "path": "output/figma/web23-footer-1440.png",
+      "bytes": 153163,
+      "sha256": "6321fc06087737c69eb023a1e902197a8ddbf99a6d82eff579984248e1d8e7cd"
+    },
+    {
+      "path": "output/figma/web23-footer-320.png",
+      "bytes": 53315,
+      "sha256": "3ab30fa1fcb9c602dd99adb9fe3528b21577d05f2b5e7cbd66b21dc7405dbe51"
+    },
+    {
+      "path": "output/figma/web23-footer-390.png",
+      "bytes": 55968,
+      "sha256": "fde9a9bece0c6502cdc76b0841ea0ae6f9b31a7d07464bec96f09d7f2b71cfdc"
+    },
+    {
+      "path": "output/figma/web23-landing-1440.png",
+      "bytes": 1534708,
+      "sha256": "c2ff1ef1d3eca4f8c3d258c172c081caa04204bc948be5665e97eb2db0580cae"
+    },
+    {
+      "path": "output/figma/web23-landing-320.png",
+      "bytes": 250240,
+      "sha256": "54843a15b0b19f4bd593deb6abcce24b1d822182a66f31ed601d9f7c7d2052d7"
+    },
+    {
+      "path": "output/figma/web23-landing-390.png",
+      "bytes": 361914,
+      "sha256": "21ded16920354497e140b0336a7572439a7506bf2bed2ab1beeabaa4787c6bda"
+    },
+    {
+      "path": "output/figma/web23-panels-1440.png",
+      "bytes": 651126,
+      "sha256": "63a6631f4a81f6ac7a3ea0da9efa452216ed82dd6edd0a2a210a58c64f45b7ab"
+    },
+    {
+      "path": "output/figma/web23-panels-320.png",
+      "bytes": 66363,
+      "sha256": "6ee12ad9c151ee4dabaa355e9785e05a6a5a98350f203af176a0ff11ebe912d1"
+    },
+    {
+      "path": "output/figma/web23-panels-390.png",
+      "bytes": 98713,
+      "sha256": "57d58800f135ca797edb9b6a4cc652e6844aba74473c8c2b42a24155469fbc0d"
+    },
+    {
+      "path": "output/playwright/v23-dev-new-products.png",
+      "bytes": 931495,
+      "sha256": "13ee6cbe2526efc9993a67ee2e749c71d672129d7e6c36a2acb5bdc5ee3daa24"
+    },
+    {
+      "path": "output/playwright/v23-home-desktop.png",
+      "bytes": 936190,
+      "sha256": "01534fa272786f88f0779d9bb977781fb4e7618ddf7d8c787c2d361ef13fd972"
+    },
+    {
+      "path": "output/playwright/v23-product-cards.png",
+      "bytes": 29746,
+      "sha256": "7e55c3b27152ef8e3ed8500c274e3944f975ad46addb7039a1369b03fc9be068"
+    },
+    {
+      "path": "output/playwright/v23-real-book-cards.png",
+      "bytes": 1077841,
+      "sha256": "f64f6a70d4f04f21d80a3dd69be4e77dda829d3f0f07ddcf2db3e91f2094b1ce"
+    },
+    {
+      "path": "output/playwright/v23-revenue.csv",
+      "bytes": 511,
+      "sha256": "ab2927906d93d570c2a3a0662d513027cf3606cc705094ce9270db95864e8391"
+    },
+    {
+      "path": "output/playwright/v23-revenue.png",
+      "bytes": 155281,
+      "sha256": "b7bec2b39aba9a2b31f090724c46254f176254659ec190f4bf8b3d880e25a3ea"
+    }
+  ],
+  "historical_docs_moved": {
+    "docs/FIGMA-CLICON-REVIEW.md": "docs/archive/FIGMA-CLICON-REVIEW.md",
+    "docs/FIGMA-V17-FLOWS.md": "docs/archive/FIGMA-V17-FLOWS.md",
+    "docs/FIGMA-V20-REVIEW.md": "docs/archive/FIGMA-V20-REVIEW.md",
+    "docs/FIGMA-V21-REVIEW.md": "docs/archive/FIGMA-V21-REVIEW.md",
+    "docs/FIGMA-V22-REVIEW.md": "docs/archive/FIGMA-V22-REVIEW.md",
+    "docs/FIGMA-V23-REVIEW.md": "docs/archive/FIGMA-V23-REVIEW.md",
+    "docs/CODE-READINESS-2026-10-23.md": "docs/archive/CODE-READINESS-2026-10-23.md",
+    "docs/RUN-AND-PAYMENT-REVIEW-2026-10-23.md": "docs/archive/RUN-AND-PAYMENT-REVIEW-2026-10-23.md"
+  }
+}

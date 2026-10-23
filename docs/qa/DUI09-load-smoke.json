@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-23T11:42:31.204Z",
+  "target": "http://localhost:18081/api/v1/storefront",
+  "environment": "local PHP development server; not production capacity proof",
+  "concurrency": 20,
+  "requests": 200,
+  "failed": 0,
+  "cookies": 0,
+  "elapsed_ms": 5592,
+  "requests_per_second": 35.77,
+  "p50_ms": 556.56,
+  "p95_ms": 601.13,
+  "p99_ms": 611.04,
+  "ten_thousand_verified": false
+}

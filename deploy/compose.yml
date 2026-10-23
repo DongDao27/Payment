@@ -1,0 +1,74 @@
+name: thu-thanh-staging
+
+x-backend: &backend
+  build:
+    context: ../backend
+    dockerfile: ../deploy/docker/backend.Dockerfile
+  image: thu-thanh-backend:local
+  env_file: .env.backend
+  environment:
+    DB_CONNECTION: mysql
+    DB_HOST: db
+    DB_PORT: 3306
+    DB_DATABASE: thu_thanh
+    DB_USERNAME: thu_thanh
+    DB_PASSWORD: ${DB_PASSWORD:?Set app database password in deploy/.env}
+  volumes:
+    - backend-storage:/var/www/html/storage
+  depends_on:
+    db:
+      condition: service_healthy
+  restart: unless-stopped
+  networks: [database, web]
+
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: thu_thanh
+      MYSQL_USER: thu_thanh
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set app database password in deploy/.env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set separate root password in deploy/.env}
+      TZ: UTC
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command: ["--default-time-zone=+00:00", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+    networks: [database]
+
+  app:
+    <<: *backend
+
+  worker:
+    <<: *backend
+    command: ["php", "artisan", "queue:work", "database", "--sleep=3", "--tries=5", "--timeout=60", "--max-time=3600"]
+
+  scheduler:
+    <<: *backend
+    command: ["php", "artisan", "schedule:work"]
+
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/docker/nginx.Dockerfile
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - backend-storage:/var/www/html/storage:ro
+    depends_on: [app]
+    restart: unless-stopped
+    networks: [web]
+
+networks:
+  database:
+    internal: true
+  web:
+
+volumes:
+  mysql-data:
+  backend-storage:

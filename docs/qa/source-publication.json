@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-24T00:52:42.005677+07:00",
+  "target": "https://github.com/DongDao27/Payment",
+  "branch": "main",
+  "staged_files": 524,
+  "staged_bytes": 54975280,
+  "high_confidence_secret_scan": "passed",
+  "runtime_and_credentials_excluded": "passed",
+  "github_size_limit": "passed",
+  "backend_tests": 111,
+  "backend_assertions": 1626,
+  "backend_junit_seconds": 33.51717,
+  "backend_cli_seconds": 38.81,
+  "pint": "passed",
+  "frontend_api_tests": 7,
+  "frontend_build": "passed",
+  "frontend_typecheck": "passed",
+  "docs_check": "passed",
+  "publication": "source_prepared_for_initial_commit",
+  "limitations": "Pattern scan is not a comprehensive security audit. Provider/deployment/10k gates unchanged."
+}

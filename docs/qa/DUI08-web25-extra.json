@@ -1,0 +1,12 @@
+{
+  "result": "passed",
+  "database": "thu_thanh_test",
+  "acceptedBestseller": true,
+  "positiveRevenue": true,
+  "shippingSeparate": 25000,
+  "csvDownload": true,
+  "productImageUploadDelete": true,
+  "inventoryAdjustment": true,
+  "reconciliationManualReview": true,
+  "pageErrors": []
+}

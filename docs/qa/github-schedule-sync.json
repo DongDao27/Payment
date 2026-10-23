@@ -1,0 +1,136 @@
+{
+  "at": "2026-10-24T00:41:56.794143+07:00",
+  "repository": "DongDao27/Thu-Thanh-bookstore",
+  "project": "https://github.com/users/DongDao27/projects/4",
+  "before_count": 8,
+  "created_tasks": [
+    "T08",
+    "T09",
+    "T10",
+    "T11",
+    "T12",
+    "T13",
+    "T14",
+    "T15",
+    "T16",
+    "T17",
+    "T18"
+  ],
+  "master": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/21",
+  "tasks": [
+    {
+      "task": "T01",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/1",
+      "milestone": 1,
+      "status": "To do"
+    },
+    {
+      "task": "T02",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/4",
+      "milestone": 1,
+      "status": "To do"
+    },
+    {
+      "task": "T03",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/5",
+      "milestone": 1,
+      "status": "To do"
+    },
+    {
+      "task": "T04",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/6",
+      "milestone": 2,
+      "status": "To do"
+    },
+    {
+      "task": "T05",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/7",
+      "milestone": 2,
+      "status": "To do"
+    },
+    {
+      "task": "T06",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/8",
+      "milestone": 2,
+      "status": "To do"
+    },
+    {
+      "task": "T07",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/9",
+      "milestone": 2,
+      "status": "To do"
+    },
+    {
+      "task": "T08",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/10",
+      "milestone": 3,
+      "status": "To do"
+    },
+    {
+      "task": "T09",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/11",
+      "milestone": 3,
+      "status": "To do"
+    },
+    {
+      "task": "T10",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/12",
+      "milestone": 3,
+      "status": "To do"
+    },
+    {
+      "task": "T11",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/13",
+      "milestone": 3,
+      "status": "To do"
+    },
+    {
+      "task": "T12",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/14",
+      "milestone": 4,
+      "status": "To do"
+    },
+    {
+      "task": "T13",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/15",
+      "milestone": 4,
+      "status": "To do"
+    },
+    {
+      "task": "T14",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/16",
+      "milestone": 4,
+      "status": "To do"
+    },
+    {
+      "task": "T15",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/17",
+      "milestone": 4,
+      "status": "To do"
+    },
+    {
+      "task": "T16",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/18",
+      "milestone": 5,
+      "status": "To do"
+    },
+    {
+      "task": "T17",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/19",
+      "milestone": 5,
+      "status": "To do"
+    },
+    {
+      "task": "T18",
+      "url": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/20",
+      "milestone": 5,
+      "status": "To do"
+    }
+  ],
+  "project_sync": "passed",
+  "issue_states": "preserved_existing_new_open",
+  "after_count": 20,
+  "project_items_total": 20,
+  "project_added_explicitly": [],
+  "verification": "18 unique issues with expected milestones and project membership; MASTER contains all18 links; preserved open states; unrelated existing item retained"
+}

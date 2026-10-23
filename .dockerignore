@@ -1,0 +1,9 @@
+**
+!backend
+!backend/public
+!backend/public/**
+backend/public/storage
+!deploy
+!deploy/nginx
+!deploy/nginx/backend.conf
+!deploy/nginx/edge.conf

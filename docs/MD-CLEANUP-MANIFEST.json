@@ -1,0 +1,70 @@
+{
+  "at": "2026-10-23T22:56:12.951531+07:00",
+  "archive": "D:\\ThuThanh-Archives\\thu-thanh-markdown-20261023-225612.zip",
+  "archive_sha256": "7461949c6b8b43bfaa1d25913e3475cad3735dc7975e4f5c351c17e4ece354d0",
+  "crc": "passed",
+  "files": [
+    {
+      "path": "docs/archive/CODE-READINESS-2026-10-23.md",
+      "bytes": 8194,
+      "sha256": "d44349656c19b0ec71c18482c4ffcd8bdfe4e26079051f15424ec8432b1a2422"
+    },
+    {
+      "path": "docs/archive/FIGMA-CLICON-REVIEW.md",
+      "bytes": 5209,
+      "sha256": "5cfecb7da5379292efe87d159ee4f19392e32fc0fbb6e5c53700335c54219031"
+    },
+    {
+      "path": "docs/archive/FIGMA-V17-FLOWS.md",
+      "bytes": 8572,
+      "sha256": "d38bd2bf0d738665f8550637ee3991447bc680eaa96768849f6450b4849391f3"
+    },
+    {
+      "path": "docs/archive/FIGMA-V20-REVIEW.md",
+      "bytes": 2847,
+      "sha256": "ccd43c542275d0e282bed3affadd7763678872586a710df50cc2b5222ea7174c"
+    },
+    {
+      "path": "docs/archive/FIGMA-V21-REVIEW.md",
+      "bytes": 5229,
+      "sha256": "0428e6d28d651f8f29a9159d1e7840206378aa446dc5f5159a190a4a7fcc1e9a"
+    },
+    {
+      "path": "docs/archive/FIGMA-V22-REVIEW.md",
+      "bytes": 4167,
+      "sha256": "ea5eac1fd7fcf6a8e4878582f6f1d18c13a274102879e25316b17376a0c99473"
+    },
+    {
+      "path": "docs/archive/FIGMA-V23-REVIEW.md",
+      "bytes": 4501,
+      "sha256": "ca1bdc3568ab877a49df13b821bd7c81dd7302cf12634b0ae9719ca38c39ca41"
+    },
+    {
+      "path": "docs/archive/RUN-AND-PAYMENT-REVIEW-2026-10-23.md",
+      "bytes": 7505,
+      "sha256": "cd64500bef1a225eebe735dd02800bd1148f304dbcf307d1da66e3d955c4de0e"
+    },
+    {
+      "path": "prompts/START-BACKEND.md",
+      "bytes": 1212,
+      "sha256": "2ac6d7753157b48c75a8ab7858edd3a8546c18a6b020d1e55ea3ab57960933b5"
+    },
+    {
+      "path": "prompts/RESUME.md",
+      "bytes": 594,
+      "sha256": "9b28e2f837df8b817fa4eea5fe6a9b8fc6947a65904f8e64b36ed70d7248bf1f"
+    },
+    {
+      "path": "docs/LAB-TO-PROJECT.md",
+      "bytes": 2022,
+      "sha256": "725d3c64cd696238c66e3435cd6a2b4fcbf5459f8ffabc706a26448c46278f04"
+    },
+    {
+      "path": "docs/FRONTEND-VERIFICATION.md",
+      "bytes": 14395,
+      "sha256": "141362276383b42c5aa0b3153ea987db918d37465575f5a93db1891db7d98b01"
+    }
+  ],
+  "reason": "D46 obsolete reviews/bootstrap/lab; frontend verification merged into VERIFICATION.md",
+  "recovery": "Extract only needed entries into a temporary directory, review before restoring. No env, database or application source included."
+}

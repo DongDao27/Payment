@@ -1,0 +1,16 @@
+{
+  "result": "passed",
+  "homeFeeds": 3,
+  "widths": [
+    320,
+    390,
+    1440
+  ],
+  "guestQuickView": true,
+  "adminLogin": true,
+  "productCreateEditArchiveRestore": true,
+  "categoryCreateHide": true,
+  "revenueDayMonth": true,
+  "reconciliationList": true,
+  "pageErrors": []
+}

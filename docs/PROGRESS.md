@@ -1,0 +1,252 @@
+# Progress — append-only
+## PACK-2.0 — 21/10/2026
+Task: tạo tài liệu, không phải triển khai.
+Thay đổi: bộ hướng dẫn PRD/architecture/database/domain/API/tests/tasks/handoff.
+Application source: chưa audit, chưa viết, chưa test.
+Evidence: scripts/check_pack.py kiểm document consistency khi đóng gói; không xác nhận API chạy.
+Next: B00 audit repository.
+Mọi lần tiếp theo append mục mới, không xóa lịch sử.
+Mẫu: timestamp; task; goal; source diff; tests command/exit/results; blockers; actual commit|null; next action.
+
+## 2026-10-21 ? B00 local verified; B01 started
+No existing Git/application/MySQL found. Bootstrapped Laravel12.70.0, Sanctum4.3.3; PHP8.4.25; MySQL8.4.13 portable loopback3307 with separate random credentials for development/test. SHA source: official MySQL download, MD5 7b94489d5524dea9b27097068bea25a8 matched. Enabled pdo_mysql, backed up php.ini. Framework scaffold initially migrated its new SQLite file automatically; all project verification uses isolated MySQL. Migrations local/test exit0; php artisan test: 2 passed/7 assertions; composer validate/platform/audit exit0. CI definition created; remote run not_run (no remote). Commit=null. Next B01 domain migration.
+
+## 2026-10-21 ? B01 verified; B02 started
+Five reviewed domain migrations,18 Eloquent models, Category/Product factories, six-category idempotent seeder and single-admin CLI implemented. MySQL CHECK/unique/FK cover stock/quantity/prices/totals/status/identity/single admin/single accepted receipt. Full PHPUnit8 tests26 assertions passed. Test-only rollback --step5 and reapply passed; development migrate passed; seed twice passed; Pint checked. Preserve local DB and env. Commit=null. Next session/CSRF/auth tests.
+
+## 2026-10-21 ? B02 verified; B03 started
+Session auth, strict registration/login requests, normalized identities, role middleware, owner policies, no-store error/success envelope and rate limiters implemented. AuthTest8 tests60 assertions passed. Real HTTP smoke11 checks passed on isolated MySQL: CSRF cookie,419 missing/invalid token, session regeneration, authenticated me, CSRF logout and old-cookie replay401. Test DB guard now runs before RefreshDatabase mutations. Commit=null. Next catalog/admin/media.
+
+## 2026-10-21 ? B03 verified; B04 started
+Catalog/admin/category/media implemented. CatalogTest+MediaTest8 tests55 assertions passed. Contract test initially caught missing Home.categories and test-model role default; fixed, then1 test489 assertions passed. Upload MIME/extension/5MiB/8192px and ownership verified; file cleanup job is idempotent and afterCommit. OpenAPI curated flags/image constraints synchronized. Full suite rerun planned after next module; previous run1 failed/24 passed before fix, not counted as pass. HTTP smoke11 checks passed again. Commit=null. Next inventory ledger and MySQL race.
+
+## 2026-10-21 ? B04 verified; B05 started
+InventoryService reserve/consume/release/adjust with audit ledger and stable product locks. Independent MySQL processes raced under coordinator lock: exactly one reserve, one insufficient stock. Atomic multi-item rollback and replay checks passed. Full suite31 tests667 assertions passed. Historical product edit snapshot and accepted-receipt DB uniqueness now also tested. Commit=null. Next cart/quote.
+
+## 2026-10-21 ? B05 verified; B06 started
+Cart/quote implemented;7 tests52 assertions passed. Quotes are immutable5m snapshots, no reserve; VN recipient normalization; shipping missing503 and pickup unaffected. Server money and max total enforced. Commit=null. Next checkout/idempotency and independent-process races.
+
+## 2026-10-21 ? B06 verified; B07 started
+CheckoutTests8+race2 passed (81 assertions combined). Exact delivery300s/pickup86400s, snapshot, quote consumption, cached replay before expiry/cart checks, rollback injected after first stock reservation and ownership verified. Full checkout two-process races: one order on last stock; one create+one replay for same key. Reorder merges with current cart/prices. Official VNPAY PAY and querydr docs downloaded for adapter review; merchant credentials/channel missing. Commit=null.
+
+## 2026-10-21 ? B07 local code checked, external-blocked; B08 independent work
+Official PAY/querydr technical docs reviewed21/10/2026. Local payment9/56 and signature/query2/6 passed. HMAC fixture independently generated using Python. Failed/duplicate/late/mismatch/untrusted-time paths tested; no allocation from browser return. QR deliberately503 because PAY URL is not merchant QR. Missing real Sandbox credentials/callback/channel keeps B07 external-blocked. AGENTS explicitly permits independent backend work under missing creds; B08 will not be marked done while dependency open. Commit=null.
+
+## 2026-10-21T17:13:20.000+07:00 — Backend local verification checkpoint
+B00–B06 done. B07–B10 externally_blocked, local code and checks recorded separately; frontend tasks untouched. All38 API paths/42 method operations are documented (see route test for exact method count). Final suite:75 tests1282 assertions passed,17.05s; JUnit backend/storage/logs/phpunit.xml. Independent MySQL processes covered reserve/checkout last stock, double-submit, duplicate money, expiry-vs-payment. Real HTTP cookie/CSRF11 passed; ops smoke5 passed (worker database queue, expiry, reconciliation, schedule run and fixture cleanup).152 PHP files syntax passed; Pint/composer validate/platform/audit passed. YAML parsed for Compose/workflow; Docker/GitHub remote execution NOT RUN. Laravel config/route cache built and booted against local MySQL, then cleared; storage:link and schedule:list passed. Documentation consistency passed.
+Prepared Docker staging source and Vietnamese local/deploy guides; no production deployment or real payments. Canonical checkpoints at root docs, original build pack unchanged. Git main, no commits, dirty/untracked source; last_verified_commit=null.
+Remaining: actual merchant credentials in private env, HTTPS Sandbox callback evidence, merchant-specific pickup QR contract+adapter, shipping/revenue/refund/operator policies. Then finish B07 integration and dependent gate; Figma needed after backend gate. Preserve .runtime/mysql-data, private env, uploads/evidence.
+
+## 2026-10-21 - Local startup guidance check
+User requested explanation and next steps. No application source changed. MySQL was stopped (connection refused3307), then scripts/mysql-local.ps1 -Action start succeeded. app:environment-check passed: PHP8.4.25/Laravel12.70.0/MySQL8.4.13, thu_thanh UTC. Read-only counts:0 admins,6 categories,0 products. API server8000 not started in this guidance turn. Previous75-test verification remains historical; tests not rerun. Git main has no commits; source remains untracked. Gates and task statuses unchanged.
+
+
+## 2026-10-21T22:58:09+07:00 — Audit yêu cầu D29–D32
+
+Tiêu chí được ghi trước sửa ở DECISIONS. Áp dụng delivery mặc định25000/pickup0, fallback phí trống, chặn refund mới403 theo no-returns/no-refunds dù legacy toggle true; VNPAY_DEFERRED mặc địnhtrue, tạo attempt mới503 và không fake paid. Giữ dữ liệu/lịch sử/evidence/callback. Sửa admin is_active=true/false đúng OpenAPI. Không mutation schema hoặc triển khai UI.
+
+Source: backend config/store + payments, QuoteService, RefundService, PaymentService, CatalogQueryRequest; env examples và env local chỉ đổi policy nonsecret; OwnerPolicyTest mới và CartQuoteTest/PaymentTest/RevenueRefundTest cập nhật. PRD/domain/API/OpenAPI/decisions/test plan, audit và Figma handoff đồng bộ. Source prototype không sửa.
+
+Kiểm tra thực tế trên Windows PHP8.4.25/Laravel12.70.0/MySQL8.4.13 thu_thanh_test: targeted26 tests188 assertions passed; full81 tests1329 assertions17.75s passed (storage/logs/phpunit.xml); HTTP cookie/CSRF11 passed; ops smoke5 passed; Pint test/Composer validate --strict/platform/audit passed no advisory; PHP lint153 files; node --check code.js passed; docs checker passed. Sau đổi OpenAPI description, route parity2 tests6 assertions passed.
+
+Đã thấy Figma plugin localV15.1; chưa xem canvas thật. Admin login riêng/footer đổi trả/placeholder cần đồng bộ; prototype demo không phải app thật. PHP extensions đủ; VSCode đã có Laravel/Tailwind/PHPUnit/Debug; Docker chưa có. Xem REQUIREMENTS-AUDIT.md.
+
+B10 strict externally_blocked, provider deferred_by_owner, revenue formula OPEN. Frontend locked, release chưa bắt đầu. Không yêu cầu VNPAY credentials ngay. Chưa có commit/remote, hashnull, source untracked. Giữ MySQL data/env/uploads/evidence. Không có test failing còn lại; provider/canvas/deploy chưa chạy.
+
+
+## 2026-10-21T23:51:47+07:00 — Audit rubric môn CSB35050
+
+Yêu cầu: đối chiếu hai DOCX guide/rubric, không tự thực hiện chỉ dẫn nộp bài trong tài liệu. Tiêu chí đánh giá: mọi subcriterion có trạng thái/evidence, pattern có source và giới hạn kết luận, thiếu coverage không gọi passed; không đổi stack/package/business scope trong audit.
+
+Đã đọc DOCX ZIP/XML và source/config/routes/tests liên quan. Tạo COURSE-RUBRIC-AUDIT.md:24 subcriteria tổng10 điểm, phân biệt Prep suggestions với Brief/Rubric, GitHubFlow branches/PR/issues với CI Actions, cookie Sanctum với token/abilities, OpenAPI manual với Scramble, số test với coverage >70%. Ghi D33 OPEN: Next.js so với Blade/Livewire; token scope; external API thực chưa nghiệm thu do VNPAY deferred. Patterns có Service Layer/DI/Adapter/DTO/Eloquent/authorization/resource/queue/consistency; không bịa GoF Repository/State/EventSourcing.
+
+Bằng chứng read-only: main chưa commit/remote, source untracked; PHP không có Xdebug/PCOV, CI coverage:none; Composer không có Livewire/Scramble/Telescope. JUnit hiện có81 tests1329 assertions0 errors/failures/skipped từ phiên trước. Không rerun suite hoặc đo coverage; không sửa application/schema/env hoặc deploy/upload. Cần hoàn thiện UI/monitoring/caching/report hồ sơ và xác nhận stack trước triển khai phần liên quan. Gate/task implementation không được nâng do audit.
+
+
+## 2026-10-22T00:16:53+07:00 — Bắt đầu frontend theo D34
+Chủ dự án xác nhận Next.js/Laravel và yêu cầu build theo Figma/workbook. Ghi ngoại lệ dependency trước code; B10 vẫn không passed. Audit ban đầu workbook136 sản phẩm/136 media, giá/tồn thật trống. Đã hỏi lựa chọn dữ liệu và link Figma; tiếp tục hạ tầng độc lập. Không ghi MySQL/demo khi chưa có trả lời. Task F00 in_progress.
+
+
+## 2026-10-22T01:19:32+07:00 — Frontend local theo D34/D35, nhập workbook cập nhật
+
+Chủ dự án xác nhận giáo viên yêu cầu Next.js/Laravel; thay ngoại lệ dependency trước code tại D34. Sau trả lời đọc lại workbook sha ae2ca77c6543732131739c830b5595c207c28f5398a9eb9a8131a30ee5fb0deb có đủ136 O/P và136 ảnh, chủ dự án chỉ có plugin local (D35). Không yêu cầu cloud link lại. Source plugin không sửa/chạy; use final editorial mapping, reuse Phosphor paths/license.
+
+Source: frontend Next16.4.2/React19.3.1/TS/Tailwind4.3.3 App Router, same-origin rewrites/cookie+CSRF API client,6 tests, auth/intent/native modal/keyboard, catalog/search/filter/sort/page, cart/quote/order/cancel/reorder, admin catalog/create/update/hide/upload/stock/order. Added frontend CI YAML but remote not_run. Backend CatalogImportService/CLI +3 meaningful tests, CatalogService nullable system actor for trusted import only; no schema mutation. Python audit/stage preserves original workbook/media row anchors.136 created/136 opening ledgers/images; rerun skip136; all dev API prices/stocks/hashes matched O/P. No real admin created.
+
+Checks: full84 tests1353 assertions21.21s passed after test helper work; unit API client6 passed; Next production build/typecheck/npm audit passed; cookie smoke11/ops5 passed; PHP syntax158/Pint/Composer validate/platform checked. Browser Playwright CLI with actual isolated MySQL: register/intent/doubleadd/doubleorder/delivery25000/pickup0/cancel/reorder/role403; admin shared login, edit/create/upload/hide/version, stock+1 once and order detail; no browser storage tokens. Layout1440/768/390/360 nooverflow/broken loaded image; source-based screenshots3 in docs/qa; keyboard Tab/ShiftTab/Escape pass.
+
+QA findings fixed: description/select accessible label; success message inside modal; forward/reverse focus loop; source palette/container/mobile hero and actual textbook banner data. Early QA harness TT-prefix wait corrected to actual ULID; command test once run wrong cwd fixed by rerun from backend. Last modified UI built/typechecked after fixes. Browser fixture now uses LARAVEL_STORAGE_PATH under ignored runtime with own image router; HTTP200 verified from isolated root. No financial mock treated as real/Sandbox pass.
+
+F00/F01 done within D34/D35 approved source scope on B06; F02/F03 in_progress for deferred payment/report and remaining specialist UI. B10 strict externally_blocked, release not_started, canvas pixel-diff/provider/GitHub remote/Docker/deploy/coverage not_run. Preserve .runtime/mysql-data, env/APP_KEY, public/private uploads, workbook and source. Git main no commit/remote, dirtytrue/hashnull. Root docs canonical.
+
+Teardown 2026-10-22T01:21:37+07:00: đã đóng3 browser sessions và các HTTP preview/QA server do phiên này mở. MySQL giữ chạy; dữ liệu phát triển giữ nguyên. Frontend production build/typecheck cuối đã pass sau sửa modal. Document checker passed; PHP syntax158/Pint test passed. Test fixture mới storage riêng đã khởi động/serve image200/stop graceful exit0, credentials runtime được xóa; audit rows test được giữ.
+
+
+## 2026-10-22T18:34:35+07:00 — DUI01 / D36: plugin Clicon để duyệt
+
+Tạo edition thu-thanh-figma-clicon riêng, logo thuthanh, UI tiếng Việt, blue/orange Clicon theo context Figma nguồn. Giữ V15.1/canvas cũ và source Laravel/Next.js. 48 mẫu đại diện từ workbook có ảnh nhúng/giá/tồn. JS syntax/manifest/UI script và mock172 screens1653 links passed;48 source image hashes/prices/stocks checked; old-page/rebuild/manual photo/cancel preservation passed. Playwright HTML previews desktop/mobile inspected; live Figma not_run, chưa owner visual approval. Chi tiết MD-CLEANUP-MANIFEST.json. Gói ZIP tự chứa ở output/figma. Git main chưa commit/remote, dirtytrue/hashnull. Backend/release gate giữ nguyên.
+
+
+## 2026-10-22T21:50:38+07:00 — DUI02 / D37: V17 hoàn tất gói duyệt
+
+Viết lại toàn bộ layout trong src/plugin.js, không reuse layout/editorial V16; data136 SKU/ảnh/giá/tồn offline.1920/content1320/card234×320; mobile390; mỗi nền tảng7 section có flow map và selector. Header exact “Chào mừng đến với nhà sách Thu Thanh”; logo thuthanh. Trang chủ bất đối xứng, sidebar/card catalog, table cart, checkout form, account/admin được dựng lại. Full catalog12 trang136 SKU không lặp; category/grade/price và phân trang theo filter; product detail đúng SKU. Giữ business25000/pickup0/no refund/VNPAY deferred. Không đổi Laravel/Next.js.
+
+JS/manifest/UI syntax và mock640 frames17302 links passed.136 nguồn giá/tồn/hash ảnh đối chiếu; workbook hash không đổi. Checks money/quantity, loading/empty/error/focus/disabled/permission/cancel/expiry/deferred, overlay và giữ dữ liệu giữa flow, preserve/rebuild/manual-image/platform-failure/cancel rollback passed.20 SVG hợp lệ và bundle khớp source. Browser preview desktop/mobile inspected; console cuối0errors0warnings, ảnh loaded. Gallery server lúc tiếp tục đã dừng, được mở lại để xem rồi đóng; không nhầm ERR_CONNECTION_REFUSED ban đầu là lỗi plugin. Một lệnh eval bulk-image bị lỗi quoting, không coi là passed; SVG validator20/20 và browser visible-image check riêng passed.
+
+Đã sửa thực tế: lọc lớp1 lẫn lớp khác; thiếu giới hạn trang danh mục ngắn; phân trang giữ filter; header table lệch dữ liệu; nút nhận tại cửa hàng bị cắt; nút giỏ chồng dòng cuối; bỏ phụ thuộc Intl trong sandbox. Hướng dẫn V17, flow manifest, CSV/checkpoint và ZIP ở output/figma. Live Figma/font/pixel-diff/user testing chưa chạy; owner cần import Present. Plugin cũ backup .runtime/figma-v16-before-v17 và ZIP V16 giữ nguyên. Git main không commit/remote, dirtytrue/hashnull.
+
+
+## 2026-10-23T00:32:51+07:00 — DUI03 / D38: Figma compact + code-readiness audit
+V18:24 mẫu/4 mỗi category, chỉTT-SGK-002 đầu tiên có nhánh mua/chỉnh sửa/tồn;80 khung thay640 (-87,5%),1260 links,7 section mỗi nền tảng. Bỏ generated perSKU detail, filter/paging/index frames; UX states gom board. Giữ welcome exact,logo,25000/pickup0,no refunds/payment deferred. Backup V17 ở .runtime/figma-v17-before-v18 và ZIP V17 giữ nguyên. Source/bundle/mock/syntax/UI,20SVG/preview và ZIP integrity passed. Browser homepage/catalog/cart/mobile inspected; no console errors; live Figma not_run.
+
+Code audit: MySQL lúc đầu tắt, start instance cũ loopback3307 thành công, không install/reset. Dev136 sản phẩm6 categories1admin; giá/tồn136 match, CatalogService12trang136unique read-only. Không giới hạn4/danh mục hoặcSKU đầu trong app. Thêm CheckoutTest multiSKU khácFigma,qty2/3,total114500,reservations/snapshots/cart verified; targeted1test13assertions and Pint passed. Full85tests1366assertions passed21,59s. Frontend6APItests/build/typecheck passed. Không rerun full application browser e2e.
+
+Cần làm: apply Clicon vào Next (hiệnlogo/header/style cũ); UIadmin category/reconciliation/evidence; VNPAY/revenue deferred; Compose chưa Next service; staging/deploy/coverage/GitHub/hồ sơ môn còn thiếu. MD-CLEANUP-MANIFEST.json ghi rõ. Sửa LOCAL-SETUP các câu Node chưa dùng/sản phẩm trống; không hướng dẫn tạo admin thứhai. MySQL giữ chạy, HTTPpreview/browser đóng. Gitmain no commit,dirtytrue/hashnull; business implementation unchanged, added meaningful test only.
+
+Packaging check D38: phát hiện một bản V17 giải nén lồng ở thu-thanh-figma-clicon/thu-thanh-figma-clicon. Giữ nguyên bản user-owned; ZIP V18 dùng whitelist30 file hiện hành, chỉ1 manifest V18, không kèm bản lồng. Đã repack và kiểm CRC/hash tất cả30 file passed. Khi import local chọn manifest ở gốc folder hiện hành hoặc dùng ZIP V18 mới.
+
+
+## 2026-10-23T01:18:06+07:00 — DUI04 / D39 local artifact and scoped UI done
+
+Acceptance recorded before edits. V19 footer white/Fahasa-column reference, removed service strip; Next common footer/brand/welcome synchronized and numeric fee hidden browse/cart/policies. Fee server25000/0 and no refund policy unchanged. Figma full QR demo+pending/success/fail/expiry/recon (48screens/platform,4samples/category,firstSKU); no real payment enabled. Empty-state text spacing and mobile order banner fixed to prevent title/body/amount collisions.
+
+Checks actual exit0: python thu-thanh-figma-clicon/build.py; node --check code.js; node scripts/test-figma-clicon.cjs96frames2082links incl unique sections/screens nonintersection, new footer/QR text geometry, qty totals, replaceV18/manual preservation/failure/cancel. QR3SVG independently decoded ZXing through .runtime/verify_qr_v19.py. Backend php artisan test --log-junit=storage/logs/phpunit.xml85tests1366assertions18.17s/JUnit17.870484, no skips. Frontend npm run test:api6passed; build/typecheckpassed after final edits. Read-only136prices/stocks match,6cats1admin. Playwright preview and webfooter390/1920 inspected; no horizontal overflow/0brokenimages; expected guest401 +4preload warnings recorded, no all-route E2E. Preview0consoleerrors/warnings. python scripts/check_pack.py passed documents only (does not run application tests).
+
+ZIP output/figma/thuthanh-figma-clicon-v19-2026-10-23.zip,46files36SVG one manifest; bytes1259255,SHA256 0b5a8d08144b9c312a5169af2565e23b26b0a0a7b9862ef3dc46c24555ebbd90. Package consistency/XML/integrity passed. V18 backup .runtime/figma-v18-before-v19 and old archives retained; nested old user copy excluded from ZIP. Guide/report MD-CLEANUP-MANIFEST.json. No schema/deploy/import/reset/newadmin. Live Figma/provider/release not_run; no claim all logic universally proved. Backend externally_blocked. Preview/web/backend processes started here stopped; MySQL retained. Gitmain no commits/remote dirtytrue; commit=null. Next F03 approved full layout/admin work after owner review; payment remains deferred.
+
+
+## 2026-10-23T01:51:46+07:00 — DUI05 / D40 V20 local deliverable done
+
+Source: native plugin admin role login/dashboard counts+chart/recent orders, clean commerce copy (no technical notes), external scenario selector in plugin UI, full payment outcomes/paid receipts/paid list quantity continuity, breadcrumb text home, one hero CTA only, THUTHANH serif italic/accent. Removed duplicate compact product from order detail and3deferred prototype pages. Kept24samples/4category/firstSKU/7flows, now56screens/platform. New shared builders avoid perSKU page expansion. App shell/font/banner/login description synchronized; real role authorization/payment/report unchanged.
+
+Actual exit0: python build.py; node --check code.js; node scripts/test-figma-clicon.cjs112frames2516links (5scenario×3branches, clean text, role, home, brand, money/paid receipt/cancel/ordercode/list, geometry and V19/manual/rebuild/failure/cancel). Frontend6APItests/build/typecheckpassed after final edits. Browser preview admin login/dashboard mobile and paid2receipt desktop inspected, preview0console; actual web390 no overflow/Georgia THUTHANH/hero1link Khám phá ngay/homehref=/; expectedguest401. No owner admin login or authenticated browser e2e. No backend source changes,85/1366 D39 evidence retained, NOT rerun this turn.
+
+Artifact output/figma/thuthanh-figma-clicon-v20-2026-10-23.zip,58files48SVG one manifest,bytes1357439,SHA256 26f407ae2df2a5e3f820db27e5d746956c5a73b9a89967ec40f01d95d0c7eea9; ZIP source/CRC/hash/XML passed. V19 source backup .runtime/figma-v19-before-v20; previous ZIPs and nested old user copy preserved/excluded. Docs FIGMA-V20-REVIEW and plugin HUONG-DAN updated; runtime guide marked V20 supersession. No deploy/schema/import/reset/admincreation, no realprovider/revenue. Live canvas pending owner import; gate externally_blocked unchanged. HTTP/browser processes started here stopped; MySQL retained. Gitmain untracked/no commits/remote,commit=null. Next F03 remaining app layout/admin.
+
+
+## 2026-10-23T03:43:54+07:00 — FUI01 / D41 web Clicon + real dashboard and guide done
+
+Acceptance and checkpoint written before source. Source: frontend/src/components/home-storefront.tsx(new) and thin home route; store-shell blueheader+white nav; new clicon.css shared tokens/components/responsive; card featurevariant/full API data; admin layout sidebar and real chart dashboard; adminorders supports q URL for recentrow links. No Figma data/sample purchase limits imported into app. New backend DashboardService + Admin/DashboardController + read-only route, Vietnam-day aggregate, active catalog/open unprocessed counts, eager-load5recent orders; updated OpenAPI/API/database/trace docs. No schema/money/auth/provider behavior changes. Backup pre-Clicon frontend .runtime/frontend-before-clicon-v21. Runtime guide CHAY-WEB-VA-LARAVEL.md explains actual local persistence and deployment, cites official docs; no deploy performed.
+
+Checks actual: php artisan test --filter=DashboardTest2tests20assertions6.24s; Pintfixedtestimports then full php artisan test --log-junit=storage/logs/phpunit.xml87tests1386assertions25.42s/JUnit24.963982,0skip/fail. Frontend6APIclienttests passed, build/typecheck initially and finally after CSS/ARIA/q-link changes passed. Failed npm invocation at repo root corrected to frontend (no source failure). API routes39 match documented contract. python scripts/check_pack.py passes docs only, not substitute for implementation tests.
+
+Browser Playwright isolated MySQL testDB (scripts/frontend-browser-fixture.php,18080 + Nextdev3100): admin login redirects/admin;4counts match HTTPdata,7days;390/1440no overflow after fixing recenttable scroll container; product editor open/close no save; guest productintent opensauth. Customer registration→preserved productdialog→qty2cart→serverdeliveryquote25000,customer dashboard403/cart no presetfee,cart+checkout390/1440 no overflow,0orderscreated,0pageerrors. Harness retries fixed waiting for logout and stale button-label assumptions. No ownerlogin/password or dev writes. Dev catalog/home1920/390 and320 checked0brokenimages/no horizontaloverflow/oneCTA; frontend-style image size warning fixed explicitboxes, no claim all dev warnings eliminated. Final query-link small feature buildverified, not separately browserclicked after last source edit. Final build rewrites assert backend8000, not test18080.
+
+Read-only dev before/after136products6cats1admin, all136source prices/stocks match. Testfixtures137/7 separate and retained for audit; no reset/import dev. All HTTP/Next/testfixture/browser QA processes stopped after checks, MySQL retained. No commits/remotes, gitmain dirtytrue/hashnull. FUI01 local done; F03 broader specialized admin + revenue/payment/release still incomplete. Backend externallyblocked/release notstarted unchanged. Next F03 or owner review; no hosting/credentials asked for local.
+
+
+D41 checkpoint validation: check_pack sau mark FUI01 done phát hiện dependency F02 vẫnin_progress. Sửa dependency FUI01 về DUI05+F01 (đều done) vì scope visual+read-only dashboard không yêu cầu nghiệm thu provider của F02; ghi DECISIONS rõ phạm vi. F02/F03 và provider/release giữ nguyên. Re-run check_pack sau correction; không dùng việc sửa metadata để nâng gate payment.
+
+
+## 2026-10-23T09:07:33+07:00 — DUI06 / D42 done scoped
+
+Logo Nhà sách Thu Thanh/card/Xem nhanh/spacing/HD136/bannermanga on web + FigmaV21. Native120frames2642links56SVG;PNG24pixel-identical,sourceverified136;mock5scenarios3channels/quantity/auth/SWAP/CLOSE/upgrade/repeatedmanualpreservation/rollbackpassed. Frontend finalbuild/typecheck6APItests passed. Chromium isolatedMySQL320/390/1440 guest/authcancel+registerqty2/realcart/buyNowcheckoutqty3/customer403/adminpurchaseblocked/TabEscape/restore/backdrop/scrolllock passed0orders0pageerrors. Dashboard2/20passed; full87/1386 not rerun. Devreadonly136/6/1admin/pricesstocks136 + workbookSHA unchanged. Package66files1manifest56SVG CRC/XML/source match passed;SHA af9abd739b9272732d727d0d4f4fe89c929d2e907728936b6c08cd9330513afe. Failures/harness retries/fixes and notrun scope recorded MD-CLEANUP-MANIFEST.json. Gitmain no commits,dirtytrue,commitnull. HTTP QA/dev/preview stopped after continuation;existingMySQL restarted and verified;fixturesecretfiles removed,testDBrows kept. NextF03 specialized admin/reconciliation/course;realpayment/revenue/releasegates unchanged.
+
+
+## 2026-10-23T09:33:06+07:00 — DUI07 in_progress / D43 acceptance before edits
+
+User authorizes separate Landing page/flat horizontal flows/gray separator/unique logo/brandfooter/newsletter/address/2banners/noCTA. Existing V21 source/dirtygit preserved in runtime backups. Newsletter backend first with add-only migration and tests before UI;no provider/deploy/reset/devimport.
+
+DUI07 schema checkpoint: NewsletterTest + APIcontract7tests37assertions passed on isolated thu_thanh_test. Reviewed migrate --pretend: only CREATE newsletter_subscriptions +unique email, consent timestamp; apply only this path to local dev. Pre-migration136products6categories1admin/pricesstocks136matched. No existing table/data mutations.
+
+
+## 2026-10-23T10:46:22+07:00 — DUI07 / D43 done scoped
+
+D43 / DUI07 hoàn tất trong phạm vi web và plugin local V22. Có Landing page riêng2frame duyệt;2page prototype/61màn mỗi page/7flow hàng ngang mỗi page,frame và nhãn top-level không có section lớn bao.124frame tổng,122prototype,2758links,58SVG local. Gap ngang320px và gap flow520px;node ngoài plugin/ảnh sửa tay cả master được giữ,đặt tránh ghi chú. Master duyệt tĩnh vì không có prototype cross-page;home entry tại mỗi page prototype giữ Trang chủ hoạt động.
+
+Web:gray gaps/panel trắng,logo Constantia/bookmark riêng,0Khám phá ngay,8nhãn hàng/footer/newsletter/address295 Tôn Đức Thắng,Hòa Khánh,Đà Nẵng. Owner đã chọn nguyên2banner Phương Nam;ảnh nguồn/chữ/logo giữ nguyên,thay toàn bộ banner tự dựng tạm. Banner manga giữ. Checkoutpickup/policies có địa chỉ mới,không sửa snapshot đơn.
+
+BackendNewsletterController/SubscribeNewsletterRequest/NewsletterSubscription/newmigration:publicPOST newsletter/subscriptions,normalize emailRFC/consent/CSRF/throttle10/min/unique-idempotent/generic202. Không expose email/id/membership,không tạo user/order và chưa gửi campaign. Bảng riêng thêm sau --pretend và --path;không sửa bảng nghiệp vụ.7targetedtests37assertions trước khi UI;full92tests1417assertions0skip/fail/error,CLI20.52s/JUnit20.140679s. TargetedPint6files passed. OpenAPI40paths/API/schema/PRD synced.
+
+Final Nextbuild/typecheck/6APIclienttests passed;productiontargets API/CSRF/storage localhost8000,không QA18080. Chromium320/390/1440home/catalog nooverflow/logofit/graypanels/gaps>=16px/0CTA/8brandsloaded/address exact;newsletter thiếu consent không submit,202/duplicate202 và readonly testDB1row+consent;guestquickview/authcancel quantity2 giữ.0orderscreated/0uncaughtpageerrors. Original2banner src và newsletterbutton màu xanh checked. Policyaddress browserchecked;finalformatter/addresscopy có build/typecheck. Expectedguest401 và NextdevLCP advisory,không claim clean-console.
+
+Figma build/JSsyntax/mock passed:geometry/containment/nooverlap/flowrows/4SKU mỗi category/firstSKUdemo/money/quantity/SWAP-CLOSE/5payment scenarios3channels/ảnh generated nângHD/ảnh manual master qua2rebuild/owner notes avoidance/rollback3pages/cancel. Original2bannerSHA/aspect ratio asserted.136ảnhgốc/PNG24lossless/3banner/8brands/2logo hashes passed. WorkbookSHA ae2ca77c6543732131739c830b5595c207c28f5398a9eb9a8131a30ee5fb0deb giữ. Dev136products6categories1admin và136giá/tồn khớp trước/sau;QA chỉ dùng thu_thanh_test.
+
+Live ownercanvas/pixeldiff/provider/deploy/remoteCI not_run. Owner cần importmanifestV22/chạybuilder và Present từ2page prototype;Landingpage để duyệt. VNPAYreal deferred503,revenueformulaOPEN,specializedadmin/course/deploy còn riêng;backendexternally_blocked,release not_started. Không gọi toàn dự án done.
+
+Sau ngắt process dừng,đã start existingMySQL và resume isolatedQA có databaseguard,không reset/import hoặc đổi fixtureaccount. HTTP/dev/preview đã dừng;MySQL giữ. Fixture runtime secret được dọn cuối;testDBfixtures/audit giữ. env/APP_KEY/mysql-data/uploads/workbook/oldZIP/userartwork giữ. Gitmain chưa có commit/remote,dirtytrue,last_verified_commitnull. Một command quoting PowerShell lỗi trước execution đã thay bằng helperPython,không có source mutation từ lệnh lỗi.
+
+Gói output/figma/thuthanh-figma-clicon-v22-2026-10-23.zip; 11692697bytes;6files1manifest;CRC/source byte match passed;58SVG XML local passed. SHA256 603d7ab450b6454e44a9d3a75103737ccb59490c47622dd9506e7861d7403bfe. Source/build/gallery ở repo,ảnh nhúng đủ trong code nên gói import offline không cần Python/extension.
+
+
+## 2026-10-23T12:03:41+07:00 — DUI08 / D44 in_progress acceptance before edits
+
+Owner revenue formula approved separately:paid merchandise less discounts,shipping separate. Read source confirms admin create/update/images/stock/orders exist;no archive/revenue UI/category/reconcile UI yet. Will add verified backend before new UI;V22 backups preserved. No devdata reset/import/adminpassword changes.
+
+
+## D44 / DUI08 — V23, 2026-10-23T16:45:42+07:00
+
+Hoàn tất phạm vi local: landing chỉ ba feed bán chạy/mới/gợi ý; bỏ SGK/VPP navbar và các category sections, giữ catalog/dữ liệu. Paid ranking SUM quantity + accepted receipt EXISTS, không adminflag hoặc unpaid. Gợi ý đa dạng/còn tồn và chỉ ưu tiên giỏ/đơn paid/accepted của chính khách. Card home4cols, ảnh330px desktop/220px mobile và display-only whitespace bounds108nguồn; font/icon/text quickview căn giữa,44px minimum. Ảnh admin uploads không bị crop import cũ.
+
+Admin có sản phẩm/ảnh/create/edit/archive/restore/statusfilter,category CRUD hide/show,stock/orders,RevenuePanel dashboard + /admin/revenue (date range/day-week-month/zero-fill/chart/CSV,tiền hàng sau discount,shipping riêng),reconciliation list/manualreview/verified-unpaid có backendcondition. /admin entry ở footer + AccountGate hướng dẫn;CLI admin:account chỉ đọc,admin:password local interactive confirm/secret twice/sessionrevoke. Không chạy reset credential dev. D15 đã được owner chốt qua D44;approved_v1 bật tronglocal/default/templates,refund disabled,VNPAY deferred.
+
+Backend100tests1476assertions0errors0failures0skips,CLI28.67s,JUnit24.869672s;Pint fullpassed sau sửa line endings config/store.php. Môi trường PHP8.4.25/Laravel12.70/MySQL8.4.13 thu_thanh_test,không dev reset. Next build/typecheck/6APIclienttests passed final. Browser320/390/1440,guestquickview/adminlogin/product create-edit-archive-restore/categorycreate-hide/day-monthreport;positive accepted+discount fixture riêng testDB/chartshipping25000/CSV/imageupload-delete/stockadjust/manualcase;customerregister qty2 buyNow checkout pickuporder/adminUI403+revenue403/adminprepare-ready/unpaidfulfillmentblocked,0uncaughtpageerrors. JS confirm trong automation được chấp nhận bằng stub để CLI không dừng ở dialog; backend money/version/permission riêng meaningfultests. Một lượt browser tạm ngắt do máy/browser session đóng trong thời gian chờ; mở lại session và chạy đạt,không thay dev.
+
+Figma V23 nativehome/nav/cards + adminRevenue,126frames(124prototype+2review)/3pages/7flows mỗi platform,2804links,24SKU/4mỗi category,60SVGlocal;mock fonts/geometry/cardregions/role/5paymentoutcomes3channels/manualphoto repeated/rollback/cancel passed;syntaxpassed. ZIP6files1manifest offline CRC/sourcebytes/XML60verified: `output/figma/thuthanh-figma-clicon-v23-2026-10-23.zip`,SHA256 `abeb07d8b5dd56dfe5559d7753b51e212ff21cf67a3605546cc4d08176200d63`. Chưa chạy canvas thật/pixelcomparison.
+
+Dev read-only:136products,6categories,1admin,136prices/136stocks khớp workbook,0product thiếu ảnh,0paidorders/0bestsellers (đúng dữ liệu thật),/home new12/recommended12cóảnh và320/390/1440khôngoverflow. Không import lại/reset/deploy/mởVNPAY. QA Next3100/Laravel18080/browser đã dừng;server sẵn có localhost3000/8000 giữ nguyên,MySQL đang chạy. Gitmain chưa commit/remote,toàn source untracked/dirtytrue,last_verified_commit=null.
+
+Source thay:backend CatalogService/RevenueService/ProductResource/public+adminProductController/ArchiveProductRequest/routes/configstore/CLIadminaccount-password/tests/OpenAPI;frontendhome/card/picture/bounds/quickviewCSS/store-provider/adminproducts/categories/revenue/reconciliation/dashboard/nav/entry;plugin source/bundle/UI/manifest/mock/package/gallery;guides/decisions/schema/API/checkpoints. Không migration mới.
+
+Lệnh tiếp: chủ dự án mở localhost3000/admin;`cd backend; php artisan admin:account` xem identity local,đăng nhập password hiện có;chỉ tự chạy `admin:password` nếu quên. Restart Laravel/Next nếu giữ terminal cũ,Ctrl+F5. Import ZIPV23 và run builder để cập nhật canvas. Task tiếp F03 còn acceptance tổng thể/ownerFigma review;VNPAY merchant/callback/worker/liveSandbox/deploy/CIremote/coverage>70%/coursereport vẫn chưa nghiệm thu. Giữ .env/APP_KEY/MySQLdata/workbook/storage/uploads/evidence và backups. Không cần cài VSCodeextension.
+
+
+## D45 / DUI09 in_progress acceptance before edits
+## D45 — CONFIRMED 23/10/2026: giá giảm, dữ liệu demo và chuẩn bị scale
+
+Chủ dự án yêu cầu bỏ hai chữ/link Thương hiệu và Quản trị nhà sách tại footer, giữ logo nhãn hàng; thêm biểu tượng lửa cho Bán chạy nhất. New tiếp tục created_at/ID giảm dần; bestseller chủ dự án xác nhận xếp tổng số lượng đã bán, không theo tiền. Sau khi hỏi nguồn lịch sử thật, chủ dự án đổi yêu cầu sang tự tạo random: cho phép tạo khoảng1000đơn ở database demo local riêng, không sửa/trộn paid sales/stock/prices/customers trong thu_thanh thật và không đưa demo vào production. Không mở VNPAY hoặc fake paid endpoint trên web. Demo command phải có guard tên DB+môi trường, idempotent và có manifest nhận biết synthetic/provider demo; testFixtures tách DBtest.
+
+Thêm phần trăm giảm giá khi tạo/sửa sản phẩm, tính sale_price server bằng số nguyên VND/làm tròn gần nhất; không tự giảm giá136sản phẩm hiện có. Không nhận đồng thời discount_percent và sale_price khác nguồn. API trả phần trăm được suy ra từ giá đang lưu; thẻ/popup thể hiện giá bán, giá gốc gạch ngang và badge giảm khi có giảm thật. Giá/tổng/quote/version/stock vẫn backend quyết định.
+
+Mục tiêu10k người đồng thời là mục tiêu nghiệm thu hạ tầng, không mặc định10k checkout/RPS. Được tối ưu source, đọc public/cache/sharedRedis, truy vấn bounded, productionbuild/PHP-FPM/opcache/reverseproxy/CDN và thêm load harness/profiles. Không tự mua/provision/deploy hạ tầng hoặc tuyên bố10k đạt từ testlocalhost. Chỉ cache dữ liệu công khai; auth/cart/checkout/order/admin/personalized home/session/CSRF phải private/no-store và không cache Set-Cookie. Các mutation stock/price/order vẫn kiểm server; cache có TTL và invalidation sau commit. Test trước/sau đo query/response/latency trên môi trường cụ thể.
+
+Dọn repo bằng inventory/reference audit; loại bản build/import/doc trùng đã thay thế khỏi vùng source hoạt động bằng archive có manifest/hash và hướng dẫn khôi phục. Không xóa env,DB,workbooknguồn,uploads,evidence,AGENTS/checkpoints/specs còn cần,dependencies hoặc userartwork. Không đổi tên hàng loạt source đang dùng. Acceptance: discount money edgecases/quote consistency/permissions; public cache isolation/invalidation/bounded recommendations; 1000demo receipts/order quantities totals/idempotence/guard; browser user/admin/responsive/errors; actual load smoke measured only at executed concurrency; finalbuild/typecheck/tests/docs/checkpoints. Backend related tests trước UI mới,provider/release gate giữ nguyên.
+
+
+
+# D45 / DUI09 — V24 local verified; production capacity pending
+
+Đã thực hiện footer/ngọn lửa/giá giảm theo phần trăm, public cache tách session và gợi ý bounded; tạo đúng 1.000 đơn ngẫu nhiên trong thu_thanh_demo riêng. Bestseller theo tổng lượng bán paid/accepted; sản phẩm mới theo created_at/id. Dữ liệu thật 136 sản phẩm/giá/tồn/admin giữ nguyên. Không bật provider thật.
+
+Kiểm tra thực tế: 111 backend tests/1.626 assertions/0 lỗi hoặc skip (JUnit 28,433283s), full Pint; Next build/typecheck và 7 API-client tests đạt. Browser khách/admin/customer ở 320/390/1440 đạt, không page error; đã kiểm tra CRUD/giảm giá/new feed/quote/role/report. Demo audit 1.000 paid orders và accepted demo receipts, tổng tiền khớp, 136 sản phẩm active, zero reserved units. Đã phục hồi hash mật khẩu demo admin và thu hồi phiên QA; không đổi admin thật.
+
+Load local 20 đồng thời/200 request: 0 lỗi, 35,77 request/s, p95 601,13ms sau khi nạp OPcache; trước đó 5,45 request/s/p95 3.710,22ms. Đây là PHP development server một worker, không chứng minh 10k. Docker/Redis/FPM/Nginx config và k6 profile đã chuẩn bị, YAML parsed; chưa có Docker/k6/staging để build/nghiệm thu. Hỏi chủ dự án hạ tầng; không triển khai hoặc mua tài nguyên.
+
+Archive 149 file trùng/cũ ngoài repo có checksum và manifest khôi phục: docs/CLEANUP-MANIFEST.json; map source docs/REPOSITORY-MAP.md. V24 Figma local mock/ZIP đạt, xem docs/FIGMA-V24-REVIEW.md; canvas thật chờ chủ dự án import/duyệt. Không bỏ workbook, env, DB, uploads hoặc source hiện hành.
+
+Chạy demo: hai terminal ở gốc repo gọi scripts/start-demo.ps1 -Component backend và -Component frontend (dừng Next cũ cổng3000 trước). Admin: /admin, admin-demo@example.test; tự chọn mật khẩu bằng php artisan admin:password --env=demo từ backend. Xem docs/CHAY-WEB-VA-LARAVEL.md. Không có password công khai. Không cần tạo/import lại database demo.
+
+Việc tiếp theo: cung cấp hosting/staging/CPU/RAM; build và kiểm tra Docker, HTTPS, backup/restore rồi chạy tải theo docs/PERFORMANCE.md trong phạm vi được phép. Payment thật/VNPAY vẫn deferred; backend strict gate externally_blocked, release not_started. Git main chưa commit/remote, last_verified_commit null, git_dirty true. Giữ cả thu_thanh, thu_thanh_demo, .env.demo và demo-storage; không migrate:fresh hay seed demo vào database thật.
+
+Evidence: docs/qa/DUI09-*.json, backend/storage/logs/phpunit.xml, output/figma/v24-package.json. Các số liệu cũ bên dưới là lịch sử, không thay cho checkpoint V24 này.
+Checkpoint: 2026-10-23T19:32:53+07:00
+
+D46 in_progress: audit12Markdown; archive/merge/reference checks before done.
+
+
+# D46 — dọn Markdown hoàn tất
+
+Đã xóa 12 file Markdown không còn cần trong repo: tám review cũ, hai prompt khởi động/tiếp tục trùng luật hiện hành, hướng dẫn chuyển lab và frontend verification đã gộp vào docs/VERIFICATION.md. Archive ngoài repo kiểm CRC/SHA trước xóa; xem docs/MD-CLEANUP-MANIFEST.json. Tham chiếu và scripts/check_pack.py cập nhật theo bộ tài liệu còn dùng. Không xóa AGENTS/checkpoint/đặc tả/guide/audit môn học/nguồn asset; không đổi ứng dụng, DB, env hoặc ảnh.
+
+Kiểm tra thực tế: python scripts/check_pack.py đạt (27 required,26tasks,22functions,41APIpaths,86scenarios); audit link Markdown local không có link hỏng; git diff --check đạt. Không chạy lại application tests vì thay đổi chỉ tài liệu và kiểm tra tài liệu. Kết quả 111 backend/7client tests bên dưới thuộc phiên D45 trước đó.
+
+DUI09 local đã verified, phần 10k vẫn chưa nghiệm thu. Chủ dự án xác nhận chưa có hạ tầng deploy; bước tiếp theo khi sẵn sàng là chọn staging rồi kiểm runtime/load theo PERFORMANCE.md. Payment thật vẫn hoãn. Git main chưa có commit, dirty=true, last_verified_commit=null; giữ thu_thanh/thu_thanh_demo/env/workbook/uploads. Chạy web theo docs/CHAY-WEB-VA-LARAVEL.md; không cần import lại database. Các checkpoint dưới đây là lịch sử.
+
+Checkpoint 2026-10-23T23:04:42+07:00
+
+D47 in_progress: verified repository/issues/milestones; prepared reviewable issue bodies in .runtime/github-schedule; project scope pending.
+
+
+# D47 — bổ sung GitHub Project hoàn tất, 24/10/2026
+
+Repo GitHub đã xác minh: DongDao27/Thu-Thanh-bookstore. Project riêng tư DongDao27/4. Có sẵn T01–T07; đã tạo 11 issue T08–T18 (#10–#20) và MASTER #21. Mỗi T01–T18 đúng một issue, đủ milestone M1–M5 và có trong Project; MASTER liên kết đủ18 task. Task kỹ thuật local được gom theo các đầu việc chức năng trong bản master người dùng gửi, không nhân đôi thành board khác. T03 được gắn lại milestone M1 còn thiếu.
+
+Đã thêm checklist/acceptance/phụ thuộc, cập nhật landing/guest quickview/giảm giá/doanh thu/demo và giới hạn payment/deploy theo quyết định hiện hành. Không đóng issue hoặc tự đánh dấu checklist hoàn tất. Giữ item cũ tạo repository, trạng thái và assignee đã có. Không tự đặt ngày kế hoạch, người review hoặc người phụ trách cho nhóm khi chưa chốt phân công.
+
+Kiểm chứng qua GitHub CLI/API: 18 issue duy nhất, milestone đúng, thành viên Project đúng, MASTER đủ link; evidence docs/qa/github-schedule-sync.json. gh đã được chủ tài khoản cấp quyền Project qua device flow; không lưu token vào repo. Không thay source ứng dụng, database/env hoặc remote của repo local. Git main local chưa có commit/remote; last_verified_commit=null, dirty=true. Application tests không chạy lại vì chỉ đồng bộ issue/tài liệu, không thay hành vi ứng dụng.
+
+Tiếp theo: nhóm phân công và review task, đính kèm PR/test thật trước khi đóng. T09/T10 provider còn hoãn; T17 cần user testing đại diện; T18/10k chờ hạ tầng. Backend strict/release gate giữ nguyên; phần capacity của DUI09 vẫn mở. Giữ database thật/demo, workbook và secrets như trước. Hướng dẫn chạy vẫn docs/CHAY-WEB-VA-LARAVEL.md.
+
+Checkpoint 2026-10-24T00:42:21+07:00
+
+D48 in_progress: target Payment verified empty, source inventory524 files54.99MB, high-confidence secret scan clean (only tracked directory .gitignore placeholders matched runtime path heuristic). Source validation before commit/push.

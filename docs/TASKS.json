@@ -1,0 +1,970 @@
+{
+  "schema_version": 1,
+  "status_values": [
+    "todo",
+    "in_progress",
+    "blocked",
+    "externally_blocked",
+    "done"
+  ],
+  "tasks": [
+    {
+      "id": "B00",
+      "title": "Audit repo, môi trường, bootstrap backend/CI",
+      "phase": "BACKEND",
+      "status": "done",
+      "depends_on": [],
+      "functions": [],
+      "files": [
+        "backend/composer.json",
+        "backend/.env.example",
+        ".github/workflows/backend.yml",
+        "docs/STATUS.json"
+      ],
+      "acceptance": [
+        "Không mất source cũ; version/MySQL local/test ghi rõ",
+        "Backend boot/health, CI baseline chạy, no secrets"
+      ],
+      "required_checks": [
+        "repository-audit",
+        "environment-smoke",
+        "mysql-connectivity"
+      ],
+      "evidence": [
+        "PHP8.4.25 / Laravel12.70.0 / MySQL8.4.13; local + test migrations passed; EnvironmentTest: 2 tests, 7 assertions; composer validate/platform/audit exit0; CI workflow created, remote GitHub execution not_run (no remote)."
+      ],
+      "actual_commit": null,
+      "notes": "Local equivalent CI baseline verified. GitHub hosted execution awaits a remote repository."
+    },
+    {
+      "id": "B01",
+      "title": "Schema, constraint, migration, factory/seed",
+      "phase": "BACKEND",
+      "status": "done",
+      "depends_on": [
+        "B00"
+      ],
+      "functions": [],
+      "files": [
+        "backend/database/migrations/",
+        "backend/database/seeders/",
+        "backend/app/Models/"
+      ],
+      "acceptance": [
+        "Schema DATABASE đầy đủ; tiền integer và constraints enforce MySQL",
+        "Migration trên test DB mới; seed category idempotent; admin bootstrap không password công khai"
+      ],
+      "required_checks": [
+        "migration-roundtrip-test-db",
+        "schema-constraints",
+        "seed-idempotency"
+      ],
+      "evidence": [
+        "5 domain migrations + 18 models; SchemaTest: 6 passed; full suite8 tests26 assertions on MySQL8.4.13; isolated test rollback5/reapply exit0; development migration exit0; categories seeded twice; Pint pass."
+      ],
+      "actual_commit": null,
+      "notes": "DB constraints enforce local invariants; cross-table grade/category and aggregate refunds are enforced by services in later tasks. Bootstrap admin tested only with fixtures; no actual admin credentials created."
+    },
+    {
+      "id": "B02",
+      "title": "Auth/roles/ownership/CSRF",
+      "phase": "BACKEND",
+      "status": "done",
+      "depends_on": [
+        "B01"
+      ],
+      "functions": [
+        "F06",
+        "F07"
+      ],
+      "files": [
+        "backend/app/Actions/Auth/",
+        "backend/app/Policies/",
+        "backend/app/Http/Controllers/Api/V1/AuthController.php"
+      ],
+      "acceptance": [
+        "Login email/phone normalize, session regenerate, logout invalidate",
+        "Register không admin; customer không truy cập admin/đơn khác; browser-cookie CSRF verify"
+      ],
+      "required_checks": [
+        "auth-tests",
+        "negative-permission-tests",
+        "cookie-csrf-smoke"
+      ],
+      "evidence": [
+        "AuthTest8 tests60 assertions passed; real HTTP auth-cookie-smoke.php11 checks passed: missing/invalid CSRF419, login regenerated DB session, cookie me, logout CSRF, destroyed session and old cookie replay401. Policies hide other owners404; actual order endpoint ownership rechecked at B06."
+      ],
+      "actual_commit": null,
+      "notes": "Explicit web middleware on first-party api/v1 provides CSRF for requests with/without Origin. Sanctum uses web session. No bearer token issuance."
+    },
+    {
+      "id": "B03",
+      "title": "Catalog/admin CRUD/media",
+      "phase": "BACKEND",
+      "status": "done",
+      "depends_on": [
+        "B02"
+      ],
+      "functions": [
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F18",
+        "F19",
+        "F20"
+      ],
+      "files": [
+        "backend/app/Services/PricingService.php",
+        "backend/app/Http/Controllers/Api/V1/Admin/",
+        "backend/app/Http/Resources/"
+      ],
+      "acceptance": [
+        "Active public read/search/sort/pagination/home sections",
+        "Admin CRUD/upload secure, không sửa stock_reserved trực tiếp; snapshot lịch sử không đổi"
+      ],
+      "required_checks": [
+        "catalog-tests",
+        "media-tests",
+        "api-contract-tests"
+      ],
+      "evidence": [
+        "CatalogTest6/43, MediaTest2/12 passed; CatalogContractTest1/489 passed after fixing Home categories and User role default; image ownership and after-commit retryable cleanup verified; lint pass."
+      ],
+      "actual_commit": null,
+      "notes": "Actual historical order snapshot test follows B06. Local files need queue worker for asynchronous deletion. API/openapi updated for curated flags and image bounds."
+    },
+    {
+      "id": "B04",
+      "title": "Inventory ledger và row locks",
+      "phase": "BACKEND",
+      "status": "done",
+      "depends_on": [
+        "B03"
+      ],
+      "functions": [
+        "F21"
+      ],
+      "files": [
+        "backend/app/Services/InventoryService.php",
+        "backend/tests/Integration/"
+      ],
+      "acceptance": [
+        "reserve/consume/release/adjust một lần, audit đầy đủ",
+        "Không âm/counter drift, MySQL lock/rollback verified"
+      ],
+      "required_checks": [
+        "stock-invariant-tests",
+        "mysql-concurrency-tests"
+      ],
+      "evidence": [
+        "InventoryTest3 passed; InventoryConcurrencyTest independent processes + parent-held MySQL row lock: one RESERVED, one INSUFFICIENT_STOCK; full suite31 tests667 assertions passed."
+      ],
+      "actual_commit": null,
+      "notes": "Ledger stock transitions are atomic/idempotent; adjustment actor/reason/request replay enforced. Payment/order callers will enforce their higher-level state rules in B06-B08."
+    },
+    {
+      "id": "B05",
+      "title": "Cart và quote",
+      "phase": "BACKEND",
+      "status": "done",
+      "depends_on": [
+        "B04"
+      ],
+      "functions": [
+        "F05",
+        "F08",
+        "F09"
+      ],
+      "files": [
+        "backend/app/Services/CartService.php",
+        "backend/app/Services/PricingService.php",
+        "backend/app/Http/Controllers/Api/V1/QuoteController.php"
+      ],
+      "acceptance": [
+        "Cart owner/multi-item/add+patch+delete đúng",
+        "Quote server totals/snapshot/version/expiry, không reserve; default shipping25000/pickup0; invalid config explicit"
+      ],
+      "required_checks": [
+        "cart-tests",
+        "quote-tests",
+        "price-change-tests"
+      ],
+      "evidence": [
+        "CartQuoteTest7 tests52 assertions passed on MySQL; add/patch/delete owner and quantity checks, immutable quote totals/expiry/no-reserve, shipping503 and configured fixture, price/fingerprint change tests.",
+        "D29 audit: CartQuoteTest + OwnerPolicyTest passed; default25000/pickup0, blank fallback, invalid config503, server totals and fee-change requote tested."
+      ],
+      "actual_commit": null,
+      "notes": "Quote pricing_version is a positive48-bit digest returned as integer per OpenAPI and stored in schema string column; full snapshot also checked at checkout."
+    },
+    {
+      "id": "B06",
+      "title": "Checkout/order/idempotency/snapshot",
+      "phase": "BACKEND",
+      "status": "done",
+      "depends_on": [
+        "B05"
+      ],
+      "functions": [
+        "F10",
+        "F12",
+        "F14",
+        "F15"
+      ],
+      "files": [
+        "backend/app/Services/CheckoutService.php",
+        "backend/app/Services/OrderService.php"
+      ],
+      "acceptance": [
+        "5 phút/24 giờ; quote consumed once, idempotency replay trước requote",
+        "Last-item race, double-submit, mid-transaction rollback, clear cart chỉ thành công"
+      ],
+      "required_checks": [
+        "checkout-tests",
+        "idempotency-race-tests",
+        "snapshot-tests",
+        "mysql-last-item-race"
+      ],
+      "evidence": [
+        "CheckoutTest8 tests63 assertions and CheckoutConcurrencyTest2 tests18 assertions passed; 2 independent full-checkout process races verified last stock and same-key replay; injected second reservation failure rolled back all order/items/stock/quote/idempotency while preserving cart."
+      ],
+      "actual_commit": null,
+      "notes": "Cancel currently safely refuses all orders with payment attempts until B08 reconciliation. Reorder merges current cart/prices without new reservation."
+    },
+    {
+      "id": "B07",
+      "title": "VNPAY adapter/payment attempts/receipts/IPN/QR",
+      "phase": "BACKEND",
+      "status": "externally_blocked",
+      "depends_on": [
+        "B06"
+      ],
+      "functions": [
+        "F11",
+        "F13",
+        "F16"
+      ],
+      "files": [
+        "backend/app/Payments/",
+        "backend/app/Services/PaymentService.php",
+        "backend/app/Http/Controllers/Api/V1/VnpayController.php"
+      ],
+      "acceptance": [
+        "Signature/amount/reference/merchant và exact provider ACK",
+        "Một accepted receipt/order; duplicate/late không sale hai lần; QR capability thật",
+        "Sandbox success/fail/query và callback verified; thiếu input ghi external-blocked"
+      ],
+      "required_checks": [
+        "payment-unit-tests",
+        "callback-contract-tests",
+        "provider-sandbox-evidence"
+      ],
+      "evidence": [
+        "PaymentTest9 tests56 assertions passed; VnpaySignatureTest2 tests6 assertions passed including independent Python HMAC fixture and signed query response; return never allocates, mismatch/duplicate/late and unknown time tested; real merchant Sandbox not_run."
+      ],
+      "actual_commit": null,
+      "notes": "D31 owner explicitly deferred real VNPAY; new attempts503 PAYMENT_INTEGRATION_DEFERRED, no fake paid. Adapter/signature/IPN/query fixture tests retained and passed. Real Sandbox/QR remains not_run; do not request credentials now or mark integration passed."
+    },
+    {
+      "id": "B08",
+      "title": "Expiry/cancel/reconcile/fulfillment/operational commands",
+      "phase": "BACKEND",
+      "status": "externally_blocked",
+      "depends_on": [
+        "B07"
+      ],
+      "functions": [
+        "F15",
+        "F16",
+        "F22"
+      ],
+      "files": [
+        "backend/app/Console/Commands/",
+        "backend/app/Services/ReconciliationService.php",
+        "backend/routes/console.php"
+      ],
+      "acceptance": [
+        "Expiry vs callback đồng thời an toàn; query outside locks; no auto-release uncertain",
+        "Valid fulfillment transitions, recovery/retry idempotent, trace/audit"
+      ],
+      "required_checks": [
+        "expiry-payment-race-tests",
+        "scheduler-smoke",
+        "fulfillment-tests",
+        "reconciliation-tests"
+      ],
+      "evidence": [
+        "OperationsTest6 cases, including signed final query + evidence resolution; PaymentExpiryConcurrencyTest2 independent-process cases passed; real queue/expire/reconcile/scheduler smoke5 checks passed; exact deadline microsecond comparison fixed; all included in75-test final suite."
+      ],
+      "actual_commit": null,
+      "notes": "Local implementation and checks passed; B07 real provider/QR dependency and actual provider semantics remain unverified, so task is not done."
+    },
+    {
+      "id": "B09",
+      "title": "Revenue/refund records/report đối chiếu",
+      "phase": "BACKEND",
+      "status": "externally_blocked",
+      "depends_on": [
+        "B08"
+      ],
+      "functions": [
+        "F17"
+      ],
+      "files": [
+        "backend/app/Services/RevenueService.php",
+        "backend/app/Http/Controllers/Api/V1/Admin/RevenueController.php"
+      ],
+      "acceptance": [
+        "Report accepted_sales/refund/shipping/unallocated riêng, VN day boundary",
+        "No-refund policy blocks new writes; historical evidence retained; report formula approval explicit"
+      ],
+      "required_checks": [
+        "revenue-fixture-tests",
+        "refund-authorization-tests",
+        "date-boundary-tests"
+      ],
+      "evidence": [
+        "RevenueRefundTest4 tests33 assertions passed; VN day boundary/from-inclusive-to-exclusive and gross unallocated receipts/refunds separated; evidence/caps/reference/authorization/no-restock tested; reports and writes gated by default."
+      ],
+      "actual_commit": null,
+      "notes": "D29 shipping25000/pickup0 approved. D30 no returns/refunds; new refund writes403 even legacy toggle enabled; retain historical ledger/evidence. D15/D27 revenue formula still OPEN; report remains gated. Provider dependency not verified."
+    },
+    {
+      "id": "B10",
+      "title": "Backend acceptance gate",
+      "phase": "BACKEND",
+      "status": "externally_blocked",
+      "depends_on": [
+        "B09"
+      ],
+      "functions": [],
+      "files": [
+        "docs/openapi.json",
+        "docs/TEST-PLAN.md",
+        "docs/STATUS.json",
+        "docs/HANDOFF.md"
+      ],
+      "acceptance": [
+        "Backend đầy đủ code và routes, không stub success",
+        "Lint/tests/MySQL concurrency/session/provider sandbox/ops evidence đạt",
+        "OPEN policies/creds thiếu ghi blocker, không mark BACKEND_VERIFIED"
+      ],
+      "required_checks": [
+        "full-backend-suite",
+        "mysql-integration-suite",
+        "openapi-source-parity",
+        "sandbox-and-operations-smoke"
+      ],
+      "evidence": [
+        "Final PHPUnit75 passed1282 assertions17.05s on MySQL8.4.13; real HTTP cookie/CSRF11 passed; actual ops smoke5 passed;152 PHP files syntax checked; Pint/composer validate/platform/audit passed; route-method parity and core response schemas passed; config/route cache boot and storage link checked; docs consistency passed.",
+        "D29-D32 audit completed: full81 tests1329 assertions17.75s passed; OwnerPolicyTest6 new tests; real HTTP cookie11/ops5 passed; Pint/Composer validate/platform/audit; PHP syntax153; JS source syntax and docs checker passed. OpenAPI route parity rechecked after description update2 tests6 assertions. See REQUIREMENTS-AUDIT.md.",
+        "Course rubric audit21/10/2026 completed read-only: source patterns mapped and all24 weighted subcriteria assessed in COURSE-RUBRIC-AUDIT.md; course compliance incomplete, coverage not measured. No application/test result changed; D33 conflicts OPEN."
+      ],
+      "actual_commit": null,
+      "notes": "Local owner-requested audit complete; strict gate not passed because provider real integration deferred by owner and revenue formula OPEN. Local Figma prototype found/audited; canvas visual not verified. No frontend implementation."
+    },
+    {
+      "id": "F00",
+      "title": "Nhận và map Figma",
+      "phase": "FRONTEND",
+      "status": "done",
+      "depends_on": [
+        "B06"
+      ],
+      "functions": [],
+      "files": [
+        "docs/FIGMA-HANDOFF.md",
+        "docs/PRODUCT-IMPORT-AUDIT.md",
+        "docs/VERIFICATION.md"
+      ],
+      "acceptance": [
+        "Nguồn plugin local được chủ dự án chọn tại D35 hoặc URL/node thật; map Web/Mobile/API và ghi giới hạn visual",
+        "Không mock business data hoặc tuyên bố pixel-diff khi chưa có canvas; giữ prototype gốc"
+      ],
+      "required_checks": [
+        "figma-source-check"
+      ],
+      "evidence": [
+        "D34/D35 confirm Next.js/Laravel and authorize scoped frontend on verified B00-B06; local V15.1 source mapping/header/footer/editorial and136-product workbook audit complete. Canvas pixel-match not_run, explicitly outside source-only acceptance."
+      ],
+      "actual_commit": null,
+      "notes": "D34 explicitly replaces B10 frontend dependency for scoped local development; strict backend/release gates remain unpassed. Plugin is owner-selected design source; no cloud link requested again."
+    },
+    {
+      "id": "F01",
+      "title": "Frontend catalog/auth/cart theo Figma",
+      "phase": "FRONTEND",
+      "status": "done",
+      "depends_on": [
+        "F00"
+      ],
+      "functions": [
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "F07",
+        "F08"
+      ],
+      "files": [
+        "frontend/src/app/page.tsx",
+        "frontend/src/app/products/page.tsx",
+        "frontend/src/components/store-provider.tsx",
+        "frontend/src/lib/api-client.ts"
+      ],
+      "acceptance": [
+        "API thật, responsive, auth dialog/shared form, popup giữ intent",
+        "Không duplicate login systems, không thêm screen ngoài approved Figma"
+      ],
+      "required_checks": [
+        "frontend-build",
+        "catalog-auth-cart-e2e",
+        "visual-qa"
+      ],
+      "evidence": [
+        "Next16.4.2/React19.3.1/TS/Tailwind4 source implemented; build/typecheck/npm audit and6 API-client tests passed. Real browser registration/intent/cart doubleclick/auth fallback/roles/search/filter/sort/empty/keyboard and responsive1440/768/390/360 verified against local Laravel/MySQL. Source-based visual QA screenshots in docs/qa; canvas pixel-diff not_run under D35."
+      ],
+      "actual_commit": null,
+      "notes": "Done within D34/D35 source-plugin scope; does not claim full course/release compliance, canvas pixel-perfect or production payment availability."
+    },
+    {
+      "id": "F02",
+      "title": "Checkout/payment/orders UI",
+      "phase": "FRONTEND",
+      "status": "in_progress",
+      "depends_on": [
+        "F01"
+      ],
+      "functions": [
+        "F09",
+        "F10",
+        "F11",
+        "F12",
+        "F13",
+        "F14",
+        "F15",
+        "F16"
+      ],
+      "files": [
+        "frontend/src/app/checkout/page.tsx",
+        "frontend/src/app/orders/page.tsx",
+        "frontend/src/app/orders/[code]/page.tsx"
+      ],
+      "acceptance": [
+        "Timer server-based, requote khi price change, pending khác fail",
+        "Return URL không tự paid; retries không tạo duplicate"
+      ],
+      "required_checks": [
+        "checkout-e2e",
+        "payment-state-e2e",
+        "mobile-qa"
+      ],
+      "evidence": [
+        "Real browser: delivery25000/pickup0 server quotes/orders, double-submit exactly1 order, cart clear after success, cancel/reorder, owner/admin denial; expired countdown uses server_time/expires_at; all orders remain unpaid without verified payment."
+      ],
+      "actual_commit": null,
+      "notes": "Non-payment checkout/order UI implemented and locally verified. Payment/result/QR actual integration deferred D31; not all acceptance checks passed, not done."
+    },
+    {
+      "id": "F03",
+      "title": "Admin UI",
+      "phase": "FRONTEND",
+      "status": "in_progress",
+      "depends_on": [
+        "F02"
+      ],
+      "functions": [
+        "F17",
+        "F18",
+        "F19",
+        "F20",
+        "F21",
+        "F22"
+      ],
+      "files": [
+        "frontend/src/app/admin/layout.tsx",
+        "frontend/src/app/admin/products/page.tsx",
+        "frontend/src/app/admin/inventory/page.tsx",
+        "frontend/src/app/admin/orders/page.tsx"
+      ],
+      "acceptance": [
+        "Category→stock, product upload, order QR và revenue đúng API",
+        "Role backend enforced; keyboard/focus theo design"
+      ],
+      "required_checks": [
+        "admin-e2e",
+        "visual-qa",
+        "accessibility-smoke"
+      ],
+      "evidence": [
+        "Admin shared login/redirect, real MySQL catalog update/create/hide/upload/version refresh, stock doubleclick adjusts once, order detail and no manual-paid control verified. Role gates backend403 and UI denied for customer."
+      ],
+      "actual_commit": null,
+      "notes": "Core catalog/inventory/orders UI implemented. Category admin/reconciliation/evidence specialized UI and real revenue/QR not complete; no fake revenue or paid action."
+    },
+    {
+      "id": "R00",
+      "title": "User testing, staging, restore, bàn giao",
+      "phase": "RELEASE",
+      "status": "todo",
+      "depends_on": [
+        "F03"
+      ],
+      "functions": [],
+      "files": [
+        "docs/OPERATIONS.md",
+        "docs/PROGRESS.md",
+        "README.md",
+        "deploy/"
+      ],
+      "acceptance": [
+        "Có test người dùng thật và sửa issue quan trọng",
+        "Staging smoke/backup restore; production chỉ khi authorization riêng",
+        "Không report zero bugs, ghi known issues và risk"
+      ],
+      "required_checks": [
+        "user-testing-evidence",
+        "staging-smoke",
+        "backup-restore-evidence"
+      ],
+      "evidence": [],
+      "actual_commit": null,
+      "notes": "Chưa audit hoặc triển khai trong repository thực."
+    },
+    {
+      "id": "DUI01",
+      "title": "Bộ plugin thuthanh Clicon để import duyệt",
+      "phase": "DESIGN_REVIEW",
+      "status": "done",
+      "depends_on": [
+        "F00"
+      ],
+      "functions": [],
+      "files": [
+        "thu-thanh-figma-clicon/",
+        "scripts/test-figma-clicon.cjs",
+        "docs/MD-CLEANUP-MANIFEST.json"
+      ],
+      "acceptance": [
+        "Edition riêng giữ plugin/canvas cũ; logo thuthanh và nhãn tiếng Việt",
+        "Màu/bố cục Clicon được dựng thành lớp chỉnh sửa; business unchanged",
+        "48 mẫu từ workbook có ảnh/giá/tồn; syntax/manifest/mock route/rebuild/cancel passed",
+        "ZIP tự chứa và hướng dẫn import; công khai live canvas chưa chạy"
+      ],
+      "required_checks": [
+        "js-syntax",
+        "manifest-ui-validation",
+        "mock-figma-regression",
+        "preview-review",
+        "zip-integrity"
+      ],
+      "evidence": [
+        "node --check thu-thanh-figma-clicon/code.js: passed",
+        "node scripts/test-figma-clicon.cjs: 172 screens/1653 links; 48 source prices/stocks/image hashes; preservation/rebuild/cancel passed",
+        "Browser HTML preview inspected; live Figma canvas not_run"
+      ],
+      "actual_commit": null,
+      "notes": "D36. Done means deliverable for review, not owner visual acceptance. Await owner import/review before website restyling. No backend/app changes."
+    },
+    {
+      "id": "DUI02",
+      "title": "Viết lại toàn bộ plugin Clicon và chia flow UX nhà sách",
+      "phase": "DESIGN_REVIEW",
+      "status": "done",
+      "depends_on": [
+        "DUI01"
+      ],
+      "functions": [],
+      "files": [
+        "thu-thanh-figma-clicon/src/plugin.js",
+        "thu-thanh-figma-clicon/src/data.json",
+        "thu-thanh-figma-clicon/build.py",
+        "thu-thanh-figma-clicon/code.js",
+        "thu-thanh-figma-clicon/manifest.json",
+        "thu-thanh-figma-clicon/ui.html",
+        "thu-thanh-figma-clicon/HUONG-DAN.md",
+        "thu-thanh-figma-clicon/LUONG-THIET-KE.json",
+        "scripts/test-figma-clicon.cjs",
+        "docs/MD-CLEANUP-MANIFEST.json"
+      ],
+      "acceptance": [
+        "D37 exact header/layout/flows",
+        "meaningful local prototype checks and honest live-canvas pending"
+      ],
+      "required_checks": [
+        "syntax",
+        "figma-mock",
+        "preview",
+        "zip"
+      ],
+      "evidence": [
+        "D37: full native layout replacement, desktop1920/content1320/Clicon234x320 and mobile390; 7 sections/flow maps per platform.",
+        "python thu-thanh-figma-clicon/build.py; node --check thu-thanh-figma-clicon/code.js passed.",
+        "node scripts/test-figma-clicon.cjs passed:640 frames17302 links136 source SKU/price/stock/hash; exact welcome/header; money/quantity continuity; category/grade/pagination; selected product; overlay; preservation/rebuild/platform-error/cancel.",
+        "20 SVG preview files parsed and bundle/source/manifest verified; Playwright desktop and mobile previews inspected, final page console0errors0warnings.",
+        "ZIP integrity and self-contained file hashes checked; live Figma/user review still not_run."
+      ],
+      "actual_commit": null,
+      "notes": "DUI02 done for local plugin deliverable and local acceptance only. Owner live-canvas review pending; not frontend/business/provider/release completion."
+    },
+    {
+      "id": "DUI03",
+      "title": "Rút gọn Figma demo và audit tính đầy đủ của code thật",
+      "phase": "DESIGN_REVIEW",
+      "status": "done",
+      "depends_on": [
+        "DUI02"
+      ],
+      "functions": [],
+      "files": [
+        "thu-thanh-figma-clicon/",
+        "scripts/test-figma-clicon.cjs",
+        "docs/"
+      ],
+      "acceptance": [
+        "D38:4 products/category,first SKU purchase only,<=40 screens/platform",
+        "App retains full catalog/multi-item API; audit evidence and owner next steps"
+      ],
+      "required_checks": [
+        "figma-mock",
+        "dataset",
+        "frontend-build-typecheck-tests",
+        "backend-regression",
+        "docs-integrity",
+        "zip"
+      ],
+      "evidence": [
+        "V18 mock passed:80 frames1260 links,24 samples4/category,first SKU only,7 flows/platform,no generated detail/paging/index frames; preservation/rebuild/cancel/failure passed.",
+        "Read-only dev audit136 products6 categories1 admin,136 prices/stocks match; real CatalogService pagination136 distinct.",
+        "Backend85 tests1366 assertions passed incl new two-arbitrary-SKU checkout success test; targeted13assertions and Pint passed.",
+        "Frontend6 API tests, production build and TypeScript passed. Browser preview inspected; loaded images true; console0errors. Live Figma and complete application browser e2e not run in this turn.",
+        "MD-CLEANUP-MANIFEST.json lists actual implementation gaps and owner next steps; source/preview/ZIP validated."
+      ],
+      "actual_commit": null,
+      "notes": "D38 local artifact and code audit complete. Not full app/Clicon/payment/release completion. App retains136 SKU/multi-item behavior; prototype restrictions isolated."
+    },
+    {
+      "id": "DUI04",
+      "title": "Footer và QR prototype đầy đủ; audit thanh toán và hướng dẫn chạy",
+      "phase": "DESIGN_REVIEW",
+      "status": "done",
+      "depends_on": [
+        "DUI03"
+      ],
+      "functions": [],
+      "files": [
+        "thu-thanh-figma-clicon/",
+        "frontend/src/",
+        "docs/"
+      ],
+      "acceptance": [
+        "D39 footer/no browse fee/full sample payment flow",
+        "Money/state/geometry checks and honest runtime guidance"
+      ],
+      "required_checks": [
+        "figma-mock",
+        "frontend-build-typecheck-tests",
+        "backend-regression",
+        "docs-integrity",
+        "zip"
+      ],
+      "evidence": [
+        "D39 implemented footer/welcome/brand/no browse shipping on Next; no backend business mutation.",
+        "V19:96frames/2082links,24products/4category,first SKU demo; footer/QR text geometry, sections/screens nonintersection, money/quantity/targets passed.",
+        "QR3SVG paths independently decoded ZXing payloads match; no real account/provider URLs.",
+        "Backend85tests1366assertions passed18.17s (JUnit17.870484), test MySQL; readonly dev136products6cats1admin prices/stocks match.",
+        "Frontend6APItests/build/typecheck passed. Browser mobile390/desktop1920 footer no horizontal overflow, no service strip/fee, exact welcome; preview inspected. Web guest401 and4image preload warnings recorded.",
+        "Artifact46files/36SVG/one manifest hashes/ZIP passed; live canvas, real provider and deploy not_run."
+      ],
+      "actual_commit": null,
+      "notes": "Local D39 deliverable done; owner Figma canvas review pending. Full app Clicon/payment/admin/release incomplete; backend gate unchanged."
+    },
+    {
+      "id": "DUI05",
+      "title": "Prototype chuyên nghiệp: admin login, payment outcomes, THUTHANH",
+      "phase": "DESIGN_REVIEW",
+      "status": "done",
+      "depends_on": [
+        "DUI04"
+      ],
+      "functions": [],
+      "files": [
+        "thu-thanh-figma-clicon/",
+        "frontend/src/",
+        "scripts/test-figma-clicon.cjs",
+        "docs/"
+      ],
+      "acceptance": [
+        "D40 clean presentation and working role/payment/home flows",
+        "Native geometry and meaningful quantity/status/rollback verification"
+      ],
+      "required_checks": [
+        "figma-mock-scenarios",
+        "frontend-build-typecheck-tests",
+        "browser-preview",
+        "zip",
+        "docs-integrity"
+      ],
+      "evidence": [
+        "D40 acceptance recorded before source: uppercase serif brand, one hero CTA, home text link, clean commerce copy, role login and full payment outcomes.",
+        "V20 real-source mock112frames2516links:24samples/4category/firstSKU; adminLogin→dashboard,5payment scenarios on3branches, paid quantity/totals/ordercode/paid-list continuity and no unpaid-cancel passed.",
+        "Native footer/QR containment, section/screen nonintersection, replaceV19 and manual-photo/preservation/failure/cancel passed. Technical-note regex across all kept-screen texts passed.",
+        "Frontend6APItests/build/typecheck passed after final source changes. Browser preview admin login/dashboard mobile and paid2cuốn desktop inspected, preview console0. Actual mobile390 no overflow, brandTHUTHANH Georgia, single hero link and logo href=/ verified.",
+        "ZIP58files/48SVG/one manifest; source bundle/XML/archive CRC/hash consistency passed. Live Figma/real provider/deploy not_run. Backend untouched and tests not rerun in D40."
+      ],
+      "actual_commit": null,
+      "notes": "Local plugin/common identity done; not real provider/report/full-Clicon-web completion. Dashboard counts use design fixtures documented outside canvas. Owner must import/run V20 to replace prior canvas."
+    },
+    {
+      "id": "FUI01",
+      "title": "Web Clicon V20 và dashboard thống kê thật; local/deploy guide",
+      "phase": "FRONTEND",
+      "status": "done",
+      "depends_on": [
+        "DUI05",
+        "F01"
+      ],
+      "functions": [],
+      "files": [
+        "frontend/src/",
+        "backend/app/Services/DashboardService.php",
+        "backend/app/Http/Controllers/Api/V1/Admin/DashboardController.php",
+        "backend/tests/Feature/DashboardTest.php",
+        "docs/"
+      ],
+      "acceptance": [
+        "D41 visual update preserving full catalog/business",
+        "Real admin counts with authorization/Vietnam day boundary tests; honest local/deploy guide"
+      ],
+      "required_checks": [
+        "backend-dashboard-and-regression",
+        "frontend-tests-build-typecheck",
+        "browser-responsive",
+        "api-docs"
+      ],
+      "evidence": [
+        "D41 acceptance recorded before edits. Home/header/nav/category/card/shared forms/cart/order/admin Clicon source theme; full136SKU retained.",
+        "New read-only admin/dashboard service/controller route, real counts/recent items/seven Vietnam-day order chart. No schema/provider/revenue/money mutation.",
+        "DashboardTest2tests20assertions targeted passed; full87tests1386assertions passed25.42s/JUnit24.963982s on thu_thanh_test; Pintpassed; OpenAPI39paths contract matches.",
+        "Frontend6APIclienttests passed; final production build/typecheck passed. Built rewrites verified localhost8000, not isolated testserver18080.",
+        "Browser testDB admin login/4counts match server/7days/390+1440/table containment/product editor read-only/guest intent passed. Customer registration intent→quantity2cart/dashboard403/fee hidden until serverquote/checkout390+1440/0orderscreated/0pageerrors passed.",
+        "Dev readonly136products6cats1admin and136prices/stocks match before+after. Local MySQL environment checked PHP8.4.25/Laravel12.70.0/MySQL8.4.13 timezoneUTC. Guide explains persisted MySQL, XAMPP/MongoDB distinction and deployment architecture with official sources."
+      ],
+      "actual_commit": null,
+      "notes": "Done scoped web update and run/explanation guide, not whole F03/project. Category/reconciliation/evidence specialized UI, real provider/revenue/deploy remain incomplete. Live canvas pixel parity not claimed. Final build covers small copy/ARIA/query-link/image-box changes after browser QA. Dependency corrected to verified F01+DUI05: FUI01 does not depend on deferred real-payment acceptance inside F02. F02/F03 remain in_progress; no gate raised."
+    },
+    {
+      "id": "DUI06",
+      "title": "Phuong Nam reference: brand/card/quickview/HD assets on Figma and web",
+      "phase": "DESIGN_REVIEW",
+      "status": "done",
+      "depends_on": [
+        "DUI05",
+        "FUI01"
+      ],
+      "functions": [],
+      "files": [
+        "frontend/src/",
+        "frontend/public/",
+        "thu-thanh-figma-clicon/",
+        "scripts/",
+        "docs/"
+      ],
+      "acceptance": [
+        "D42 image provenance and matching; spaced layout/custom brand/cards",
+        "Guest quickview purchase auth retention; prototype/native geometry and responsive verification"
+      ],
+      "required_checks": [
+        "assets-hash-dimensions-review",
+        "figma-mock",
+        "frontend-tests-build-typecheck",
+        "browser-quickview-auth",
+        "docs-integrity",
+        "zip"
+      ],
+      "evidence": [
+        "D42 + PRD F05 synced; own vector logo/large cards/spacing/guest quickview and auth continuation implemented on full136SKU web and24SKU Figma.",
+        "136verified original image hashes/dimensions;24losslessPNG;banner provenance and unchanged workbook; source/asset scripts passed.",
+        "V21 JS syntax/mock120screens2642routes/5payment scenarios3channels/card geometry/overlay SWAP/CLOSE/legacy HD upgrade/repeated manual photo/rollback/cancel passed;live canvas not_run.",
+        "Final Next build/typecheck/6APIclienttests passed;Chromium320/390/1440 home/catalog/cart/quickview/auth quantity2/buyNow checkout/customer403/admin purchase restriction/keyboard/backdrop passed0orders0pageerrors.",
+        "DashboardTest2passed20assertions12.88s;dev readonly136/6/1admin,136prices/stocks matched. No Laravel or API/schema changes.",
+        "docs/MD-CLEANUP-MANIFEST.json;docs/qa/DUI06-browser.json;output/figma/v21-validation.json;output/figma/v21-package.json;ZIP66files56SVG1manifest CRC/XML/source byte match passed."
+      ],
+      "actual_commit": null,
+      "notes": "Done scoped local UI/plugin delivery; owner must run imported builder to update old canvas. Real provider/revenue/specialized admin/course/deploy remain separate; gates unchanged."
+    },
+    {
+      "id": "DUI07",
+      "title": "V22 flat Figma flows, separate landing, distinct brand, gray panels and newsletter footer",
+      "phase": "DESIGN_REVIEW",
+      "status": "done",
+      "depends_on": [
+        "DUI06"
+      ],
+      "functions": [],
+      "files": [
+        "backend/",
+        "frontend/",
+        "thu-thanh-figma-clicon/",
+        "docs/",
+        "scripts/"
+      ],
+      "acceptance": [
+        "D43 backend newsletter before UI: persistence consent normalization duplicate CSRF throttle and API/schema contract",
+        "Flat horizontal native flows plus separate landing review, rollback and manual image preservation",
+        "Web gray separators unique brand address brands newsletters two banners no old CTA; all commerce logic preserved"
+      ],
+      "required_checks": [
+        "newsletter-tests-and-contract",
+        "migration-preservation",
+        "figma-mock",
+        "frontend-tests-build-typecheck",
+        "browser-responsive-newsletter",
+        "assets-provenance",
+        "docs-integrity",
+        "zip"
+      ],
+      "evidence": [
+        "D43 original2banner reply reflected in web and native;Landing page +flat flows/graypanels/ownlogo/8brands/newsletter/address/noCTA implemented.",
+        "Newsletter backend first7targetedtests37assertions;add-only migration reviewed/applied;40APIpaths/schema synced.",
+        "Full92backendtests1417assertions0fail/skip,JUnit20.140679s;targetedPint6filespassed. Dev136/6/1admin/pricesstocks136 unchanged.",
+        "FinalNextbuild/typecheck6clienttests passed. Browser3203901440 panels/brands/originalbanners/address/consent/202duplicateDBone/authqty2passed0orders0pageerrors.",
+        "Mock124frames3pages2758links58SVG geometry/flatrows/masterphoto/repeatedrebuild/owner-note avoidance/rollback3pages/cancel/5payment scenarios3channels passed.",
+        "Asset136originals24PNG3banner8brand2logo passed;ZIP6files1manifest CRC/XML/source match;MD-CLEANUP-MANIFEST.json andqa/DUI07-browser.json."
+      ],
+      "actual_commit": null,
+      "notes": "Done local UI/plugin scope;owner canvas review needed. Newsletter stores opt-in,not campaign delivery. Provider/revenue/specializedadmin/course/release remain separate."
+    },
+    {
+      "id": "DUI08",
+      "title": "Sales home and complete admin catalog/revenue access",
+      "phase": "FRONTEND",
+      "status": "done",
+      "depends_on": [
+        "DUI07"
+      ],
+      "functions": [
+        "F01",
+        "F04",
+        "F05",
+        "F17",
+        "F18",
+        "F19",
+        "F20",
+        "F21",
+        "F22"
+      ],
+      "files": [
+        "backend/",
+        "frontend/",
+        "thu-thanh-figma-clicon/",
+        "docs/",
+        "scripts/"
+      ],
+      "acceptance": [
+        "D44 actual paid bestsellers/new/recommended instead of category home;larger imagery and aligned quick view",
+        "Owner-approved merchandise revenue separate shipping;admin entry and archive/catalog/category/report/reconciliation workflows",
+        "Backend meaningful tests before frontend,real isolated browser and dev preservation"
+      ],
+      "required_checks": [
+        "backend-ranking-archive-revenue-tests",
+        "frontend-build-typecheck-tests",
+        "isolated-admin-customer-browser",
+        "figma-if-changed",
+        "docs-integrity",
+        "dev-preservation"
+      ],
+      "evidence": [
+        "backend/storage/logs/phpunit.xml",
+        "backend/tests/Feature/SalesHomeArchiveTest.php",
+        "backend/tests/Feature/AdminAccessCommandTest.php",
+        "docs/qa/DUI08-web25-qa.json",
+        "docs/qa/DUI08-web25-extra.json",
+        "docs/qa/DUI08-customer25-qa.json",
+        "docs/qa/DUI08-dev25-readonly.json",
+        "docs/MD-CLEANUP-MANIFEST.json",
+        "output/figma/thuthanh-figma-clicon-v23-2026-10-23.zip",
+        "docs/CHAY-WEB-VA-LARAVEL.md"
+      ],
+      "actual_commit": null,
+      "historical_evidence_archive": "docs/CLEANUP-MANIFEST.json"
+    },
+    {
+      "id": "DUI09",
+      "title": "D45 discounted prices, synthetic sales demo isolation, performance and repository cleanup",
+      "phase": "FRONTEND",
+      "status": "in_progress",
+      "depends_on": [
+        "DUI08"
+      ],
+      "functions": [
+        "F01",
+        "F04",
+        "F05",
+        "F17",
+        "F18",
+        "F19",
+        "F20",
+        "F22"
+      ],
+      "files": [
+        "backend/",
+        "frontend/",
+        "deploy/",
+        "scripts/",
+        "docs/"
+      ],
+      "acceptance": [
+        "D45 footer and bestseller icon; integer percent pricing preserves existing catalog and quotes",
+        "Guarded idempotent 1000 synthetic sales in separate demo DB, never in real database",
+        "Public caching isolation/bounded queries, scaling configuration and actual user/load checks",
+        "Archive obsolete duplicate import/build/docs with manifest, preserve current sources and data"
+      ],
+      "required_checks": [
+        "backend-discount-cache-demo-tests",
+        "frontend-build-typecheck-tests",
+        "browser-customer-admin",
+        "bounded-load-measurements",
+        "cleanup-reference-audit",
+        "dev-preservation"
+      ],
+      "evidence": [
+        "111 backend tests / 1626 assertions / zero errors failures skips; JUnit 28.433283s; full Pint passed.",
+        "Final Next production build, TypeScript and seven API client tests passed after pricing compatibility helper and checkout copy.",
+        "docs/qa/DUI09-web24-qa.json and DUI09-customer24-template.json: guest/admin/customer, percent create/new feed/card/popup, quote/payment permissions and 320/390/1440; zero page errors.",
+        "docs/qa/DUI09-demo-audit.json: 1000 paid synthetic demo orders/receipts, totals match, 136 active products, zero reserved units, demo admin hash restored; real catalog preserved.",
+        "docs/qa/DUI09-load-smoke.json: local single-worker PHP OPcache, 20 concurrent / 200 requests / zero errors, 35.77 RPS, p95 601.13ms. Does not verify 10k.",
+        "Docker/Redis/FPM/Nginx/standalone configuration prepared; YAML parsed. Docker runtime, staging and 10k k6 not run; host details pending.",
+        "docs/CLEANUP-MANIFEST.json: 149 obsolete files archived with checksums outside repo; current workbook/env/DB/uploads and V24 package preserved.",
+        "docs/FIGMA-V24-REVIEW.md: local mock 126 frames / 2804 links / 24 SKUs / 3 pages, ZIP CRC/source checked; owner canvas review pending.",
+        "D46: removed12 obsolete Markdown after verified external archive; frontend evidence merged; required-doc config and references synced; check_pack and local Markdown link audit passed."
+      ],
+      "actual_commit": null,
+      "local_implementation": "verified",
+      "capacity_acceptance": "externally_blocked_pending_staging",
+      "notes": "Local authorized implementation and checks complete. Task remains open only for production capacity acceptance after hosting details and staging are supplied. No deploy/provider/gate claim.",
+      "markdown_cleanup": {
+        "decision": "D46",
+        "status": "done",
+        "removed_markdown_files": 12,
+        "manifest": "docs/MD-CLEANUP-MANIFEST.json",
+        "verification": "CRC/SHA before delete; check_pack passed; zero broken local Markdown links; git diff --check passed",
+        "application_tests": "not rerun: documentation and document-check configuration only"
+      }
+    }
+  ],
+  "github_schedule_sync": {
+    "decision": "D47",
+    "status": "done",
+    "project": "https://github.com/users/DongDao27/projects/4",
+    "repository": "DongDao27/Thu-Thanh-bookstore",
+    "master": "https://github.com/DongDao27/Thu-Thanh-bookstore/issues/21",
+    "tasks": 18,
+    "created_tasks": 11,
+    "created_master": 1,
+    "evidence": "docs/qa/github-schedule-sync.json",
+    "verified_at": "2026-10-24T00:42:21+07:00"
+  }
+}

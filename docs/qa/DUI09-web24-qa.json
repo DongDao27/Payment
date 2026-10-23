@@ -1,0 +1,22 @@
+{
+  "result": "passed",
+  "database": "thu_thanh_demo",
+  "baselineSyntheticOrders": 1000,
+  "footerLabelsRemoved": true,
+  "brandLogos": 8,
+  "flame": true,
+  "rankingByUnits": true,
+  "anonymousAuthRequests": 0,
+  "adminCreateDiscount5Percent": true,
+  "listPrice": 35000,
+  "salePrice": 33250,
+  "newestInsertion": true,
+  "cardPopupConsistent": true,
+  "positiveRevenue": true,
+  "widths": [
+    320,
+    390,
+    1440
+  ],
+  "pageErrors": []
+}

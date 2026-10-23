@@ -1,0 +1,80 @@
+# Add to compose.yml; a reference for one host, not proof of 10k capacity.
+services:
+  app:
+    environment:
+      SESSION_DRIVER: redis
+      CACHE_STORE: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set a separate Redis secret}
+      CACHE_PREFIX: thu_thanh_production_
+      TRUSTED_PROXIES: 172.28.0.0/16
+    volumes:
+      - ./php/production.ini:/usr/local/etc/php/conf.d/production.ini:ro
+      - ./php/fpm.conf:/usr/local/etc/php-fpm.d/zz-capacity.conf:ro
+    depends_on:
+      redis: { condition: service_healthy }
+    mem_limit: 2g
+  worker:
+    depends_on:
+      redis: { condition: service_healthy }
+    command: ["php", "artisan", "queue:work", "redis", "--sleep=1", "--tries=5", "--timeout=60", "--max-time=3600"]
+    environment:
+      SESSION_DRIVER: redis
+      CACHE_STORE: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set a separate Redis secret}
+      CACHE_PREFIX: thu_thanh_production_
+  scheduler:
+    depends_on:
+      redis: { condition: service_healthy }
+    environment:
+      SESSION_DRIVER: redis
+      CACHE_STORE: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set a separate Redis secret}
+      CACHE_PREFIX: thu_thanh_production_
+  redis:
+    image: redis:7.4-alpine
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set a separate Redis secret}
+      REDISCLI_AUTH: ${REDIS_PASSWORD:?Set a separate Redis secret}
+    command: ["sh", "-c", "exec redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy noeviction --requirepass \"$$REDIS_PASSWORD\""]
+    volumes: [redis-data:/data]
+    networks: [database]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../deploy/docker/frontend.Dockerfile
+      args:
+        LARAVEL_INTERNAL_URL: http://web
+    environment:
+      LARAVEL_INTERNAL_URL: http://web
+    networks: [web]
+    restart: unless-stopped
+    mem_limit: 1g
+    depends_on: [web]
+  edge:
+    build:
+      context: ..
+      dockerfile: deploy/docker/edge.Dockerfile
+    ports: ["127.0.0.1:8081:80"]
+    ulimits:
+      nofile: { soft: 65536, hard: 65536 }
+    networks: [web]
+    restart: unless-stopped
+    depends_on: [web, frontend]
+volumes:
+  redis-data:
+networks:
+  web:
+    ipam:
+      config: [{ subnet: 172.28.0.0/16 }]

@@ -1,0 +1,16 @@
+# Security và bảo vệ dữ liệu
+- Auth: Sanctum session cookie cho first-party Next.js. CSRF trên mọi user mutation, HttpOnly session, Secure ở HTTPS, SameSite phù hợp topology, regenerate login và logout. Không tắt CSRF toàn hệ thống để chữa419.
+- Authorization: customer role, owner carts/orders/payment, admin role; check backend từng API. UUID/order_code không thay quyền. Không nhận role từ register. Chỉ CLI bootstrap admin, một admin theo scope, không hardcode secret.
+- Input: FormRequest whitelist, parameterized queries, sort/filter allowlist. Không pass toàn request vào fill/update. Không trả email/phone users khác qua public resource.
+- Password: Hash Laravel, broker reset email nếu scope được mở; không tự mã hóa reversible. Không giả OTP/phone verification. Session fixation và rate limit login/register/payment có tests.
+- Media: MIME+size validation server, storage random filename, strip/sanitize metadata khi phù hợp, cấm script execution. Không dùng user URL để server fetch vô hạn (SSRF).
+- Web: output escape React, không render raw HTML mô tả tùy ý; nếu rich text cần sanitizer allowlist. Modal keyboard/focus. Private API no shared caching.
+- VNPAY: secret server-side, canonical signature, merchant/amount/reference, receipt uniqueness; không thêm manual success endpoint production.
+- Idempotency scoped user/action, payload hash; cache response không lộ dữ liệu cross-user.
+- Log: request_id/order_code/disposition, không cookie/password/tokens/full payload PII. APP_DEBUG=false ngoài local. Telescope chỉ local được bảo vệ.
+- Audit: adjustment/status/reconciliation/refund evidence có actor và timestamp. File evidence private, signed download admin. Không để public storage chung cho payment evidence.
+- Secrets: env server/CI secret store, .env.example chỉ key/value trống, không plaintext admin password trong README.
+- Database/test: database test riêng, credential least privilege, real MySQL concurrency tests. Không seed demo trên prod. Không expose MySQL ra public Internet.
+- Retention: chưa có chính sách kinh doanh được duyệt, config retention và đánh dấu quyết định mở; không tự xóa lịch sử tiền/đơn theo TTL log. Logs technical tối thiểu cần thiết.
+- Dependency: composer audit/npm audit chạy và triage risk, không tự force fix nâng major; ghi accepted risk nếu có.
+- Backups: DB+uploads/evidence, access restricted, kiểm restore staging. Không log đường dẫn backup có secret.

@@ -1,0 +1,117 @@
+# Chạy web và demo doanh số — V24 / D45
+
+## Web với dữ liệu thật hiện tại
+
+Giữ database `thu_thanh`: 136 sản phẩm, giá/tồn nguồn và tài khoản quản trị hiện có. Không import lại, không tạo APP_KEY hoặc reset database. Nếu giữ terminal cũ, Ctrl+C rồi chạy lại; trình duyệt Ctrl+F5.
+
+Terminal 1:
+
+```powershell
+cd D:\ThuThanh-WebDesign
+powershell -ExecutionPolicy Bypass -File scripts/mysql-local.ps1 -Action start
+cd backend
+php artisan serve --host=localhost --port=8000
+```
+
+Terminal 2:
+
+```powershell
+cd D:\ThuThanh-WebDesign\frontend
+npm run dev
+```
+
+Mở **http://localhost:3000**. Dùng hostname localhost nhất quán. Mục mới lấy 12 sản phẩm đang bán có ngày tạo/ID mới nhất; sửa giá không làm sản phẩm cũ thành mới. Bán chạy lấy tổng số lượng từ đơn đã paid có receipt accepted, không lấy giá trị tiền hoặc cờ gắn tay. Database thật chưa có paid receipt nên mục bán chạy trống và báo cáo doanh thu bằng 0.
+
+## Mở bộ 1.000 đơn ngẫu nhiên
+
+Đã chuẩn bị riêng database **thu_thanh_demo**, 1.000 đơn paid và 1.000 receipt provider `demo` trong khoảng 90 ngày. Có giảm giá/stock mô phỏng riêng; không thay 136 giá/tồn của database thật. Lượt kiểm thử có thể tạo thêm sản phẩm đã ngừng bán/đơn chưa trả tiền trong demo, không cộng chúng vào doanh số paid.
+
+Nếu cần chuẩn bị lại sau khi chuyển máy đã có MySQL portable và dữ liệu thật, chạy từ gốc repo:
+
+```powershell
+php scripts/prepare-demo.php
+```
+
+Lệnh chạy lại sẽ bỏ qua 1.000 đơn cùng seed, không nhân dữ liệu. Nếu database demo tồn tại nhưng mất private env, lệnh từ chối thay mật khẩu/ghi đè. Không chạy script chuẩn bị local này trên hosting production.
+
+Để xem demo, dừng Next.js cũ trên port 3000 trước. Hai terminal từ gốc repo:
+
+```powershell
+cd D:\ThuThanh-WebDesign
+powershell -ExecutionPolicy Bypass -File scripts/start-demo.ps1 -Component backend
+```
+
+```powershell
+cd D:\ThuThanh-WebDesign
+powershell -ExecutionPolicy Bypass -File scripts/start-demo.ps1 -Component frontend
+```
+
+Mở **http://localhost:3000**. Banner môi trường ở trên cùng cho biết đang xem dữ liệu giả lập. Laravel demo chạy port 18081; DB, session cookie, APP_KEY và storage ảnh đều riêng. OPcache được bật cho server demo để tránh chi phí biên dịch PHP lặp. Không chạy đồng thời hai Next dev trong cùng thư mục/port.
+
+Tài khoản demo: **admin-demo@example.test**. Không có mật khẩu mặc định công khai. Chọn mật khẩu demo của bạn trong terminal:
+
+```powershell
+cd D:\ThuThanh-WebDesign\backend
+php artisan admin:password --env=demo
+```
+
+Xác nhận rồi nhập mật khẩu mới hai lần, 12–128 ký tự, không hiển thị khi gõ. Lệnh này chỉ đổi admin trong database demo khi dùng `--env=demo`, không đổi tài khoản thật. Sau đó mở **http://localhost:3000/admin** để xem biểu đồ và quản lý.
+
+Quay về web dữ liệu thật: dừng hai terminal demo và chạy hai terminal ở phần đầu. Không chép `.env.demo` đè `.env`, không đổi DB_DATABASE của dữ liệu thật.
+
+## Vào admin dữ liệu thật
+
+Mở **http://localhost:3000/admin**, đăng nhập tài khoản quản trị hiện có. Footer không còn link quản trị theo yêu cầu; có thể lưu bookmark URL này. Login chung, Laravel quyết định quyền; đăng ký trên web chỉ tạo khách hàng.
+
+Nếu quên tên đăng nhập hoặc mật khẩu local:
+
+```powershell
+cd D:\ThuThanh-WebDesign\backend
+php artisan admin:account
+# Chỉ khi quên mật khẩu và muốn tự thay:
+php artisan admin:password
+```
+
+Không có `--env=demo` thì đây là database thật local; lệnh thay mật khẩu cần bạn xác nhận. Phiên làm việc này không đổi mật khẩu admin thật. Máy hiện tại đã có một admin; không cần tạo lại bằng admin:create.
+
+| Trang | Chức năng |
+|---|---|
+| `/admin` | Thống kê đơn/catalog và doanh thu tháng |
+| `/admin/products` | Thêm/sửa sản phẩm, ảnh, lọc trạng thái, ngừng bán và mở bán lại |
+| `/admin/categories` | Thêm/sửa, ẩn/hiện danh mục |
+| `/admin/inventory` | Tăng/giảm tồn có lý do và lịch sử |
+| `/admin/orders` | Chi tiết, chuẩn bị, sẵn sàng nhận/giao, hoàn tất theo điều kiện thanh toán |
+| `/admin/revenue` | Tiền hàng sau giảm giá; phí giao riêng; lọc ngày/tuần/tháng, CSV |
+| `/admin/reconciliation` | Ca cần xác minh, ghi nhận xử lý; đóng khi đủ bằng chứng backend |
+
+Trong form sản phẩm: nhập **giá bìa**, chọn **Nhập phần trăm giảm giá**, nhập số nguyên 0–100. Ví dụ 35.000đ giảm 5% thành 33.250đ. Laravel tính giá bán bằng số nguyên VND, làm tròn gần nhất; không nhận đồng thời hai nguồn sale_price và discount_percent. Giá gốc gạch ngang/badge chỉ hiện khi có giảm thật. Chế độ Nhập giá bán giữ khả năng nhập giá chính xác. Thay giá không làm đổi snapshot các đơn cũ.
+
+## Scheduler và queue
+
+Muốn kiểm tra hết hạn/đối soát nền, mở thêm hai terminal trong backend:
+
+```powershell
+php artisan schedule:work
+```
+
+```powershell
+php artisan queue:work database --tries=5 --timeout=60
+```
+
+Với demo, thêm `--env=demo` cho cả hai lệnh. Ctrl+C để dừng. Không đánh giá xử lý nền nếu chưa chạy worker/scheduler.
+
+## Laravel lưu dữ liệu ở đâu?
+
+Trình duyệt → Next.js → Laravel API → MySQL → JSON trả lại giao diện. Laravel dùng Eloquent/migration để quản lý bảng, validation/quyền/transaction để xử lý giá, tồn, giỏ và đơn. MySQL là tiến trình database thật; migration không phải database engine.
+
+Máy hiện tại chạy MySQL portable tại `127.0.0.1:3307`, dữ liệu trên đĩa trong `.runtime/mysql-data`. Không cần XAMPP hoặc MongoDB. Tắt trình duyệt không làm mất bản ghi đã commit. Sau reboot bật lại MySQL rồi các server. `.env` chỉ chứa cấu hình/secret; không chứa danh sách đơn hàng.
+
+Ảnh thật ở `backend/storage/app/public`, ảnh demo ở `.runtime/demo-storage/app/public`; database lưu metadata/đường dẫn. Giữ MySQL data, private env/APP_KEY, workbook, upload/evidence khi sao lưu hoặc chuyển máy. Không sửa trực tiếp file trong mysql-data.
+
+## Deploy và Figma
+
+Chưa deploy, chưa nghiệm thu 10.000 truy cập đồng thời. Đã có cấu hình và load profile; xem [PERFORMANCE.md](PERFORMANCE.md) để biết kết quả đo, ngưỡng và phần cần máy chủ thật. VNPAY/QR thật vẫn hoãn; đơn mới không tự paid và không được bàn giao nếu chưa xác nhận tiền. Không đổi trả/hoàn tiền. Phí ship chỉ ở checkout/đơn: delivery 25.000đ, pickup 0đ.
+
+Figma hiện hành V24: giải nén `output/figma/thuthanh-figma-clicon-v24-2026-10-23.zip`, import manifest ở gốc, chạy lại builder. Xem `thu-thanh-figma-clicon/HUONG-DAN.md`. Canvas không tự cập nhật và chưa được kiểm trực tiếp bằng tài khoản Figma của bạn. Không cần extension VS Code để chạy web/import plugin.
+
+[Bản đồ source và khôi phục archive](REPOSITORY-MAP.md) · [Trạng thái kiểm thử](VERIFICATION.md).

@@ -1,0 +1,20 @@
+{
+  "result": "passed",
+  "database": "thu_thanh_demo",
+  "register": true,
+  "quantity": 2,
+  "discountPrice": 33250,
+  "subtotal": 70000,
+  "discount": 3500,
+  "shipping": 25000,
+  "payable": 91500,
+  "orderUnpaid": true,
+  "admin403": true,
+  "publicNoSetCookie": true,
+  "widths": [
+    320,
+    390,
+    1440
+  ],
+  "pageErrors": []
+}

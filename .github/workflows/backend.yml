@@ -1,0 +1,60 @@
+name: Backend
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+          MYSQL_DATABASE: thu_thanh_test
+          MYSQL_USER: thu_thanh_test
+          MYSQL_PASSWORD: ci-isolated-test-only
+          TZ: UTC
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_mysql, mbstring, fileinfo, bcmath
+          tools: composer:v2
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - name: Configure isolated test environment
+        run: |
+          cp .env.testing.example .env.testing
+          php artisan key:generate --env=testing
+        env:
+          DB_PORT: 3306
+          DB_PASSWORD: ci-isolated-test-only
+      - run: composer validate --strict
+      - run: composer check-platform-reqs
+      - run: php vendor/bin/pint --test
+      - run: php artisan migrate --env=testing --force
+        env: &test-env
+          DB_PORT: 3306
+          DB_PASSWORD: ci-isolated-test-only
+      - run: php artisan app:environment-check --env=testing
+        env: *test-env
+      - run: php artisan test --log-junit=storage/logs/phpunit.xml
+        env: *test-env
+      - run: php ../scripts/auth-cookie-smoke.php
+        env: *test-env
+      - run: php ../scripts/ops-smoke.php
+        env: *test-env
+      - run: composer audit
