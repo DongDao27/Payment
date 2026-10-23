@@ -16,6 +16,13 @@
   "frontend_build": "passed",
   "frontend_typecheck": "passed",
   "docs_check": "passed",
-  "publication": "source_prepared_for_initial_commit",
-  "limitations": "Pattern scan is not a comprehensive security audit. Provider/deployment/10k gates unchanged."
+  "publication": "source_committed_and_remote_verified",
+  "limitations": "Pattern scan is not a comprehensive security audit. Provider/deployment/10k gates unchanged.",
+  "source_commit": "33428a4a1a42cf20dea27d5ce5f63b94441a2f94",
+  "remote_main_verified": "33428a4a1a42cf20dea27d5ce5f63b94441a2f94",
+  "verified_at": "2026-10-24T00:53:45+07:00",
+  "committed_source_files": 525,
+  "source_tree_clean_before_checkpoint": true,
+  "ci": "GitHub Actions started; final result pending",
+  "note": "This report verifies the source commit; the following documentation checkpoint is committed separately."
 }

@@ -11,20 +11,20 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "33428a4a1a42cf20dea27d5ce5f63b94441a2f94",
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-24T00:42:21+07:00",
+  "last_checkpoint_at": "2026-10-24T00:53:45+07:00",
   "last_test_run": {
-    "at": "2026-10-23T19:32:53+07:00",
+    "at": "2026-10-24T00:52:42.005677+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
     "result": "passed",
     "tests": 111,
     "assertions": 1626,
-    "duration_seconds": 28.433283,
-    "cli_duration_seconds": 28.82,
+    "duration_seconds": 33.51717,
+    "cli_duration_seconds": 38.81,
     "database": "MySQL8.4.13 thu_thanh_test",
     "evidence": "backend/storage/logs/phpunit.xml",
-    "at_note": "Checkpoint time; JUnit retained from actual full suite execution this task."
+    "at_note": "D48 full suite executed before source commit; test run timestamp recorded by staged audit."
   },
   "figma": {
     "status": "V24_local_verified_owner_canvas_pending",
@@ -85,7 +85,7 @@
     "php_syntax_files": 158,
     "lint": "passed_full_pint_D45",
     "composer_audit": "no_advisories_reported",
-    "github_remote_ci": "not_run",
+    "github_remote_ci": "started_pending_D48",
     "docker_build_deploy": "not_run",
     "vnpay_real_sandbox": "not_run",
     "figma_plugin_js_syntax": "passed_V24_live_canvas_not_run",
@@ -216,5 +216,17 @@
     "created_master": 1,
     "evidence": "docs/qa/github-schedule-sync.json",
     "verified_at": "2026-10-24T00:42:21+07:00"
-  }
+  },
+  "source_publication": {
+    "decision": "D48",
+    "status": "done",
+    "repository": "DongDao27/Payment",
+    "branch": "main",
+    "source_commit": "33428a4a1a42cf20dea27d5ce5f63b94441a2f94",
+    "source_remote_verified_at": "2026-10-24T00:53:45+07:00",
+    "evidence": "docs/qa/source-publication.json",
+    "ci": "started_pending",
+    "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint."
+  },
+  "git_dirty_note": "Captured while writing this documentation checkpoint; use git status for live state after commit/push."
 }

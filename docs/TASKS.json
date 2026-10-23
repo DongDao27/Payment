@@ -966,5 +966,16 @@
     "created_master": 1,
     "evidence": "docs/qa/github-schedule-sync.json",
     "verified_at": "2026-10-24T00:42:21+07:00"
+  },
+  "source_publication": {
+    "decision": "D48",
+    "status": "done",
+    "repository": "DongDao27/Payment",
+    "branch": "main",
+    "source_commit": "33428a4a1a42cf20dea27d5ce5f63b94441a2f94",
+    "source_remote_verified_at": "2026-10-24T00:53:45+07:00",
+    "evidence": "docs/qa/source-publication.json",
+    "ci": "started_pending",
+    "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint."
   }
 }
