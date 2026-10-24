@@ -211,7 +211,6 @@
     "scripts/auth-cookie-smoke.php",
     "scripts/ops-smoke.php",
     "scripts/load/public-storefront.k6.js",
-    "docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx",
     "workbook",
     "runtime databases/env/uploads",
     "web and Figma assets"
@@ -241,5 +240,11 @@
     "browser": "D51 prior evidence archived; not repeated for file cleanup",
     "environment": "Windows, PHP8.4.25, MySQL8.4.13, Next16.4.2",
     "figma_mock": "passed_V24_126frames_2804routes_24products_live_canvas_not_run"
+  },
+  "concurrent_workspace_change": {
+    "path": "docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx",
+    "observed": "deleted after source commit; deletion retained",
+    "recovery_commit": "3e1b0fb13a6d1bdfefb6589a07dea848ab6f3fed",
+    "recovery_member": "docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx"
   }
 }

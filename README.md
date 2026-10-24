@@ -90,8 +90,8 @@ Cấu hình Docker, Next standalone, Nginx, PHP-FPM/OPcache và Redis ở [deplo
 | `deploy/` | Cấu hình triển khai và môi trường mẫu |
 | `scripts/` | Chạy local/demo, kiểm tài liệu/asset, smoke CI và load profile |
 | `thu-thanh-figma-clicon/` | Plugin thiết kế V24; [hướng dẫn import](thu-thanh-figma-clicon/HUONG-DAN.md) |
-| `docs/` | Đặc tả, hướng dẫn, checkpoint và báo cáo Excel |
+| `docs/` | Đặc tả, hướng dẫn, checkpoint bảo trì |
 
-[API](docs/API.md) · [Database](docs/DATABASE.md) · [Kiến trúc](docs/ARCHITECTURE.md) · [Nghiệp vụ](docs/DOMAIN-RULES.md) · [Phân công Đông/Thiện](docs/PHAN-CONG-VA-COMMIT.md) · [Báo cáo 11–31/10](docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx).
+[API](docs/API.md) · [Database](docs/DATABASE.md) · [Kiến trúc](docs/ARCHITECTURE.md) · [Nghiệp vụ](docs/DOMAIN-RULES.md) · [Phân công Đông/Thiện](docs/PHAN-CONG-VA-COMMIT.md).
 
 Source: [DongDao27/Payment](https://github.com/DongDao27/Payment). Task: [GitHub Project #4](https://github.com/users/DongDao27/projects/4), issue thuộc repo Thu-Thanh-bookstore. Các báo cáo đánh giá/đề xuất, snapshot QA và công cụ lấy dữ liệu dùng một lần đã được lưu ngoài repo; xem [bản đồ và khôi phục](docs/REPOSITORY-MAP.md).

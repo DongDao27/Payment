@@ -2,7 +2,7 @@
 
 Cập nhật 24/10/2026. Source chính: [DongDao27/Payment](https://github.com/DongDao27/Payment). [Project #4](https://github.com/users/DongDao27/projects/4) và T01–T18 đang thuộc repo [Thu-Thanh-bookstore](https://github.com/DongDao27/Thu-Thanh-bookstore/issues). Hai repo có vai trò khác nhau; không tạo bản code thứ hai trong repo issue.
 
-Báo cáo ba tuần **11–31/10/2026**: [Excel Đông / Thiện](reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx). Snapshot GitHub24/10: cả18issue vẫn OPEN/To do, nên tỷ lệ nghiệm thu GitHub là0% mỗi người; hiện trạng source local được ghi riêng. Workbook có5sheet, công thức theo task/điểm, kế hoạch25–31/10 và hướng dẫn cập nhật. Đây là phân công đề xuất, không xác nhận tác giả code cũ. Số liệu kỹ thuật D49 bên dưới là snapshot trước D51; hiện D51 có27task kỹ thuật và118backendtests, không phải cùng mẫu số18task GitHub.
+Báo cáo ba tuần **11–31/10/2026**: Excel Đông / Thiện (đã đưa khỏi workspace; khôi phục từ commit `3e1b0fb`). Snapshot GitHub24/10: cả18issue vẫn OPEN/To do, nên tỷ lệ nghiệm thu GitHub là0% mỗi người; hiện trạng source local được ghi riêng. Workbook có5sheet, công thức theo task/điểm, kế hoạch25–31/10 và hướng dẫn cập nhật. Đây là phân công đề xuất, không xác nhận tác giả code cũ. Số liệu kỹ thuật D49 bên dưới là snapshot trước D51; hiện D51 có27task kỹ thuật và118backendtests, không phải cùng mẫu số18task GitHub.
 
 Đây là phân công đề xuất cho giai đoạn tiếp theo, theo tên hai thành viên chủ dự án cung cấp. Chưa có xác nhận username của Thiện, nên chưa tự gán tài khoản trên GitHub hoặc gửi lời mời. Đông/Thiện thống nhất bảng này rồi dùng assignee và PR để ghi nhận công việc thực tế.
 
@@ -208,4 +208,4 @@ Ghi tên/username thật, task chủ trì/review, PR URL, commit SHA thật, ng�
 
 Không đưa `.env`, password, token, APP_KEY, database dump hoặc customer data thật vào Git/PR/log. File mẫu có giá trị trống được giữ. Không bật VNPAY/deploy để tạo bằng chứng nếu chưa có yêu cầu và đủ điều kiện. Danh sách nguồn/giới hạn xem [KNOWN-LIMITATIONS](KNOWN-LIMITATIONS.md) và [PERFORMANCE](PERFORMANCE.md).
 
-Các snapshot QA/audit cũ đã lưu ngoài repo theo [manifest dọn source](CLEANUP-2026-10-24.json); báo cáo Excel giữ nguyên như snapshot ngày24/10.
+Các snapshot QA/audit cũ đã lưu ngoài repo theo [manifest dọn source](CLEANUP-2026-10-24.json); báo cáo Excel snapshot ngày24/10 có thể khôi phục từ commit `3e1b0fb`.

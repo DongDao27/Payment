@@ -11,9 +11,9 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "3e1b0fb13a6d1bdfefb6589a07dea848ab6f3fed",
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-24T16:35:11+07:00",
+  "last_checkpoint_at": "2026-10-24T16:38:46+07:00",
   "last_test_run": {
     "at": "2026-10-24T16:35:11+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
@@ -232,7 +232,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "Captured while writing this documentation checkpoint; use git status for live state after commit/push.",
+  "git_dirty_note": "Captured while recording the post-commit documentation checkpoint; source commit was clean. Use git status for live state after the checkpoint commit.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -262,7 +262,6 @@
     "status": "done",
     "period_start": "2026-10-11",
     "period_end": "2026-10-31",
-    "artifact": "docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx",
     "assignment": "D49_proposed_9tasks36points_each_not_historical_authorship",
     "completion_basis": "GitHub_CLOSED_and_COMPLETED_separate_from_local_implementation",
     "snapshot_at": "2026-10-24T15:40:27+07:00",
@@ -273,7 +272,10 @@
     "github_mutation": false,
     "application_changes": false,
     "archived_audit": "docs/qa/weekly-report-audit.json",
-    "archived_snapshot": "docs/qa/weekly-report-github.json"
+    "archived_snapshot": "docs/qa/weekly-report-github.json",
+    "archived_artifact": "docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx",
+    "artifact_recovery_commit": "3e1b0fb13a6d1bdfefb6589a07dea848ab6f3fed",
+    "artifact_location": "removed_from_workspace_recoverable_from_git"
   },
   "maintenance_cleanup": {
     "decision": "D53",
@@ -285,7 +287,7 @@
     "automated_tests_and_ci": "preserved",
     "data_env_uploads": "preserved",
     "readme": "updated_2026-10-24",
-    "commit": "pending_after_staged_review"
+    "commit": "3e1b0fb13a6d1bdfefb6589a07dea848ab6f3fed"
   },
   "archived_evidence_manifest": "docs/CLEANUP-2026-10-24.json"
 }

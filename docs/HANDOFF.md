@@ -1,12 +1,12 @@
-# D53 — dọn repo/README hoàn tất, commit đang chuẩn bị (2026-10-24T16:35:11+07:00)
+# D53 — dọn repo/README hoàn tất, source đã commit (2026-10-24T16:35:11+07:00)
 
-Đã dọn39file kiểmCRC/SHA vào archive ngoài repo tại manifest docs/CLEANUP-2026-10-24.json. Bỏ đánh giá/đề xuất/testplan dư,snapshotQA và scriptfetch/import/fixturebrowser dùng một lần; giữ bộtest tự động/CI,HTTP+opssmoke,k6profile,đặc tả/runbook,guidehai người vàXLSX11–31/10. Không xóa data/env/workbook/uploads hoặc ảnh web/Figma. Các đường dẫnQA trong checkpoint cũ là member archive, không file hoạt động.
+Đã dọn39file kiểmCRC/SHA vào archive ngoài repo tại manifest docs/CLEANUP-2026-10-24.json. Bỏ đánh giá/đề xuất/testplan dư,snapshotQA và scriptfetch/import/fixturebrowser dùng một lần; giữ bộtest tự động/CI,HTTP+opssmoke,k6profile,đặc tả/runbook,guidehai người. XLSX11–31/10 đã bị xóa khỏi workspace sau commit, giữ việc xóa và ghi cách khôi phục từ Git `3e1b0fb`. Không xóa data/env/workbook/uploads hoặc ảnh web/Figma. Các đường dẫnQA trong checkpoint cũ là member archive, không file hoạt động.
 
 README mới mô tả web/admin/contact/recovery,localhost3000/8000,MySQL3307,DBreal/demo/test,SMTP và productionlimits. LOCAL-SETUP/START-HERE/VERIFICATION/frontendREADME/REPOSITORY-MAP đã đồng bộ,docschecker kiểm23required/27tasks/43paths và link hoạt động.
 
 Test trước commit:118backendtests1675assertions0fail/skip CLI38.42s;Pint/Composer validate/platform passed;cookieCSRF11/ops5checks passed.7clienttests/build/typecheck passed. Composer/npm audit0;136HD/24Figma/3banner/8manufacturerassetspassed. MySQL vàserverdev đã chạy sẵn được giữ. BrowserD51 không chạy lại;SMTP/provider/staging/restore/10k không nghiệm thu. JUnit ởstorage/logs bịignore; manifest chứa kết quả ngắn thay QA snapshot mới.
 
-Gitmain đang có toàn bộ sourceD51 chưa commit và cleanupD53; không reset/rewrite authorship. Bước tiếp: stagedsecret/runtime/size/diff review → commit thật theo yêu cầu; cập nhật hash bằng chứng sau commit. Backend externally_blocked/frontend authorized_scoped/release not_started,DUI09 pending không đổi. Cần SMTP thật/canvasreview/provider/hosting như các giới hạn trongREADME.
+Gitmain đang có toàn bộ sourceD51 chưa commit và cleanupD53; không reset/rewrite authorship. Commit source `3e1b0fb13a6d1bdfefb6589a07dea848ab6f3fed` đã tạo, stagedreview/diffcheck passed; tree sạch sau sourcecommit. Checkpoint này chỉ ghi hash thật và trạng thái tài liệu. Muốn đồng bộ remote, push bình thường vàoorigin Payment, khôngforce; CI mới chỉ xác nhận khi GitHub chạy xong. Backend externally_blocked/frontend authorized_scoped/release not_started,DUI09 pending không đổi. Cần SMTP thật/canvasreview/provider/hosting như các giới hạn trongREADME.
 
 # D52 — báo cáo Excel hoàn tất, 2026-10-24T15:47:12+07:00
 
