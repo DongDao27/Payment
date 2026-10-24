@@ -4,6 +4,7 @@ import Link from "next/link";
 import { api } from "@/lib/api-client";
 import { errorMessage, money } from "@/lib/format";
 import { Loading, Notice } from "./ui";
+import { TimeSeriesChart } from "./time-series-chart";
 
 type Amounts = {
   accepted_sales: number;
@@ -56,10 +57,6 @@ export function RevenuePanel({ compact = false }: { compact?: boolean }) {
       });
     return () => abort.abort();
   }, [query, revision]);
-  const max = Math.max(
-    1,
-    ...(data?.series.map((row) => row.accepted_sales) ?? []),
-  );
   const grouping = new URLSearchParams(query).get("granularity");
   function exportCsv() {
     if (!data) return;
@@ -100,6 +97,40 @@ export function RevenuePanel({ compact = false }: { compact?: boolean }) {
           </Link>
         )}
       </div>
+      {!compact && (
+        <div className="revenue-presets" aria-label="Khoảng thời gian nhanh">
+          {[7, 30, 90].map((days) => {
+            const start = new Date(`${today}T00:00:00Z`);
+            start.setUTCDate(start.getUTCDate() - days + 1);
+            const startKey = start.toISOString().slice(0, 10);
+            return (
+              <button
+                key={days}
+                type="button"
+                aria-pressed={
+                  new URLSearchParams(query).get("from") === startKey &&
+                  new URLSearchParams(query).get("to") === nextDay(today)
+                }
+                onClick={() => {
+                  setFrom(startKey);
+                  setTo(today);
+                  setGranularity(days === 90 ? "week" : "day");
+                  setQuery(
+                    new URLSearchParams({
+                      from: startKey,
+                      to: nextDay(today),
+                      granularity: days === 90 ? "week" : "day",
+                    }).toString(),
+                  );
+                  setRevision((n) => n + 1);
+                }}
+              >
+                {days} ngày qua
+              </button>
+            );
+          })}
+        </div>
+      )}
       {!compact && (
         <form
           className="admin-toolbar revenue-filters"
@@ -143,6 +174,7 @@ export function RevenuePanel({ compact = false }: { compact?: boolean }) {
           <label>
             Nhóm theo
             <select
+              aria-label="Nhóm theo"
               value={granularity}
               onChange={(e) => setGranularity(e.target.value)}
             >
@@ -194,46 +226,15 @@ export function RevenuePanel({ compact = false }: { compact?: boolean }) {
               <strong>{money(data.totals.unallocated_receipts)}</strong>
             </div>
           </div>
-          <figure className="dashboard-chart">
-            <figcaption>
-              Doanh thu tiền hàng theo{" "}
-              {grouping === "week"
-                ? "tuần"
-                : grouping === "month"
-                  ? "tháng"
-                  : "ngày"}
-            </figcaption>
-            <div
-              className="revenue-bars"
-              role="img"
-              aria-label={data.series
-                .map((row) => `${row.period}: ${money(row.accepted_sales)}`)
-                .join("; ")}
-            >
-              {data.series.map((row) => (
-                <div
-                  className="revenue-bar"
-                  key={row.period}
-                  title={`${row.period}: ${money(row.accepted_sales)}; giao hàng ${money(row.shipping_collected)}`}
-                >
-                  <div className="revenue-track">
-                    <span
-                      style={{ height: `${(row.accepted_sales / max) * 100}%` }}
-                    />
-                  </div>
-                  <span>
-                    {row.period.slice(8)}/{row.period.slice(5, 7)}
-                  </span>
-                </div>
-              ))}
-            </div>
-            {!data.totals.accepted_sales && (
-              <p className="empty-chart">
-                Chưa có doanh thu từ đơn đã thanh toán trong khoảng thời gian
-                này.
-              </p>
-            )}
-          </figure>
+          <TimeSeriesChart
+            title={`Doanh thu theo ${grouping === "week" ? "tuần" : grouping === "month" ? "tháng" : "ngày"}`}
+            points={data.series.map((row) => ({
+              date: row.period,
+              value: row.accepted_sales,
+            }))}
+            currency
+            period={grouping}
+          />
           {!compact && (
             <div className="data-table-wrap">
               <table>

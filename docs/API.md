@@ -120,3 +120,11 @@ Product create/patch thêm `discount_percent` integer0..100, không nhận đồ
 GET `/storefront` mới, không session/auth/cookie, snapshot công khai cache20s, header public,max-age0,s-maxage20. Không nhận đầu vào cá nhân. GET `/home` giữ session và `private,no-store`, gợi ý riêng của chính khách. GET categories/products/show bỏ middleware session nhưng vẫn no-store để giá/tồn đọc trực tiếp. API khác/CSRF/auth/admin không đổi sang cache public. Meta requestid origin vẫn mỗi request riêng. Cache revision đổi sau commit; rollback không publish giá.
 
 Không có API fake-paid/seed-sales. Demo là CLI có guard environment+DB. OpenAPI hiện41paths; private/API error tiếp tục no-store. Trusted proxy chỉ nhận CIDR cấu hình để rate limit dùng đúng IP khách.
+
+## D51 — Khôi phục mật khẩu khách hàng
+
+`POST /api/v1/auth/forgot-password`: JSON email chuẩn hóa; trả202 và cùng message cho email không tồn tại/admin/đã được gửi gần đây. Chỉ gửi cho customer có email; không có SMS hoặc public admin recovery. Hai endpoint dùng session+CSRF, limit10/IP/phút và5/email+IP/phút, không trả token. Production dùng mailer log/array trả503 RECOVERY_UNAVAILABLE.
+
+`POST /api/v1/auth/reset-password`: email, token64hex, password12–128 và password_confirmation. Token hash/60phút/mộtlần bằng Laravel broker. Reset trong transaction/khóa user, tiêu thụ token và thu hồi sessions của đúng khách, đổi remember_token; không tự login. Sai/hết hạn/dùng lại trả422, cùng lỗi token; admin không được reset qua endpoint công khai. Email đưa vào encrypted queued notification sau commit; FRONTEND_URL do server cấu hình, không từ Host/request. Frontend /reset-password không referrer/noindex và xóa token khỏi URL khi thành công. Xem openapi.json (43paths).
+
+D51 session bổ sung: login/register lưu HMAC mật khẩu vào session; Sanctum AuthenticateSession áp dụng toàn web API, gồm home cá nhân, để từ chối phiên cũ sau reset kể cả với session ngoài database. Test chạy driver array chứng minh không phụ thuộc xóa bảng sessions; Redis runtime production chưa chạy. Token không được đưa vào session/API response.

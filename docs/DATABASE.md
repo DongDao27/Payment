@@ -80,3 +80,9 @@ Không thêm cột discount_percent: chỉ persist list_price/sale_price/catalog
 `thu_thanh_demo` được tạo local riêng với user DB/private env/APP_KEY/cookie/storage riêng; clone read-only catalog từ thu_thanh, không clone khách/đơn thật. Seed1000paidorders/accepted demo receipts và stock movements qua reserve/consume, totals/quantity đúng, business keys chống trùng. Tạo giá giảm/tồn mô phỏng chỉ trong demo. Dùng provider=demo, không fake chữ ký VNPAY. Prepare-demo/seed từ chối production và DB thật; chạy lại cùngseed bỏ qua1000đơn. Các bản ghi QA local không thuộc doanh số thực.
 
 Production overlay chuyển cache/session/queue sang Redis chia sẻ; MySQL vẫn quyết định tiền/tồn và unique/locks. Cache invalidation sau commit, không giữ global cache-row lock trong transaction tồn kho. Xem PERFORMANCE.md cho phần chưa đo trên production.
+
+## D51 — Password reset, không thêm migration
+
+Dùng bảng password_reset_tokens đã có từ migration users: email là khóa, token lưu hash, created_at dùng hết hạn60phút. Không thêm cột mãOTP hoặc lưu token plain. Reset khóa users tương ứng trong transaction, cập nhật passwordhash/remember_token, xóa token và sessions theo user_id. Notification queue payload mã hóa; worker và APP_KEY phải giữ ổn định khi triển khai. Scheduler auth:clear-resets dọn token hết hạn mỗi giờ. Không đổi schema/giá/tồn/order/payment trong lần này.
+
+D51 session bổ sung: login/register lưu HMAC mật khẩu vào session; Sanctum AuthenticateSession áp dụng toàn web API, gồm home cá nhân, để từ chối phiên cũ sau reset kể cả với session ngoài database. Test chạy driver array chứng minh không phụ thuộc xóa bảng sessions; Redis runtime production chưa chạy. Token không được đưa vào session/API response.

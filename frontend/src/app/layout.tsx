@@ -5,6 +5,7 @@ import "./globals.css";
 import "./clicon.css";
 import "./bookstore.css";
 import "./styles/storefront.css";
+import "./styles/experience.css";
 
 export const metadata: Metadata = {
   title: {

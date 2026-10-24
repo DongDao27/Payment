@@ -1,39 +1,30 @@
-# Bản đồ repo và khôi phục file cũ
-
-## Source đang sử dụng
+# Bản đồ source và khôi phục
 
 | Đường dẫn | Vai trò |
 |---|---|
-| `backend/app/Services` | Quy tắc giá, catalog/cache, giỏ/quote/checkout, tồn kho, thanh toán/report |
-| `backend/app/Http` | Controller mỏng, validation, resource, middleware quyền/proxy/request |
-| `backend/app/Console/Commands` | Công cụ admin và seed demo có guard; không có endpoint fake-paid |
-| `frontend/src/app` | Next App Router, các trang khách và admin |
-| `frontend/src/components` | UI dùng chung; ProductPrice/điều khiển giá tách riêng để tránh lệch card/popup/form |
-| `frontend/src/lib` | API client, types, metadata ảnh và gộp public request |
-| `frontend/src/app/styles/storefront.css` | Styles storefront/footer/price/report hiện hành, thay hai file version cũ |
-| `deploy` | Docker/Nginx/PHP-FPM và overlay scale, chưa nghiệm thu runtime |
-| `scripts` | Audit, chuẩn bị demo, load test, build/package/verify Figma, kiểm tài liệu |
-| `thu-thanh-figma-clicon` | Source/plugin Figma hiện hành V24; không dùng bộ v12 cũ |
-| `docs/qa` | Kết quả kiểm thử máy đọc được, không chứa password/token |
-| `docs/MD-CLEANUP-MANIFEST.json` | Danh sách tài liệu cũ đã xóa và archive khôi phục ngoài repo |
+| `backend/app/Services` | Giá, catalog/cache, giỏ/checkout, tồn, đơn, thanh toán, recovery và doanh thu |
+| `backend/app/Http` | Controller, FormRequest, resource, middleware và quyền |
+| `backend/database` | Schema, factory và seeder có kiểm soát |
+| `backend/tests`, `frontend/tests` | Test tự động đang được CI sử dụng |
+| `frontend/src/app`, `frontend/src/components` | Trang khách/admin và component dùng chung |
+| `frontend/src/lib` | API client, types, metadata ảnh và thông tin nhà sách |
+| `scripts` | Chạy local/demo, kiểm tài liệu/asset, smoke CI, package Figma và load profile |
+| `deploy` | Docker/Nginx/FPM/Redis; chưa nghiệm thu staging |
+| `thu-thanh-figma-clicon` | Plugin Figma V24 và hướng dẫn import |
+| `docs/reports` | Báo cáo Excel Đông/Thiện11–31/10/2026 |
 
-Giữ `AGENTS.md`, START-HERE, PRD/domain/API/database, TASKS/STATUS/HANDOFF/PROGRESS và bài audit môn học. Đây là tài liệu còn cần để bảo trì; không xóa vì không được frontend import. CSV test cases là tài liệu kiểm thử, không phải dữ liệu bán hàng để import.
+## Dọn ngày24/10/2026
 
-## Đã dọn
+Theo yêu cầu chủ dự án, bỏ các báo cáo đánh giá/rubric/đề xuất cũ, test plan/CSV/traceability trùng source tests, snapshot và screenshot QA, fixture browser thủ công cùng công cụ tải ảnh/import workbook một lần. Workbook sản phẩm, ảnh web/Figma, database, env, uploads, test tự động và smoke CI được giữ.
 
-149 file cũ, 183.666.923 byte, đã chuyển vào ZIP ngoài repo; kiểm CRC và SHA-256 từng file trước khi xóa bản trùng. Gồm build pack tài liệu gốc đã được triển khai vào repo, ZIP/thư mục giải nén/screenshot Figma cũ và hai stylesheet đã gộp. Manifest: [CLEANUP-MANIFEST.json](CLEANUP-MANIFEST.json).
+Danh sách từng file, SHA-256, vị trí ZIP và hướng dẫn khôi phục ở [CLEANUP-2026-10-24.json](CLEANUP-2026-10-24.json). ZIP nằm ngoài repo tại `D:\ThuThanh-Archives`; đã kiểm CRC và từng SHA trước khi bỏ bản trong repo. Một số checkpoint hoặc báo cáo lịch sử còn ghi đường dẫn cũ: tìm member tương ứng trong manifest, không hiểu đó là file còn hoạt động. Công cụ tạo/fetch báo cáo Excel cũ cũng có trong archive; fileExcel đã bàn giao vẫn giữ nguyên.
 
-Archive nằm tại `D:\ThuThanh-Archives\thu-thanh-legacy-20261023-185819.zip`; SHA-256 archive được ghi trong manifest. Có thể giải nén ra thư mục tạm để lấy lại file theo đường dẫn gốc, xem diff rồi mới chép vào repo. Không giải nén ghi đè toàn repo. Khi chuyển máy, sao lưu cả thư mục archive nếu cần các bằng chứng cũ. Các task lịch sử giữ liên kết manifest cho evidence đã archive.
-
-Không dọn `.runtime/mysql-data`, `.env*`, APP_KEY, workbook nguồn, upload/evidence, dependencies hoặc backup source. File Excel 136 sản phẩm được giữ vì là nguồn đối chiếu giá/tồn, không phải file thừa. `.runtime/demo-storage` và database demo cũng được giữ để tiếp tục trình bày.
-
-`output/` và SVG xem trước được sinh lại, được bỏ khỏi Git để tránh commit build lớn. ZIP V24 hiện hành vẫn có trong `output/figma/`. Tạo lại: `python thu-thanh-figma-clicon/build.py`, `node scripts/test-figma-clicon.cjs`, `python scripts/package-figma.py`. ZIP import có 6 file và nhúng toàn bộ ảnh; người import không cần Python.
+Khôi phục bằng cách giải nén riêng member cần thiết ra thư mục tạm, kiểm hash/diff rồi mới chép lại file đó. Không giải nén đè toàn repository. Nếu chuyển máy và cần lịch sử, sao lưu cả ZIP ngoài repo. Các lần dọn trước nằm trong [CLEANUP-MANIFEST.json](CLEANUP-MANIFEST.json) và [MD-CLEANUP-MANIFEST.json](MD-CLEANUP-MANIFEST.json).
 
 ## Bảo trì
 
-Thêm loại giá hiển thị ở `ProductPrice`; thay quy tắc tính tiền ở backend, không lấy giá client làm nguồn. Nếu thay dữ liệu bằng bulk SQL ngoài Eloquent, gọi StorefrontSnapshot::invalidate sau commit. Không thêm cache vào API private hoặc cookie/CSRF. Thay asset cùng URL cần version/purge CDN thích hợp. Mở chức năng mới đọc PRD/DECISIONS và cập nhật hợp đồng/test/checkpoint, không sao chép controller/service thành một luồng nghiệp vụ khác.
+Giữ AGENTS, START-HERE, PRD/domain/API/database, checkpoint và tài liệu vận hành hiện hành. Test mới bổ sung vào bộ test source; kết quả chạy tạm trong storage/logs/output bịignore, không tạo thêm báo cáo đánh giá để commit nếu không được yêu cầu.
 
+Giữ `.runtime/mysql-data`, `.env*`, APP_KEY, upload và workbook khi cập nhật code. Không reset/seed lại dữ liệu thật để sửa UI. Fetch API runtime vẫn cần cho web; chỉ công cụ lấy dữ liệu một lần được dọn. Giá/tiền/tồn/quyền vẫn do Laravel quyết định.
 
-## D46 — tài liệu Markdown đã tinh gọn
-
-Đã xóa 12 file khỏi repo: tám review lịch sử, hai prompt bootstrap/resume trùng AGENTS/START-HERE, tài liệu chuyển lab và FRONTEND-VERIFICATION đã gộp vào VERIFICATION.md. Archive ngoài repo có CRC/SHA từng file trong [MD-CLEANUP-MANIFEST.json](MD-CLEANUP-MANIFEST.json). Giữ đặc tả/nghiệp vụ, hướng dẫn chạy/deploy, chứng cứ môn học và tài liệu nguồn asset vì vẫn cần bảo trì/nộp bài.
+Figma: `python thu-thanh-figma-clicon/build.py`, `node scripts/test-figma-clicon.cjs`, `python scripts/package-figma.py`. Output ZIP/preview không commit. Canvas thật vẫn cần chủ dự án duyệt riêng.

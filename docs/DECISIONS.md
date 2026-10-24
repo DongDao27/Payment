@@ -193,3 +193,28 @@ Chủ dự án yêu cầu kiểm tra/bổ sung tất cả task theo master sched
 ## D48 — CONFIRMED 24/10/2026: commit/push toàn bộ source vào Payment
 
 Chủ dự án chỉ định https://github.com/DongDao27/Payment làm nơi nhận source. API/ls-remote xác nhận repo đích trống và quyền ADMIN; local main chưa có commit/remote. Được tạo commit, origin và push main không force. Repo issue Thu-Thanh-bookstore/Project4 giữ nguyên. Chỉ commit source/assets/workbook/spec/tests/templates; không đưa env/keys/database runtime/vendor/node_modules/generated build vào Git. Acceptance: kiểm stagedfiles secrets/runtime/size, kiểm tra thích hợp, commit có hash thật, remote main trùng HEAD sau push, working tree sạch. Không deploy hoặc bật payment thật.
+
+
+## D49 — CONFIRMED 24/10/2026: hiện trạng và hướng dẫn hai người đóng góp
+
+Chủ dự án yêu cầu đề xuất cải thiện, liệt kê task đã làm và file hướng dẫn chia việc/commit trên hai máy; xác nhận tên Đông, Thiện. Phân công 9task/36điểm mỗi người là đề xuất trách nhiệm tương lai, chưa có username Thiện hoặc xác nhận công sức lịch sử. Không viết lại commit nền/author/ngày hoặc giả PR/đóng task. Source Payment, issue Thu-Thanh-bookstore/Project4, dùng fullURL để tham chiếu chéo repo. Acceptance: đủ18task hiện trạng có giới hạn rõ, bảng phân công cân bằng/reviewchéo, hướng dẫn identity/branch/stage/test/PR/merge/conflict/secrets và evidence thực; link/mapping/docs kiểm được. Không tự gán người/merge/push hoặc thay code ứng dụng.
+
+
+## D50 — CONFIRMED 24/10/2026: đánh giá thiết kế trước mở bán
+
+Chủ dự án yêu cầu đánh giá chuyên nghiệp và đề xuất sửa để dùng thật sau deploy. Scope đánh giá public browser/source/priorQA, không sửa UI/nghiệp vụ/Figma hoặc mua/deploy hạ tầng. Acceptance: chỉ rõ bằng chứng quan sát, ưu tiên/ảnh hưởng/tiêu chí đạt, phân biệt đề xuất với yêu cầu đã chốt; không nhận đạt provider/10k/WCAG từ local. Dùng banner riêng, giảm sốitem hoặc productURL là đề xuất cần duyệt, không tự thay D43/D44.
+
+
+## D51 — CONFIRMED 24/10/2026: liên hệ/bản đồ, UX07/08 và admin chart
+
+Chủ dự án cung cấp linkGoogleMaps địa chỉ295TônĐứcThắng,hotline0915466951,xác nhận07:30–21:30hằngngày. Yêu cầu mapdướifooter,UX07hitarea/focus/label,UX08recoveryvàđánhgiá/chỉnhadminicons/chart. Scope mới cho phép backend recovery trước UI: email broker Laravel, token hash/expire/oneuse/lock/sessionrevoke,customeronly,CSRF/rate/genericrequest;khôngSMSgiả/adminpublicreset. No schema mutation cần thiết nếu password_reset_tokens hiện hữu. EmailproductionphảiSMTPthật;localmailer chỉ development,khôngclaimdelivery. Backendtests/contracttrướcfrontend mới;UI maplazy/contact/passwordvisibility/inlineerrors,adminuniqueicons/chartaxis/filter/tooltipresponsive/dataempty. Acceptance bằng test/backend/APIcontract,frontendbuild/typecheck,browserisolatedDB/admin/guest/mobile/accessibility/map;khôngđổitổngdoanhthu,quyền,price/stock/provider/no-refund.
+
+## D52 — CONFIRMED 24/10/2026: báo cáo Excel Đông/Thiện, 11–31/10/2026
+
+Chủ dự án yêu cầu báo cáo phần trăm task GitHub và kế hoạch ba tuần; chốt ngày 11–17/10, 18–24/10, 25–31/10/2026. Scope tạo workbook và đọc GitHub; không thay trạng thái issue/Project, không commit/push hoặc deploy. Giữ phân công đề xuất D49: mỗi người 9 task/36 điểm, review chéo; không suy thành tác giả lịch sử. Tỷ lệ GitHub dựa trên issue đóng với lý do hoàn thành, tách rõ code local/chờ nghiệm thu. Hai tuần đã qua chỉ ghi bằng chứng có thật; lịch phân bổ là khung đối chiếu lập ngày24/10, không giả là kế hoạch đã chốt từ11/10. Tuần cuối là mục tiêu, provider/hosting/SMTP thật còn điều kiện ngoài. Acceptance: đủ18 task/link đúng, ba khoảng tuần đúng, tổng điểm cân bằng, công thức tỷ lệ có cached values, bảng tuần/in ấn dễ đọc, đối chiếu snapshot GitHub và kiểm cấu trúc XLSX bằng trình đọc độc lập. Không chạy lại application tests khi không đổi ứng dụng.
+
+## D53 — CONFIRMED 24/10/2026: dọn repo, cập nhật README và commit toàn bộ thay đổi
+
+Chủ dự án yêu cầu bỏ tài liệu đánh giá/đề xuất, hồ sơ test thừa và phần fetch dữ liệu không còn cần, cập nhật README rồi commit tất cả thay đổi. Dọn script tải ảnh/import workbook một lần, fixture browser thủ công cũ, snapshot/ảnh QA và audit trùng; giữ API fetch đang phục vụ web, bộ test tự động/CI, schema/domain/API, hướng dẫn chạy/deploy, nguồn ảnh, phân công và báo cáo Excel vừa yêu cầu. Lưu file bỏ trong ZIP ngoài repo, kiểm đường dẫn tuyệt đối/CRC/SHA trước khi xóa bản trong repo; manifest để truy lại chứng cứ lịch sử. Không xóa database, env, uploads, ảnh web/Figma, workbook, dữ liệu demo hoặc test nghiệp vụ.
+
+Acceptance: danh sách dọn rõ, archive khôi phục đúng byte, không link hoạt động trỏ file đã bỏ, README đúng phiên bản/chức năng/contact/SMTP/giới hạn thật; kiểm tài liệu/API, backend tests/Pint/HTTP+ops smoke và frontend tests/build/typecheck trước commit. Không thêm tối ưu suy đoán hoặc đổi nghiệp vụ; giữ toàn bộ chức năng D51. Commit gồm source chưa commit D49–D52 và cleanup hiện tại, loại secret/runtime/dependencies; kiểm staged diff và hash thật, working tree sạch. Lượt này chỉ được yêu cầu commit, không tự deploy/mua hạ tầng hoặc bật provider thật.

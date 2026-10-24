@@ -5,26 +5,26 @@
   "phase": "FRONTEND",
   "current_task_id": "DUI09",
   "next_task_id": "DUI09",
-  "implementation_state": "v24_local_verified_capacity_pending",
+  "implementation_state": "v24_D51_contact_recovery_admin_locally_verified",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "33428a4a1a42cf20dea27d5ce5f63b94441a2f94",
+  "last_verified_commit": null,
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-24T00:53:45+07:00",
+  "last_checkpoint_at": "2026-10-24T16:35:11+07:00",
   "last_test_run": {
-    "at": "2026-10-24T00:52:42.005677+07:00",
+    "at": "2026-10-24T16:35:11+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
     "result": "passed",
-    "tests": 111,
-    "assertions": 1626,
-    "duration_seconds": 33.51717,
-    "cli_duration_seconds": 38.81,
+    "tests": 118,
+    "assertions": 1675,
+    "duration_seconds": 34.968478,
+    "cli_duration_seconds": 38.42,
     "database": "MySQL8.4.13 thu_thanh_test",
     "evidence": "backend/storage/logs/phpunit.xml",
-    "at_note": "D48 full suite executed before source commit; test run timestamp recorded by staged audit."
+    "at_note": "D53 suite rerun; checkpoint timestamp after execution."
   },
   "figma": {
     "status": "V24_local_verified_owner_canvas_pending",
@@ -58,7 +58,8 @@
   "external_inputs_pending": [
     "Owner imports V24 plugin and reviews canvas",
     "VNPAY merchant credentials only when owner reopens payment stage",
-    "Owner has no hosting yet; production capacity acceptance waits for future staging infrastructure"
+    "Owner has no hosting yet; production capacity acceptance waits for future staging infrastructure",
+    "SMTP/from-address/HTTPS frontend origin and actual recovery email delivery acceptance"
   ],
   "notes": "D45 local source verified; 1000 synthetic orders isolated in demo DB; archive149 files recoverable. 10k acceptance pending. No deployment, real payment or canvas verification claim.",
   "environment": {
@@ -83,17 +84,17 @@
     "http_cookie_csrf_checks": 11,
     "operational_smoke_checks": 5,
     "php_syntax_files": 158,
-    "lint": "passed_full_pint_D45",
+    "lint": "passed_full_pint_D51",
     "composer_audit": "no_advisories_reported",
-    "github_remote_ci": "started_pending_D48",
+    "github_remote_ci": "passed_Backend_and_Frontend_503ca3d_verified_D49",
     "docker_build_deploy": "not_run",
     "vnpay_real_sandbox": "not_run",
     "figma_plugin_js_syntax": "passed_V24_live_canvas_not_run",
     "frontend_api_tests": 7,
-    "frontend_build": "passed_final_D45",
-    "frontend_typecheck": "passed_final_D45",
+    "frontend_build": "passed_final_D51",
+    "frontend_typecheck": "passed_final_D51",
     "frontend_npm_audit": "no_vulnerabilities_reported",
-    "browser_qa": "D45_guest_customer_admin_3203901440_passed_zero_page_errors",
+    "browser_qa": "D51_map_recovery_admin_1440390320_passed_0pageerrors",
     "frontend_workflow_remote": "not_run",
     "figma_canvas_pixel_diff": "not_run",
     "figma_plugin_mock_screens": 126,
@@ -111,7 +112,7 @@
     "figma_payment_scenarios": "passed_5_scenarios_3_quantity_channels",
     "figma_role_navigation": "passed_customer_admin_login",
     "dashboard_tests": "2_passed_20_assertions_vietnam_date_admin_role",
-    "api_documented_paths": 41,
+    "api_documented_paths": 43,
     "figma_hd_lossless_images": 24,
     "web_hd_original_images": 136,
     "asset_hash_dimension_verification": "passed_136originals_24PNG_3banners_8brands_2logo",
@@ -126,7 +127,8 @@
     "public_load": "20concurrent_200requests_0errors_35.77RPS_p95_601.13ms_local_only",
     "ten_thousand_concurrent": "not_run",
     "demo_sales": "1000_synthetic_paid_orders_in_thu_thanh_demo_audited",
-    "cleanup": "149_files_archived_checksums_verified"
+    "cleanup": "149_files_archived_checksums_verified",
+    "password_recovery": "7_cases_passed_in_fullsuite_including_non_database_sessions"
   },
   "last_runtime_check": {
     "date": "2026-10-23",
@@ -181,14 +183,16 @@
     "figma_preview_http": "not_running"
   },
   "backend_full_suite_previous": {
-    "at": "2026-10-23T03:43:54+07:00",
+    "at": "2026-10-24T03:49:01+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
     "result": "passed",
-    "tests": 87,
-    "assertions": 1386,
-    "duration_seconds": 24.963982,
+    "tests": 118,
+    "assertions": 1675,
+    "duration_seconds": 31.902844,
+    "cli_duration_seconds": 32.41,
     "database": "MySQL8.4.13 thu_thanh_test",
-    "evidence": "backend/storage/logs/phpunit.xml"
+    "evidence": "backend/storage/logs/phpunit.xml",
+    "at_note": "D51 actual final suite; timestamp captured at checkpoint after completion."
   },
   "newsletter": {
     "endpoint": "POST /api/v1/newsletter/subscriptions",
@@ -214,8 +218,8 @@
     "tasks": 18,
     "created_tasks": 11,
     "created_master": 1,
-    "evidence": "docs/qa/github-schedule-sync.json",
-    "verified_at": "2026-10-24T00:42:21+07:00"
+    "verified_at": "2026-10-24T00:42:21+07:00",
+    "archived_evidence": "docs/qa/github-schedule-sync.json"
   },
   "source_publication": {
     "decision": "D48",
@@ -224,9 +228,64 @@
     "branch": "main",
     "source_commit": "33428a4a1a42cf20dea27d5ce5f63b94441a2f94",
     "source_remote_verified_at": "2026-10-24T00:53:45+07:00",
-    "evidence": "docs/qa/source-publication.json",
-    "ci": "started_pending",
-    "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint."
+    "ci": "passed_Backend_and_Frontend_503ca3d_verified_D49",
+    "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
+    "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "Captured while writing this documentation checkpoint; use git status for live state after commit/push."
+  "git_dirty_note": "Captured while writing this documentation checkpoint; use git status for live state after commit/push.",
+  "team_commit_guide": {
+    "decision": "D49",
+    "status": "done",
+    "guide": "docs/PHAN-CONG-VA-COMMIT.md",
+    "assignment_status": "proposed_9tasks36points_each_names_confirmed_usernames_pending",
+    "application_changes": false,
+    "archived_audit": "docs/qa/team-guide-audit.json"
+  },
+  "last_completed_task_id": "DUI10",
+  "password_recovery": {
+    "implementation": "local_verified",
+    "delivery": "real_SMTP_not_verified",
+    "channel": "registered_customer_email",
+    "sms": "not_implemented",
+    "admin_public_reset": "forbidden",
+    "worker": "required_encrypted_queued_mail",
+    "docs": "docs/CHAY-WEB-VA-LARAVEL.md"
+  },
+  "store_contact": {
+    "address": "295 Tôn Đức Thắng, Hòa Khánh, Đà Nẵng",
+    "phone": "0915466951",
+    "hours": "07:30–21:30 hằng ngày",
+    "map": "provided_place_and_pin16.0561478,108.1686171"
+  },
+  "weekly_report": {
+    "decision": "D52",
+    "status": "done",
+    "period_start": "2026-10-11",
+    "period_end": "2026-10-31",
+    "artifact": "docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx",
+    "assignment": "D49_proposed_9tasks36points_each_not_historical_authorship",
+    "completion_basis": "GitHub_CLOSED_and_COMPLETED_separate_from_local_implementation",
+    "snapshot_at": "2026-10-24T15:40:27+07:00",
+    "accepted_tasks": {
+      "Đông": 0,
+      "Thiện": 0
+    },
+    "github_mutation": false,
+    "application_changes": false,
+    "archived_audit": "docs/qa/weekly-report-audit.json",
+    "archived_snapshot": "docs/qa/weekly-report-github.json"
+  },
+  "maintenance_cleanup": {
+    "decision": "D53",
+    "status": "done",
+    "manifest": "docs/CLEANUP-2026-10-24.json",
+    "removed_files": 39,
+    "archived_bytes": 2025068,
+    "app_runtime_fetch": "preserved",
+    "automated_tests_and_ci": "preserved",
+    "data_env_uploads": "preserved",
+    "readme": "updated_2026-10-24",
+    "commit": "pending_after_staged_review"
+  },
+  "archived_evidence_manifest": "docs/CLEANUP-2026-10-24.json"
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('orders:expire --limit=100')->everyMinute()->withoutOverlapping(5);
 Schedule::command('payments:reconcile --limit=20')->everyFiveMinutes()->withoutOverlapping(5);
+Schedule::command('auth:clear-resets')->hourly()->withoutOverlapping(5);
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());

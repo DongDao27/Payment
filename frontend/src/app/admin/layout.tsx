@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AccountGate } from "@/components/account-gate";
+import { AdminIcon, type AdminIconName } from "@/components/admin-icon";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const path = usePathname();
@@ -21,21 +22,25 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </div>
         <div className="admin-workspace">
           <nav className="admin-nav" aria-label="Quản lý cửa hàng">
-            {[
-              ["/admin", "Tổng quan"],
-              ["/admin/products", "Sản phẩm"],
-              ["/admin/categories", "Danh mục"],
-              ["/admin/revenue", "Doanh thu"],
-              ["/admin/reconciliation", "Đối soát"],
-              ["/admin/inventory", "Tồn kho"],
-              ["/admin/orders", "Đơn hàng"],
-            ].map(([href, label]) => (
+            <div className="admin-nav-caption">KHÔNG GIAN QUẢN TRỊ</div>
+            {(
+              [
+                ["/admin", "Tổng quan", "overview"],
+                ["/admin/products", "Sản phẩm", "products"],
+                ["/admin/categories", "Danh mục", "categories"],
+                ["/admin/revenue", "Doanh thu", "revenue"],
+                ["/admin/reconciliation", "Đối soát", "reconciliation"],
+                ["/admin/inventory", "Tồn kho", "inventory"],
+                ["/admin/orders", "Đơn hàng", "orders"],
+              ] satisfies [string, string, AdminIconName][]
+            ).map(([href, label, icon]) => (
               <Link
                 key={href}
                 href={href}
                 aria-current={path === href ? "page" : undefined}
               >
-                {label}
+                <AdminIcon name={icon} />
+                <span>{label}</span>
               </Link>
             ))}
           </nav>

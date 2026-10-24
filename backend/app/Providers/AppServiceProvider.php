@@ -47,5 +47,14 @@ class AppServiceProvider extends ServiceProvider
             ];
         });
         RateLimiter::for('register', fn (Request $request) => Limit::perMinute(5)->by('register:'.$request->ip()));
+        RateLimiter::for('password-recovery', function (Request $request) {
+            $email = $request->input('email');
+            $email = is_string($email) ? NormalizeIdentity::email($email) : '';
+
+            return [
+                Limit::perMinute(10)->by('recovery-ip:'.$request->ip()),
+                Limit::perMinute(5)->by('recovery:'.hash('sha256', $email.'|'.$request->ip())),
+            ];
+        });
     }
 }

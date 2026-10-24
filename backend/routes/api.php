@@ -6,11 +6,13 @@ use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\NewsletterController;
 use App\Http\Controllers\Api\V1\OrderController;
+use App\Http\Controllers\Api\V1\PasswordRecoveryController;
 use App\Http\Controllers\Api\V1\PaymentController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\QuoteController;
 use App\Http\Controllers\Api\V1\VnpayController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 
 Route::get('v1/payments/vnpay/ipn', [VnpayController::class, 'ipn']);
 Route::get('v1/payments/vnpay/return', [VnpayController::class, 'returned']);
@@ -24,11 +26,13 @@ Route::prefix('v1')->group(function () {
 });
 
 // Explicit web middleware ensures CSRF/session protection even when Origin is absent.
-Route::prefix('v1')->middleware('web')->group(function () {
+Route::prefix('v1')->middleware(['web', AuthenticateSession::class])->group(function () {
     Route::post('newsletter/subscriptions', NewsletterController::class)->middleware('throttle:10,1');
     Route::get('home', [ProductController::class, 'home']);
     Route::post('auth/register', [AuthController::class, 'register'])->middleware('throttle:register');
     Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:login');
+    Route::post('auth/forgot-password', [PasswordRecoveryController::class, 'requestLink'])->middleware('throttle:password-recovery');
+    Route::post('auth/reset-password', [PasswordRecoveryController::class, 'reset'])->middleware('throttle:password-recovery');
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('auth/me', [AuthController::class, 'me']);
         Route::post('auth/logout', [AuthController::class, 'logout']);

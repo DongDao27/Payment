@@ -1,9 +1,9 @@
-# THUTHANH — Next.js storefront/admin
+# Giao diện Nhà sách Thu Thanh
 
-Giao diện Clicon V20 triển khai trên dữ liệu Laravel/MySQL thật, đủ136SKU; không dùng giới hạn prototype. Next16.4.2/React19.3.1/TypeScript/Tailwind4.3.3 theo lockfile. Shared visual override clicon.css dùng sau globals.css, giữ các control nghiệp vụ/accessibility cũ. Không rebuild bootstrap.
+Next.js16.4.2, React19.3.1, TypeScript và Tailwind4.3.3 theo lockfile. App Router gồm storefront, tài khoản/khôi phục mật khẩu, giỏ/checkout/đơn và các trang quản trị. Giao diện hiện hành dùng plugin Figma V24, dữ liệu đầy đủ từ Laravel; không áp dụng giới hạn sản phẩm của prototype vào web.
 
-Máy hiện tại: chạy MySQL bằng scripts/mysql-local.ps1 -Action start, Laravel serve localhost8000; terminal khác tại frontend chạy npm run dev, mở http://localhost:3000. Dùng cùng hostname localhost cho cookie/CSRF. Hướng dẫn đầy đủ và giải thích database/deploy: ../docs/CHAY-WEB-VA-LARAVEL.md.
+Trong thư mục này, chạy `npm ci` khi thiết lập máy mới, sau đó `npm run dev`. Mở http://localhost:3000; admin ở /admin. Cần Laravel và MySQL chạy riêng; xem [hướng dẫn](../docs/CHAY-WEB-VA-LARAVEL.md).
 
-API proxy /api/v1, /sanctum/csrf-cookie, /storage về LARAVEL_INTERNAL_URL (server config, defaulthttp://localhost:8000). Không dùng localStorage bearer token hoặc NEXT_PUBLIC database secrets. Đăng nhập chung, server xác định admin/customer; admin tự vào /admin. Dashboard gọi endpoint /admin/dashboard thật, không fake fixtures/revenue. Nút mã đơn gần đây mở tìm kiếm trong adminorders.
+`LARAVEL_INTERNAL_URL` mặc định http://localhost:8000, proxy /api/v1, /sanctum/csrf-cookie và /storage. Browser dùng cookie/session/CSRF; backend xác định admin/customer và quyết định giá/tồn/trạng thái. Không lưu bearer token trong localStorage hoặc đưa secret vào NEXT_PUBLIC.
 
-Kiểm tra: npm run test:api; npm run build; npm run typecheck. Laravel tests chỉ chạy trên thu_thanh_test. Browser QA dùng scripts/frontend-browser-fixture.php và server riêng18080/Nextdev3100, không owner credentials/dev data. Payment/revenue thật và production deploy chưa nghiệm thu; Compose hiện chưa có Nextservice. Khi thay máy mới dùng npm ci theo lockfile; không cần cài extension VSCode để chạy.
+Kiểm tra: `npm run test:api`, `npm run build`, `npm run typecheck`. Các fixture browser dùng một lần đã dọn; bộ test API-client và GitHub Actions vẫn giữ. SMTP/provider/deploy thật chưa nghiệm thu. Docker có frontend production và cấu hình scale ở [deploy](../deploy/README.md).

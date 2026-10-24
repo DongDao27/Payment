@@ -1,3 +1,55 @@
+# D53 — dọn repo/README hoàn tất, commit đang chuẩn bị (2026-10-24T16:35:11+07:00)
+
+Đã dọn39file kiểmCRC/SHA vào archive ngoài repo tại manifest docs/CLEANUP-2026-10-24.json. Bỏ đánh giá/đề xuất/testplan dư,snapshotQA và scriptfetch/import/fixturebrowser dùng một lần; giữ bộtest tự động/CI,HTTP+opssmoke,k6profile,đặc tả/runbook,guidehai người vàXLSX11–31/10. Không xóa data/env/workbook/uploads hoặc ảnh web/Figma. Các đường dẫnQA trong checkpoint cũ là member archive, không file hoạt động.
+
+README mới mô tả web/admin/contact/recovery,localhost3000/8000,MySQL3307,DBreal/demo/test,SMTP và productionlimits. LOCAL-SETUP/START-HERE/VERIFICATION/frontendREADME/REPOSITORY-MAP đã đồng bộ,docschecker kiểm23required/27tasks/43paths và link hoạt động.
+
+Test trước commit:118backendtests1675assertions0fail/skip CLI38.42s;Pint/Composer validate/platform passed;cookieCSRF11/ops5checks passed.7clienttests/build/typecheck passed. Composer/npm audit0;136HD/24Figma/3banner/8manufacturerassetspassed. MySQL vàserverdev đã chạy sẵn được giữ. BrowserD51 không chạy lại;SMTP/provider/staging/restore/10k không nghiệm thu. JUnit ởstorage/logs bịignore; manifest chứa kết quả ngắn thay QA snapshot mới.
+
+Gitmain đang có toàn bộ sourceD51 chưa commit và cleanupD53; không reset/rewrite authorship. Bước tiếp: stagedsecret/runtime/size/diff review → commit thật theo yêu cầu; cập nhật hash bằng chứng sau commit. Backend externally_blocked/frontend authorized_scoped/release not_started,DUI09 pending không đổi. Cần SMTP thật/canvasreview/provider/hosting như các giới hạn trongREADME.
+
+# D52 — báo cáo Excel hoàn tất, 2026-10-24T15:47:12+07:00
+
+File: docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx;5sheet, ba tuần11–17/18–24/25–31/10, mỗi người9task36điểm theo đề xuất D49. GitHub snapshot24/10:18OPEN/To do, tỷ lệ nghiệm thu0% cả hai; hiện trạng code local riêng. Không xác nhận tác giả lịch sử, không dựng ngày làm việc quá khứ. Kế hoạch tuần cuối gồm review từngtask, user testing/coverage/bản nộp; provider/deploy còn điều kiện, chưa hứa31/10 đạt production.
+
+Kiểm độc lập openpyxl:54formulas/cachedvalues,26hyperlinks,18task đúngmapping/điểm;ZIPCRC passed. Excel COM readonly tính lại0%/0%, exportPDF và xem ảnh: tổng quan1trang, tuần3trang không orphan. Audit docs/qa/weekly-report-audit.json, snapshot docs/qa/weekly-report-github.json. Tái tạo bằng python scripts/export-weekly-report.py --offline; bỏ --offline để đọc GitHub mới. Tái tạo sẽ ghi đè chỉnh sửa tay trong workbook; Excel cộtJ dành tự đánh giá riêng, G/H là state/reason để tính nghiệm thu. Không chạy lại test app, số118/7 vẫn bằng chứng D51; check_pack/diffcheck sau checkpoint.
+
+Gitmain503ca3d còn dirty, giữ toàn bộ thay đổi chưa commit D49–D51 và next-env có sẵn. Không stage/commit/push, không mutation GitHub/DB/env/source app. Giữ136SKU/1000demo/admin/uploads/workbook gốc; backend externally_blocked/release not_started/DUI09 pending không đổi. Python reporting libs và PDF preview chỉ trong .runtime/output bịignore; Excel automation đã đóng sau export.
+
+Tiếp theo: hai thành viên review các issue thật, đính kèm evidence/PR và cập nhật đúng trạng thái GitHub; mở fileExcel để báo cáo. Muốn tiếp tục nghiệm thu app: theo D51 bên dưới, cần SMTP thật/canvas/provider/staging theo phạm vi được cấp. Báo cáo không tự thay lịch MASTER GitHub4tuần thành3tuần.
+
+
+# D51 / DUI10 — hoàn tất local, SMTP thật còn chờ cấu hình
+
+Footer Google place đúng link/pin chủdựán,hotline0915466951,07:30–21:30hằngngày,iframe lazy/no-referrer vàmaptiles đã xem được. UX07 link44px/focus/mobileaccount label; UX08 forgot/reset email+hiệnẩn+inlineerror. Backend brokerhash/60phút/oneuse/customeronly/generic/CSRF/rate/encryptedqueue,transaction lock/sessionrevoke và HMAC binding/Sanctum middleware cho cảsessionngoàiDB. Không schema migration,khôngSMShayadminpublicreset. Mailerlog/arrayproduction503;SMTP thật/worker delivery còn cần cấu hình và nghiệmthu.
+
+Admin7naviconskhác nhau,4KPIicons,màu/card/active navigation,header/footer riêng. Chartrevenuearea/orderbars,trục0/đơnvị/grid/legend/readout,keyboardroving/scrollresponsive,7/30/90presets/month/CSV,data thật theoAPI. Đã sửa320headeroverflow,selectaria-label vàchartResizeObserver. Đánhgiáadmin/cácđềxuấttiếp ởDANH-GIA-SAN-PHAM;FigmaV24 không đổi.
+
+Full118backendtests1675assertions0fail/error/skip,CLI32.41s/JUnit31.902844s;fullPintpass. Nextbuild/typecheck7clienttests pass. BrowserD51isolateddemo1440/390/320 map/phone/hours/hittarget/reset+newlogin/roleicons/chartAPI/keyboard/month/CSV,0pageerrors. Demo adminhash phục hồi,QAuser xóa,1000paid/136active/zeroreserved giữ;realDB/env/workbook/uploads không sửa. SMTP/SMS/providerpayment/Redisruntime/fullWCAG/staging/10k không gọi passed.
+
+Source/docs mới chưa commit/push;gitmain503ca3d,dirtytrue,last_verified_commitnull cho task chưacommit. Bảo toàn sửa docsD49/D50vànext-env dev cósẵn. Evidence docs/qa/D51-browser.json,D51-data-preservation.json,JUnit. API43paths vàtestcases90 đồngbộ. TaskDUI10done trongphạmvilocal;DUI09capacity/backendgate/release vẫn giữpending nhưtrước. Tiếptheo:chủdựán cấu hìnhSMTP+FRONTEND_URL thật,worker/scheduler theoCHAY-WEB-VA-LARAVEL vàtestdelivery;phone-only liênhệnhàsách,khôngfakeOTP. QAserver/browser do phiên này mở dừng saukiểmtra;đểxemweb chạyguide demo nhưtrước.
+
+
+# D50 — đánh giá thiết kế/mức sẵn sàng mở bán
+
+Report docs/DANH-GIA-SAN-PHAM.md có P0/P1/P2,tiêu chí đạt và đề xuất phối hợp Đông/Thiện. Browser guest thật1440/390/320 không tràn ngang; home6073/8837/8890px,sản phẩm đầu khoảng1593/1313/1292px,emptybestseller trongDBthật,2bannerphụcùng/products,nútaccountheadermobilekhôngaccessible name. Quickview mở/Escapeđóng được. Search0results/login/cart/admingate/policies xemreadonly;source checkout/payment/readme/metadata đối chiếu. Không dùng screenshot ảnh chưa tải để kết luận banner hỏng;banner naturalWidth đã xác nhận. Admin có quyền/checkout mutation không chạy lại;source+QA cũ ghi rõ.
+
+Kết luận có thể demo/chạy thử,còn P0payment/supportpolicy/stagingrestore trước mởbán. Giảm banner/items,brandassetriêng,bookmetadata/recovery/SEO/accessibility là đề xuất,chưa chủdựán duyệt và chưacode. Giữ quy tắc phí25kchỉcheckout,pickup0,no-refunds,VNPAYdeferred,khôngthêmCOD/fakepaid. Không tuyên bố WCAG/Lighthouse/productionload đạt.
+
+Evidence docs/qa/design-readiness-audit.json;ảnh output/playwright/design-review-*.png (ignored). Link/fence/bằngchứng kiểm đạt;check_pack/diffcheck chạy sau checkpoint. Không chạy lại applicationtests vì khôngđổisource;111backend/7client vẫn bằngchứngD48. Gitmain503ca3d,dirtythực gồm docsD49/D50vànext-envcósẵn,khôngstage/commit/push. GiữDB/env/workbook/uploads. Browser+haiHTTPserver do lượt này mở được đóng sau review,MySQLcũgiữ. Tiếp theo chủdựán chọn scopeUX/P0để triểnkhai;DUI09capacity/gatesgiữnguyên.
+
+
+# D49 — hướng dẫn phân công/commit cho Đông, Thiện
+
+Đã tạo docs/PHAN-CONG-VA-COMMIT.md: bảng hiện trạng từngT01–T18, phân biệt code local/acceptance;18/26task kỹ thuật done,3inprogress,4externalblocked,1todo. Bảng đề xuất Đông9task36điểm/Thiện9task36điểm,reviewchéo,không là xác nhận ai viết code cũ. Username Thiện chưa biết nên không tự assign/invite; không mutation GitHub hoặc viết lại lịch sử. Source vẫn Payment; issues vẫn Thu-Thanh-bookstore/Project4. Hướng dẫn clone/identity/env/nhánh/commit từngfile/test/PR đúngrepo/refissuefullURL/merge/conflict và bảo toàn dữ liệu.
+
+Xác minh GitHub: Backend/Frontend CI của503ca3d đều success. Sửa README/KNOWN-LIMITATIONS và đặt cập nhật đầu COURSE-RUBRIC-AUDIT để ghi chú cũ không bị hiểu thành hiện trạng. Ưu tiên tiếp: PR/review thật của hai người,clone máy thứhai,canvasreview,coverage/user testing;payment/deploy/10k chỉ mở khi đủ điều kiện. Không gọi đủ điểm hoặc release done.
+
+Kiểm tra tài liệu: đủ18taskduynhất,9task36điểmmỗingười,18reviewchéo,Markdown fences/linklocal đạt; check_pack và git diff --check được chạy sau cập nhật. Evidence docs/qa/team-guide-audit.json. Không chạy lại111backend/7clienttests vì chỉ sửa docs; số test từ D48. Giữ nguyên thay đổi có sẵn frontend/next-env.d.ts do Next dev dùng .next/dev/types; không stage/commit/push hộ trong lượt yêu cầu tạo guide này.
+
+Gitmain HEAD503ca3d,dirtythực gồm docs mới/sửa và next-env của người dùng;last_verified_commit vẫn33428a4source đã test,D48. Bước tiếp theo: hai thành viên thống nhất bảng,thiết lập identity/collaborator/Project đúng tài khoản,rồi mỗi máy làm diff thật và mởPR. Đông là người cập nhật checkpoint sau review. Gates/payment/no-refund/DB/workbook/env giữ nguyên;DUI09capacity vẫn pending,nohosting.
+
+
 # D48 — source đã commit/push vào Payment, 24/10/2026
 
 Repo source hiện hành: https://github.com/DongDao27/Payment, origin HTTPS, main tracking origin/main. Source commit thật: 33428a4a1a42cf20dea27d5ce5f63b94441a2f94. Đã push không force, đối chiếu ls-remote main khớp và tree sạch trước checkpoint tài liệu này. 525 file source/assets/workbook/spec/tests/config được đưa lên; env/database/runtime/vendor/node_modules/output sinh tự động không vào Git. Repo issue Thu-Thanh-bookstore và Project4 vẫn giữ nguyên, không tự chuyển issue.

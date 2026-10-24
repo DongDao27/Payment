@@ -6,6 +6,8 @@ import { api } from "@/lib/api-client";
 import { errorMessage, money, statusLabel } from "@/lib/format";
 import type { Order } from "@/lib/types";
 import { Empty, Loading, Notice } from "@/components/ui";
+import { TimeSeriesChart } from "@/components/time-series-chart";
+import { AdminIcon, type AdminIconName } from "@/components/admin-icon";
 
 type Dashboard = {
   timezone: string;
@@ -45,12 +47,26 @@ export default function AdminPage() {
       </Notice>
     );
   if (!data) return <Loading />;
-  const max = Math.max(1, ...data.daily_orders.map((day) => day.count));
   const stats = [
-    ["Sản phẩm đang bán", data.counts.active_products, "/admin/products"],
-    ["Danh mục đang bán", data.counts.active_categories, "/admin/categories"],
-    ["Đơn hàng hôm nay", data.counts.orders_today, "/admin/orders"],
-    ["Chờ xử lý", data.counts.awaiting_processing, "/admin/orders"],
+    [
+      "Sản phẩm đang bán",
+      data.counts.active_products,
+      "/admin/products",
+      "products",
+    ],
+    [
+      "Danh mục đang bán",
+      data.counts.active_categories,
+      "/admin/categories",
+      "categories",
+    ],
+    ["Đơn hàng hôm nay", data.counts.orders_today, "/admin/orders", "orders"],
+    [
+      "Chờ xử lý",
+      data.counts.awaiting_processing,
+      "/admin/orders",
+      "reconciliation",
+    ],
   ] as const;
   return (
     <>
@@ -59,46 +75,29 @@ export default function AdminPage() {
         Hoạt động đơn hàng và danh mục sản phẩm
       </p>
       <div className="dashboard-stats">
-        {stats.map(([label, value, href]) => (
+        {stats.map(([label, value, href, icon]) => (
           <Link key={label} href={href} className="dashboard-stat">
+            <span className={`stat-icon stat-icon-${icon}`}>
+              <AdminIcon name={icon as AdminIconName} />
+            </span>
             <span>{label}</span>
             <strong>{value.toLocaleString("vi-VN")}</strong>
           </Link>
         ))}
       </div>
       <RevenuePanel compact />
-      <figure className="dashboard-chart">
-        <figcaption>Đơn hàng trong 7 ngày</figcaption>
-        <div
-          className="daily-bars"
-          role="img"
-          aria-label={data.daily_orders
-            .map((day) => `${day.date}: ${day.count} đơn`)
-            .join("; ")}
-        >
-          {data.daily_orders.map((day) => (
-            <div className="daily-bar" key={day.date}>
-              <strong>{day.count}</strong>
-              <div
-                className="bar"
-                style={{ height: `${(day.count / max) * 75}%` }}
-              />
-              <span>
-                {day.date.slice(8)}/{day.date.slice(5, 7)}
-              </span>
-            </div>
-          ))}
-        </div>
-        {!data.daily_orders.some((day) => day.count) && (
-          <p className="empty-chart">
-            Chưa phát sinh đơn hàng trong 7 ngày qua.
-          </p>
-        )}
-        <p className="muted">
-          Số đơn tạo theo ngày, bao gồm tất cả trạng thái. Thời gian theo giờ
-          Việt Nam.
-        </p>
-      </figure>
+      <TimeSeriesChart
+        title="Đơn hàng trong 7 ngày"
+        points={data.daily_orders.map((day) => ({
+          date: day.date,
+          value: day.count,
+        }))}
+        kind="bars"
+      />
+      <p className="muted">
+        Số đơn tạo theo ngày, bao gồm tất cả trạng thái. Thời gian theo giờ Việt
+        Nam.
+      </p>
       <section className="dashboard-recent">
         <h3>Đơn hàng gần đây</h3>
         {data.recent_orders.length ? (

@@ -87,3 +87,7 @@ D30/D31 supersede refund proposal for current operations: no customer returns/re
 Admin có hai cách nhập độc lập: giá sale_price chính xác hoặc discount_percent integer0..100. Không trộn hai nguồn. Percent được chuyển thành sale_price dưới product row lock và catalog_version check, `intdiv(list_price*(100-percent)+50,100)`;0% trở về null. Resource tính phần trăm hiển thị từ giá đang lưu, không tạo ledger phần trăm riêng. Giá/quote/order vẫn nguyên tắc snapshot ở đầu tài liệu.
 
 Home bán chạy xếp tổng số lượng paid/accepted, không theo doanh thu, không theo cờ. Demo1000đơn nằm riêng database/provider demo, không trở thành bằng chứng thanh toán thật hoặc dữ liệu triển khai production. Cachepublic không được dùng để chấp nhận giá/tồn tại checkout.
+
+## D51 — Liên hệ và khôi phục
+
+Chủ dự án xác nhận295TônĐứcThắng,HòaKhánh,ĐàNẵng;0915466951;07:30–21:30hằngngày. Map footer dùng đúng pin16.0561478,108.1686171 và link place được cung cấp. Recovery tự động chỉ qua email khách đăng ký, chứng minh sở hữu hộp thư bằng token; không có SMSgiả hoặc thay quyền admin. Phí25kchỉcheckout/pickup0/no-refund/VNPAYdeferred và công thức doanh thu giữ nguyên. Biểu đồ thể hiện dữ liệu thật của môi trường đang chạy, không tự tăng giá trị0 hoặc pha phí giao vào doanh thu.

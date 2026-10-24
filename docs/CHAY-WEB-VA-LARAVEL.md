@@ -1,4 +1,4 @@
-# Chạy web và demo doanh số — V24 / D45
+# Chạy web, admin và demo — cập nhật24/10/2026
 
 ## Web với dữ liệu thật hiện tại
 
@@ -115,3 +115,13 @@ Chưa deploy, chưa nghiệm thu 10.000 truy cập đồng thời. Đã có cấ
 Figma hiện hành V24: giải nén `output/figma/thuthanh-figma-clicon-v24-2026-10-23.zip`, import manifest ở gốc, chạy lại builder. Xem `thu-thanh-figma-clicon/HUONG-DAN.md`. Canvas không tự cập nhật và chưa được kiểm trực tiếp bằng tài khoản Figma của bạn. Không cần extension VS Code để chạy web/import plugin.
 
 [Bản đồ source và khôi phục archive](REPOSITORY-MAP.md) · [Trạng thái kiểm thử](VERIFICATION.md).
+
+## Bản đồ, giờ mở cửa và quên mật khẩu
+
+Footer đã có map đúng link chủ nhà sách, hotline0915466951 và giờ07:30–21:30hằngngày. `/forgot-password` nhận email khách; `/reset-password` mở từ liên kết riêng trong email. Liên kết chỉ dùng một lần/60phút; đổi thành công đăng nhập lại, các phiên cũ bị thu hồi. Tài khoản chỉ dùng số điện thoại có hướng dẫn liên hệ nhà sách; chưa tích hợp SMS, không có OTP mặc định. Admin vẫn dùng tiện ích local riêng và không được reset công khai bằng chức năng này.
+
+Email thật cần cấu hình riêng trong backend .env: MAIL_MAILER=smtp, MAIL_HOST, MAIL_PORT, MAIL_SCHEME theo nhà cung cấp, MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM_ADDRESS, MAIL_FROM_NAME; FRONTEND_URL phải là URL frontend thật/HTTPS khi deploy. Không gửi mật khẩu SMTP trong chat hoặc commit env. Chạy `php artisan config:clear` ở local sau đổi env; production rebuild config cache và restart worker theo quy trình deploy. Không dùng log/array làm mailer production: API sẽ trả503 để tránh giả gửi mail. SMTP delivery chưa được nghiệm thu vì chưa có tài khoản dịch vụ.
+
+Notification được xếp hàng mã hóa. Chạy worker database theo mục bên trên (thêm --env=demo khi dùng DBdemo), scheduler dọn token hết hạn mỗi giờ. APP_KEY/env/DB cần được giữ, không key:generate lại env đang dùng. Mailer log chỉ dành cho phát triển, nội dung riêng nằm trong log bị Git ignore; không chia sẻ log có reset link. Không chạy worker demo với SMTP thật cho những tài khoản demo ngẫu nhiên.
+
+Admin đã tách header/menu khỏi footer mua sắm, icon theo từng chức năng, biểu đồ doanh thu dạng đường/diện tích và đơn dạng cột. Trục bắt đầu0, đọc giá trị bằng hover/touch hoặc Tab/mũi tên/Home/End; mobile cuộn ngang vùng chart khi cần. Bộ lọc7/30/90ngày, nhómngày/tuần/tháng và CSV giữ số liệu API. Không cần cài thêm thư viện biểu đồ hoặc extension.

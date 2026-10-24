@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """Document consistency only; never claims to test the application."""
-import csv
 import json
 import re
 from pathlib import Path
+from urllib.parse import unquote
 ROOT = Path(__file__).resolve().parents[1]
 def load(name):
     return json.loads((ROOT/name).read_text(encoding="utf-8"))
 def main():
     required = ["README.md","AGENTS.md","START-HERE.md","docs/PRD.md",
         "docs/ARCHITECTURE.md","docs/DATABASE.md","docs/DOMAIN-RULES.md",
-        "docs/API.md","docs/openapi.json","docs/TEST-PLAN.md","docs/test-cases.csv",
+        "docs/API.md","docs/openapi.json",
         "docs/TASKS.json","docs/STATUS.json","docs/HANDOFF.md","docs/PROGRESS.md",
-        "docs/DECISIONS.md","docs/FIGMA-HANDOFF.md","docs/OPERATIONS.md",
+        "docs/DECISIONS.md","docs/OPERATIONS.md",
         "docs/SECURITY.md","docs/KNOWN-LIMITATIONS.md",
-        "docs/TRACEABILITY.md","docs/SOURCES.md","docs/CHAY-WEB-VA-LARAVEL.md","docs/VERIFICATION.md","docs/MD-CLEANUP-MANIFEST.json",
+        "docs/SOURCES.md","docs/CHAY-WEB-VA-LARAVEL.md","docs/VERIFICATION.md","docs/CLEANUP-2026-10-24.json",
         "templates/backend.env.example","templates/frontend.env.example"]
     for name in required: assert (ROOT/name).is_file(),name
     doc=load("docs/TASKS.json")
@@ -69,21 +69,38 @@ def main():
             params={p["name"] for p in op.get("parameters",[]) if p["in"]=="path"}
             assert params==set(re.findall(r"\{([^}]+)\}",path)),path
     assert len(opids)==len(set(opids))
-    with (ROOT/"docs/test-cases.csv").open(encoding="utf-8",newline="") as f:
-        cases=list(csv.DictReader(f))
-    assert len({c["case_id"] for c in cases})==len(cases)
-    for c in cases:assert c["task_id"] in tasks and c["scenario"] and c["expected"]
-    for tid in tasks:
-        if tid!="B00":assert any(c["task_id"]==tid for c in cases),tid
+    # Executable tests are retained; the redundant manual case spreadsheet was archived.
+    for suite, pattern in (("backend/tests", "*Test.php"), ("frontend/tests", "*.test.ts")):
+        assert list((ROOT/suite).rglob(pattern)),suite
+    for name in ("auth-cookie-smoke.php", "ops-smoke.php"):
+        assert (ROOT/"scripts"/name).is_file(),name
+        assert name in (ROOT/".github/workflows/backend.yml").read_text(encoding="utf-8"),name
+    cleanup=load("docs/CLEANUP-2026-10-24.json")
+    archived={entry["path"] for entry in cleanup["files"]}
+    assert len(archived)==cleanup["file_count"]
+    assert all(len(entry["sha256"])==64 for entry in cleanup["files"])
     markdown = [ROOT/"README.md", ROOT/"AGENTS.md", ROOT/"START-HERE.md"]
-    markdown += list((ROOT/"docs").rglob("*.md")) + list((ROOT/"prompts").rglob("*.md"))
+    markdown += list((ROOT/"docs").rglob("*.md"))
+    markdown += [ROOT/"frontend/README.md",ROOT/"frontend/AGENTS.md",ROOT/"deploy/README.md",ROOT/"thu-thanh-figma-clicon/HUONG-DAN.md"]
+    links=0
     for file in markdown:
-        assert file.read_text(encoding="utf-8").count(chr(96)*3)%2==0,str(file)
+        content=file.read_text(encoding="utf-8")
+        assert content.count(chr(96)*3)%2==0,str(file)
+        for target in re.findall(r"!?\[[^\]]*\]\(([^)]+)\)",content):
+            if target.startswith(("http:","https:","mailto:","tel:","#")):
+                continue
+            target=unquote(target.split("#",1)[0].strip("<>"))
+            path=(file.parent/target).resolve()
+            # Historical checkpoint citations can resolve through the cleanup manifest.
+            historical=file.name in ("HANDOFF.md","PROGRESS.md","DECISIONS.md")
+            archived_target=path.is_relative_to(ROOT) and path.relative_to(ROOT).as_posix() in archived
+            assert path.exists() or (historical and archived_target),(str(file),target)
+            links+=1
     for env in (ROOT/"templates").glob("*.env.example"):
         for line in env.read_text().splitlines():
             if line.startswith(("VNPAY_HASH_SECRET=","ADMIN_PASSWORD=","DB_PASSWORD=")):
                 assert not line.split("=",1)[1],str(env)
     print(f"PASS — docs only: {len(required)} required files; {len(tasks)} tasks; "
-          f"{len(functions)} functions; {len(spec['paths'])} API paths; {len(cases)} test scenarios.")
+          f"{len(functions)} functions; {len(spec['paths'])} API paths; {links} local links; executable test suites retained.")
     print("Application implementation/integration tests: NOT RUN.")
 if __name__=="__main__":main()

@@ -21,19 +21,35 @@ const config: NextConfig = {
   images: { minimumCacheTTL: 86400 },
   async headers() {
     return [
-      "/catalog-hd/:path*",
-      "/brands/:path*",
-      "/brand/:path*",
-      "/banners/:path*",
-    ].map((source) => ({
-      source,
-      headers: [
-        {
-          key: "Cache-Control",
-          value: "public, max-age=86400, stale-while-revalidate=604800",
-        },
-      ],
-    }));
+      {
+        source: "/reset-password",
+        headers: [
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "Cache-Control", value: "private, no-store" },
+        ],
+      },
+      {
+        source: "/forgot-password",
+        headers: [
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "Cache-Control", value: "private, no-store" },
+        ],
+      },
+      ...[
+        "/catalog-hd/:path*",
+        "/brands/:path*",
+        "/brand/:path*",
+        "/banners/:path*",
+      ].map((source) => ({
+        source,
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, stale-while-revalidate=604800",
+          },
+        ],
+      })),
+    ];
   },
   poweredByHeader: false,
   async rewrites() {

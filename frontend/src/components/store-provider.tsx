@@ -19,6 +19,8 @@ import type { Cart, Category, Product, User } from "@/lib/types";
 import { errorMessage } from "@/lib/format";
 import { imageSrc } from "@/lib/product-images";
 import { Modal, Notice } from "./ui";
+import Link from "next/link";
+import { PasswordField } from "./password-field";
 
 type Store = {
   user: User | null;
@@ -258,33 +260,32 @@ function AuthDialog({
             required
             maxLength={254}
             aria-invalid={!!(fields.identifier || fields.email || fields.phone)}
+            aria-describedby={
+              fields.identifier || fields.email || fields.phone
+                ? "auth-identifier-error"
+                : undefined
+            }
           />
         </label>
-        <label>
-          Mật khẩu
-          <input
-            name="password"
-            type="password"
-            autoComplete={register ? "new-password" : "current-password"}
-            required
-            minLength={register ? 12 : undefined}
-            maxLength={128}
-          />
-        </label>
+        {(fields.identifier || fields.email || fields.phone) && (
+          <small className="field-error" id="auth-identifier-error">
+            {(fields.identifier ?? fields.email ?? fields.phone).join(" ")}
+          </small>
+        )}
+        <PasswordField
+          newPassword={register}
+          error={fields.password?.join(" ")}
+          disabled={busy}
+        />
         {register && (
           <>
-            <small className="muted">Mật khẩu từ 12 đến 128 ký tự.</small>
-            <label>
-              Nhập lại mật khẩu
-              <input
-                name="password_confirmation"
-                type="password"
-                autoComplete="new-password"
-                required
-                minLength={12}
-                maxLength={128}
-              />
-            </label>
+            <PasswordField
+              name="password_confirmation"
+              label="Nhập lại mật khẩu"
+              newPassword
+              error={fields.password_confirmation?.join(" ")}
+              disabled={busy}
+            />
           </>
         )}
         {error && (
@@ -298,6 +299,15 @@ function AuthDialog({
         <button className="button primary full" disabled={busy}>
           {busy ? "Đang xử lý…" : register ? "Đăng ký" : "Đăng nhập"}
         </button>
+        {!register && (
+          <Link
+            className="forgot-password-link"
+            href="/forgot-password"
+            onClick={onClose}
+          >
+            Quên mật khẩu?
+          </Link>
+        )}
       </form>
       <p className="auth-switch">
         {register ? "Đã có tài khoản?" : "Bạn chưa có tài khoản?"}{" "}

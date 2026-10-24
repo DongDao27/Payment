@@ -9,6 +9,7 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { useStore } from "./store-provider";
 import { Icon } from "./ui";
 import { errorMessage } from "@/lib/format";
+import { storeInfo } from "@/lib/store-info";
 
 export function Brand({ light = false }: { light?: boolean }) {
   return (
@@ -30,6 +31,7 @@ export function Brand({ light = false }: { light?: boolean }) {
 export function StoreShell({ children }: { children: ReactNode }) {
   const { user, cart, requireLogin, logout, notify } = useStore();
   const path = usePathname();
+  const adminArea = path.startsWith("/admin");
   const router = useRouter();
   const [search, setSearch] = useState("");
   function submit(event: FormEvent) {
@@ -48,27 +50,31 @@ export function StoreShell({ children }: { children: ReactNode }) {
         Đến nội dung chính
       </a>
       <div className="announcement">Chào mừng đến với nhà sách Thu Thanh</div>
-      <header className="site-header">
+      <header className={`site-header${adminArea ? " admin-site-header" : ""}`}>
         <div className="header-inner">
-          <div className="mobile-menu">
-            <CategoryMenu />
-          </div>
+          {!adminArea && (
+            <div className="mobile-menu">
+              <CategoryMenu />
+            </div>
+          )}
           <Brand light />
-          <form role="search" className="header-search" onSubmit={submit}>
-            <label className="sr-only" htmlFor="site-search">
-              Tìm sản phẩm
-            </label>
-            <input
-              id="site-search"
-              placeholder="Tìm sách, đồ dùng học tập…"
-              value={search}
-              maxLength={100}
-              onChange={(event) => setSearch(event.target.value)}
-            />
-            <button type="submit" aria-label="Tìm kiếm">
-              <Icon name="search" size={20} />
-            </button>
-          </form>
+          {!adminArea && (
+            <form role="search" className="header-search" onSubmit={submit}>
+              <label className="sr-only" htmlFor="site-search">
+                Tìm sản phẩm
+              </label>
+              <input
+                id="site-search"
+                placeholder="Tìm sách, đồ dùng học tập…"
+                value={search}
+                maxLength={100}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+              <button type="submit" aria-label="Tìm kiếm">
+                <Icon name="search" size={20} />
+              </button>
+            </form>
+          )}
           <div className="header-actions">
             {user ? (
               <details className="account-menu">
@@ -93,131 +99,199 @@ export function StoreShell({ children }: { children: ReactNode }) {
                 </div>
               </details>
             ) : (
-              <button className="header-action" onClick={requireLogin}>
+              <button
+                className="header-action"
+                aria-label="Tài khoản"
+                onClick={requireLogin}
+              >
                 <Icon name="user" />
                 <span>Tài khoản</span>
               </button>
             )}
-            <Link
-              className="header-action cart-link"
-              href="/cart"
-              aria-label={`Giỏ hàng, ${count} sản phẩm`}
-            >
-              <Icon name="cart" />
-              <span>Giỏ hàng</span>
-              {count > 0 && <b className="cart-count">{count}</b>}
-            </Link>
+            {adminArea ? (
+              <Link className="header-action" href="/">
+                Về cửa hàng <Icon name="arrow" size={18} />
+              </Link>
+            ) : (
+              <Link
+                className="header-action cart-link"
+                href="/cart"
+                aria-label={`Giỏ hàng, ${count} sản phẩm`}
+              >
+                <Icon name="cart" />
+                <span>Giỏ hàng</span>
+                {count > 0 && <b className="cart-count">{count}</b>}
+              </Link>
+            )}
           </div>
         </div>
       </header>
-      <nav className="store-navigation" aria-label="Điều hướng mua sắm">
-        <div className="container">
-          <CategoryMenu />
-          <Link href="/">
-            <Icon name="home" size={20} />
-            Trang chủ
-          </Link>
-          <Link href="/orders">
-            <Icon name="box" size={20} />
-            Đơn hàng của tôi
-          </Link>
-          <span className="nav-location">Nhà sách tại Đà Nẵng</span>
-        </div>
-      </nav>
+      {!adminArea && (
+        <nav className="store-navigation" aria-label="Điều hướng mua sắm">
+          <div className="container">
+            <CategoryMenu />
+            <Link href="/">
+              <Icon name="home" size={20} />
+              Trang chủ
+            </Link>
+            <Link href="/orders">
+              <Icon name="box" size={20} />
+              Đơn hàng của tôi
+            </Link>
+            <span className="nav-location">Nhà sách tại Đà Nẵng</span>
+          </div>
+        </nav>
+      )}
       <main id="main" tabIndex={-1}>
         {children}
       </main>
-      <footer className="site-footer">
-        <section className="container footer-brands" aria-label="Các nhãn hàng">
-          <div className="brand-grid">
-            {brands.map((brand) => (
-              <div className="brand-tile" key={brand.name}>
-                <Image
-                  src={brand.src}
-                  alt={brand.name}
-                  width={brand.width}
-                  height={brand.height}
-                  sizes="(max-width: 700px) 40vw, 150px"
-                />
+      {!adminArea && (
+        <footer className="site-footer">
+          <section
+            className="container footer-brands"
+            aria-label="Các nhãn hàng"
+          >
+            <div className="brand-grid">
+              {brands.map((brand) => (
+                <div className="brand-tile" key={brand.name}>
+                  <Image
+                    src={brand.src}
+                    alt={brand.name}
+                    width={brand.width}
+                    height={brand.height}
+                    sizes="(max-width: 700px) 40vw, 150px"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+          <div className="container footer-newsletter">
+            <NewsletterForm />
+            <div className="footer-visit">
+              <h2>Ghé nhà sách Thu Thanh</h2>
+              <address>
+                <a
+                  href={storeInfo.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {storeInfo.address} ↗
+                </a>
+              </address>
+              <p className="store-contact">
+                <a href={storeInfo.phoneHref}>{storeInfo.phone}</a>
+                <span>{storeInfo.hours}</span>
+              </p>
+              <p>Chọn sách trực tuyến hoặc đặt trước để nhận tại cửa hàng.</p>
+              <Link href="/policies#shipping">
+                Hướng dẫn mua hàng và nhận sách →
+              </Link>
+            </div>
+          </div>
+          <section
+            className="container footer-location"
+            aria-labelledby="store-map-heading"
+          >
+            <div className="footer-map-heading">
+              <div>
+                <h2 id="store-map-heading">Tìm đường đến nhà sách</h2>
+                <p>{storeInfo.address}</p>
               </div>
-            ))}
+              <a
+                className="button"
+                href={storeInfo.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Mở Google Maps ↗
+              </a>
+            </div>
+            <iframe
+              title="Bản đồ Nhà sách Thu Thanh tại 295 Tôn Đức Thắng, Đà Nẵng"
+              src={storeInfo.mapEmbed}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              allowFullScreen
+            />
+          </section>
+          <div className="container footer-grid">
+            <div className="footer-brand">
+              <Brand />
+              <address>
+                <a
+                  href={storeInfo.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {storeInfo.address}
+                </a>
+              </address>
+              <p>
+                Sách và đồ dùng học tập cho mỗi ngày.
+                <br />
+                Đặt trực tuyến, giao tận nhà hoặc nhận tại cửa hàng.
+              </p>
+            </div>
+            <div>
+              <h3>DỊCH VỤ</h3>
+              <Link href="/policies#terms">Điều khoản sử dụng</Link>
+              <Link href="/policies#privacy">Bảo mật thông tin cá nhân</Link>
+              <Link href="/policies#terms">Thông tin thanh toán</Link>
+              <Link href="/products">Danh mục sản phẩm</Link>
+            </div>
+            <div>
+              <h3>HỖ TRỢ</h3>
+              <Link href="/policies">Chính sách mua hàng</Link>
+              <Link href="/policies#returns">Không đổi trả, hoàn tiền</Link>
+              <Link href="/policies#shipping">Chính sách vận chuyển</Link>
+              <Link href="/policies#shipping">Hướng dẫn nhận tại cửa hàng</Link>
+            </div>
+            <div>
+              <h3>TÀI KHOẢN CỦA TÔI</h3>
+              <Link href="/login">Đăng nhập</Link>
+              <Link href="/register">Tạo tài khoản</Link>
+              <Link href="/orders">Lịch sử mua hàng</Link>
+              <Link href="/cart">Giỏ hàng của tôi</Link>
+            </div>
           </div>
-        </section>
-        <div className="container footer-newsletter">
-          <NewsletterForm />
-          <div className="footer-visit">
-            <h2>Ghé nhà sách Thu Thanh</h2>
-            <address>295 Tôn Đức Thắng, Hòa Khánh, Đà Nẵng</address>
-            <p>Chọn sách trực tuyến hoặc đặt trước để nhận tại cửa hàng.</p>
-            <Link href="/policies#shipping">
-              Hướng dẫn mua hàng và nhận sách →
-            </Link>
+          <div className="container copyright">
+            © 2026 Thu Thanh <span>Nhà sách &amp; văn phòng phẩm</span>
           </div>
-        </div>
-        <div className="container footer-grid">
-          <div className="footer-brand">
-            <Brand />
-            <address>295 Tôn Đức Thắng, Hòa Khánh, Đà Nẵng</address>
-            <p>
-              Sách và đồ dùng học tập cho mỗi ngày.
-              <br />
-              Đặt trực tuyến, giao tận nhà hoặc nhận tại cửa hàng.
-            </p>
-          </div>
-          <div>
-            <h3>DỊCH VỤ</h3>
-            <Link href="/policies#terms">Điều khoản sử dụng</Link>
-            <Link href="/policies#privacy">Bảo mật thông tin cá nhân</Link>
-            <Link href="/policies#terms">Thông tin thanh toán</Link>
-            <Link href="/products">Danh mục sản phẩm</Link>
-          </div>
-          <div>
-            <h3>HỖ TRỢ</h3>
-            <Link href="/policies">Chính sách mua hàng</Link>
-            <Link href="/policies#returns">Không đổi trả, hoàn tiền</Link>
-            <Link href="/policies#shipping">Chính sách vận chuyển</Link>
-            <Link href="/policies#shipping">Hướng dẫn nhận tại cửa hàng</Link>
-          </div>
-          <div>
-            <h3>TÀI KHOẢN CỦA TÔI</h3>
-            <Link href="/login">Đăng nhập</Link>
-            <Link href="/register">Tạo tài khoản</Link>
-            <Link href="/orders">Lịch sử mua hàng</Link>
-            <Link href="/cart">Giỏ hàng của tôi</Link>
-          </div>
-        </div>
-        <div className="container copyright">
-          © 2026 Thu Thanh <span>Nhà sách &amp; văn phòng phẩm</span>
-        </div>
-      </footer>
-      <nav className="mobile-bottom-nav" aria-label="Điều hướng nhanh">
-        <Link aria-current={path === "/" ? "page" : undefined} href="/">
-          <Icon name="home" />
-          Trang chủ
-        </Link>
-        <Link
-          aria-current={path.startsWith("/products") ? "page" : undefined}
-          href="/products"
-        >
-          <Icon name="menu" />
-          Danh mục
-        </Link>
-        <Link aria-current={path === "/cart" ? "page" : undefined} href="/cart">
-          <Icon name="cart" />
-          Giỏ hàng{count ? ` (${count})` : ""}
-        </Link>
-        {user ? (
-          <Link href={user.role === "admin" ? "/admin" : "/orders"}>
-            <Icon name="user" />
-            Tài khoản
+        </footer>
+      )}
+      {!adminArea && (
+        <nav className="mobile-bottom-nav" aria-label="Điều hướng nhanh">
+          <Link aria-current={path === "/" ? "page" : undefined} href="/">
+            <Icon name="home" />
+            Trang chủ
           </Link>
-        ) : (
-          <button onClick={requireLogin}>
-            <Icon name="user" />
-            Tài khoản
-          </button>
-        )}
-      </nav>
+          <Link
+            aria-current={path.startsWith("/products") ? "page" : undefined}
+            href="/products"
+          >
+            <Icon name="menu" />
+            Danh mục
+          </Link>
+          <Link
+            aria-current={path === "/cart" ? "page" : undefined}
+            href="/cart"
+          >
+            <Icon name="cart" />
+            Giỏ hàng{count ? ` (${count})` : ""}
+          </Link>
+          {user ? (
+            <Link href={user.role === "admin" ? "/admin" : "/orders"}>
+              <Icon name="user" />
+              Tài khoản
+            </Link>
+          ) : (
+            <button onClick={requireLogin}>
+              <Icon name="user" />
+              Tài khoản
+            </button>
+          )}
+        </nav>
+      )}
     </>
   );
 }

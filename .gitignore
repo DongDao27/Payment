@@ -10,6 +10,9 @@
 **/.phpunit.result.cache
 **/database/*.sqlite*
 *.log
+# Temporary Office lock files while a workbook is open.
+~$*
+.~lock.*#
 /.idea/
 /.vscode/
 /.playwright-cli/

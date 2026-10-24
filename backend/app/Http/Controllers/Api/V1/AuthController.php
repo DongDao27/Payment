@@ -22,6 +22,7 @@ class AuthController extends Controller
         $user = $register->handle($request->validated());
         Auth::guard('web')->login($user);
         $request->session()->regenerate();
+        $request->session()->put('password_hash_web', Auth::guard('web')->hashPasswordForCookie($user->getAuthPassword()));
 
         return ApiResponse::data(new UserResource($user->refresh()), 201);
     }
@@ -35,6 +36,7 @@ class AuthController extends Controller
             throw ValidationException::withMessages(['identifier' => 'The credentials are invalid.']);
         }
         $request->session()->regenerate();
+        $request->session()->put('password_hash_web', Auth::guard('web')->hashPasswordForCookie($request->user()->getAuthPassword()));
 
         return ApiResponse::data(new UserResource($request->user()));
     }

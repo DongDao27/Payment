@@ -1,0 +1,245 @@
+{
+  "decision": "D53",
+  "created_at": "2026-10-24T16:28:21+07:00",
+  "archive": "D:\\ThuThanh-Archives\\thu-thanh-maintenance-20261024-162821.zip",
+  "archive_sha256": "90ec2e8844fa7201fe58ab97ce0a93805736baeed1e979dd560cc2b8691a1fee",
+  "files": [
+    {
+      "path": "docs/DANH-GIA-SAN-PHAM.md",
+      "bytes": 15664,
+      "sha256": "2f9256f3eb94fc9bd43604e69d0ce7a3e62e50e4176fed761299decd9f0f22db"
+    },
+    {
+      "path": "docs/COURSE-RUBRIC-AUDIT.md",
+      "bytes": 18348,
+      "sha256": "d7cabdfd2c90a2a54e5f497db73809b6bd206f50c4c5f63ea0c2279fc3494aa5"
+    },
+    {
+      "path": "docs/REQUIREMENTS-AUDIT.md",
+      "bytes": 5741,
+      "sha256": "239eb72ede1525bba10d5730a3abb7b93147896fa8ef0f0df43160635bc44979"
+    },
+    {
+      "path": "docs/PRODUCT-IMPORT-AUDIT.md",
+      "bytes": 2234,
+      "sha256": "98f7f648e791aaf57b597496c7dba9684d1aef88cf59fe386858888559db680a"
+    },
+    {
+      "path": "docs/TEST-PLAN.md",
+      "bytes": 11168,
+      "sha256": "198817deecefc305853f40595bb04245f27ff539b1b06cce55215153bc34aeee"
+    },
+    {
+      "path": "docs/test-cases.csv",
+      "bytes": 11279,
+      "sha256": "cbdd08cfe3e6a4d6b77b528619d8ed5ab721d54445ca95b86902f2761f8699f4"
+    },
+    {
+      "path": "docs/TRACEABILITY.md",
+      "bytes": 5300,
+      "sha256": "a23c0019df18918035cff51c9f64452fb96961e24369b305fab49a3561e5aaaa"
+    },
+    {
+      "path": "docs/FIGMA-V24-REVIEW.md",
+      "bytes": 1470,
+      "sha256": "7c1afaba9063a2833a448d12b4b46df647bc1f046fcd40bc3110fd9db20cb35d"
+    },
+    {
+      "path": "docs/FIGMA-HANDOFF.md",
+      "bytes": 11350,
+      "sha256": "72b7901b4f3b45852c0cf5f071ed3587ba11d356d2edd15c62f3a3d1df07f49c"
+    },
+    {
+      "path": "scripts/fetch-store-assets.py",
+      "bytes": 3240,
+      "sha256": "14bc258f83c3da64cdf006189360eef3f49aae68fbe59e07282e316a767275fa"
+    },
+    {
+      "path": "scripts/audit-products.py",
+      "bytes": 8782,
+      "sha256": "7076c524d11b9f73f4b16eff6b010af468c7cc99338c75d6fda649f17fd53fa7"
+    },
+    {
+      "path": "scripts/prepare-figma-hd-assets.py",
+      "bytes": 1675,
+      "sha256": "63c0ad292d511215f6a222190d67c9b4c4c3c311c32a85aaf3430880a99872ec"
+    },
+    {
+      "path": "scripts/export-weekly-report.py",
+      "bytes": 30800,
+      "sha256": "daeaab3a212b10b3318575f20dc73ff02bf76102cf12090f810afe8f40d34d68"
+    },
+    {
+      "path": "scripts/frontend-browser-fixture.php",
+      "bytes": 4153,
+      "sha256": "22ea832761960957d90b7e3484670b410d145684f4ab5ecd8da4060c1743303a"
+    },
+    {
+      "path": "scripts/frontend-test-router.php",
+      "bytes": 1178,
+      "sha256": "6e1af65226e6ff5bce74d415db1f9f8a88dd5d84da6eef1224cda4cb911b340e"
+    },
+    {
+      "path": "scripts/cleanup-legacy.py",
+      "bytes": 6025,
+      "sha256": "fc30a5363e64bdc89424f20ea69c9e677288daf2ea272c48df41c95871ef6298"
+    },
+    {
+      "path": "scripts/load/smoke.mjs",
+      "bytes": 2388,
+      "sha256": "172f228bc9630346fb425369a6d2bda23a3b841850574686800a4611bb692f66"
+    },
+    {
+      "path": "docs/qa/D51-browser.json",
+      "bytes": 927,
+      "sha256": "6fc0fc8004a36cdee66eb5f3325328d7c1b591d284192b9aca7a699410686e42"
+    },
+    {
+      "path": "docs/qa/D51-data-preservation.json",
+      "bytes": 216,
+      "sha256": "7f5eb4b0efc45058072a9ba3de2792b0faeb32e0fe083c0cf5f75dc0a65f4430"
+    },
+    {
+      "path": "docs/qa/design-readiness-audit.json",
+      "bytes": 14383,
+      "sha256": "edf1978e39f7d377432a4e8c4bb495232567a743f371fdce0b7c1cbccab68940"
+    },
+    {
+      "path": "docs/qa/DUI06-browser.json",
+      "bytes": 1085,
+      "sha256": "8f0387c52b97e6b2017042fafb6f8cfbf0319f69e4eaca4154a6bd7ca7b8bd1f"
+    },
+    {
+      "path": "docs/qa/DUI07-browser.json",
+      "bytes": 664,
+      "sha256": "89ba4a895fda45b2cfea14f8418441ce2a442a14cfceded9abc31f09d588727e"
+    },
+    {
+      "path": "docs/qa/DUI08-customer25-qa.json",
+      "bytes": 341,
+      "sha256": "03a7b3b104c47c71d3fa547572ac5cfd5c767b0a0bbe40d4e91f13fe7a4aeb89"
+    },
+    {
+      "path": "docs/qa/DUI08-dev25-readonly.json",
+      "bytes": 369,
+      "sha256": "154a3510c3c066ee5ae9879e776c3c113d23569646d29a5e3a43aa89e32321c0"
+    },
+    {
+      "path": "docs/qa/DUI08-web25-extra.json",
+      "bytes": 303,
+      "sha256": "122b3e9c2ba2bc248c72fff2b050e662ceed936275c8a10c853bd8b26366139e"
+    },
+    {
+      "path": "docs/qa/DUI08-web25-qa.json",
+      "bytes": 303,
+      "sha256": "0f45a356b5a774836200393e552e46a71f324000236106474c062242c29f0e76"
+    },
+    {
+      "path": "docs/qa/DUI09-customer24-template.json",
+      "bytes": 360,
+      "sha256": "449290fcc812a604779dfb2ccee263dea7b9d7986941b9e743b904e3d32680cd"
+    },
+    {
+      "path": "docs/qa/DUI09-demo-audit.json",
+      "bytes": 344,
+      "sha256": "61b37deb15df4e02b34d2d54a948549477cae035c89eb70ddfb0263bd705cbf3"
+    },
+    {
+      "path": "docs/qa/DUI09-load-smoke-baseline.json",
+      "bytes": 397,
+      "sha256": "1af09560cc51541f2c8f4cf72147a49d50413150a257f5eb1d9c7f34ce392bbc"
+    },
+    {
+      "path": "docs/qa/DUI09-load-smoke.json",
+      "bytes": 394,
+      "sha256": "9cb5e39282d65a9e829aabd27a4f52021951d4148610385965560bfa81f7ebf8"
+    },
+    {
+      "path": "docs/qa/DUI09-web24-qa.json",
+      "bytes": 471,
+      "sha256": "8bf905af2ce707daf0772d428983a67a357fdb77ff6f94e45141725abbecea0e"
+    },
+    {
+      "path": "docs/qa/github-schedule-sync.json",
+      "bytes": 3668,
+      "sha256": "4f376e5df693f587e1650196e56598a26958c690891c25e1dc79817caf535055"
+    },
+    {
+      "path": "docs/qa/home-desktop.png",
+      "bytes": 956076,
+      "sha256": "78c147a6a4a0d021a2642ac2cf54a1d1c82654b56b5f8254db6c5fa140347722"
+    },
+    {
+      "path": "docs/qa/home-mobile.png",
+      "bytes": 463165,
+      "sha256": "0dac4ced0246b6ccf967f4953f819e0f2da228e4facb2b0c1226b8286c373128"
+    },
+    {
+      "path": "docs/qa/products-mobile.png",
+      "bytes": 373520,
+      "sha256": "bcaf43e48b53541d20fb3890658d324c78e85dc3ef22cab309c441b84af1d532"
+    },
+    {
+      "path": "docs/qa/source-publication.json",
+      "bytes": 1184,
+      "sha256": "419b5cbf95cae2137f1a57cc887ca2991622411e993dff706a5739cd46d56d33"
+    },
+    {
+      "path": "docs/qa/team-guide-audit.json",
+      "bytes": 1194,
+      "sha256": "8f266acdd65c4cf6b23a40782ca06b6b0a8b2de570d3311a22c1b5e3028aa053"
+    },
+    {
+      "path": "docs/qa/weekly-report-audit.json",
+      "bytes": 1638,
+      "sha256": "f71b9dcc147a4115d0f5d9261dc97eeddc32dd5a1d538a862fa1e584aa597d2d"
+    },
+    {
+      "path": "docs/qa/weekly-report-github.json",
+      "bytes": 63271,
+      "sha256": "95939b6318bfe9ff039792fe36d2de5af5fd5367fa64187e7d8b4d504469cbce"
+    }
+  ],
+  "file_count": 39,
+  "bytes": 2025068,
+  "verification": "ZIP CRC and SHA256 of each file verified before unlink",
+  "restore": "Extract the required member into a temporary directory, compare, then restore that file only.",
+  "preserved": [
+    "backend/tests",
+    "frontend/tests",
+    ".github/workflows",
+    "scripts/auth-cookie-smoke.php",
+    "scripts/ops-smoke.php",
+    "scripts/load/public-storefront.k6.js",
+    "docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx",
+    "workbook",
+    "runtime databases/env/uploads",
+    "web and Figma assets"
+  ],
+  "checks": {
+    "backend": {
+      "tests": 118,
+      "assertions": 1675,
+      "failed": 0,
+      "skipped": 0,
+      "cli_seconds": 38.42,
+      "junit_seconds": 34.968478,
+      "database": "thu_thanh_test"
+    },
+    "pint": "passed",
+    "composer_validate_and_platform": "passed",
+    "http_cookie_csrf_checks": 11,
+    "operational_checks": 5,
+    "frontend_api_client_tests": 7,
+    "frontend_build": "passed",
+    "frontend_typecheck": "passed",
+    "composer_audit": "0 advisories, 0 abandoned",
+    "npm_audit": "0 vulnerabilities",
+    "assets": "136 originals, 24 Figma PNG, 3 banners, 8 manufacturers verified",
+    "documentation": "passed; 23 required files, 27 tasks, 43 paths, active local links checked",
+    "compose": "YAML parsed; Docker and production runtime not executed",
+    "browser": "D51 prior evidence archived; not repeated for file cleanup",
+    "environment": "Windows, PHP8.4.25, MySQL8.4.13, Next16.4.2",
+    "figma_mock": "passed_V24_126frames_2804routes_24products_live_canvas_not_run"
+  }
+}

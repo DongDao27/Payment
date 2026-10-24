@@ -20,7 +20,7 @@ Nguồn đối chiếu: [Laravel 12 deployment](https://laravel.com/docs/12.x/de
 
 ## Đo thực tế local
 
-Nguồn: `docs/qa/DUI09-load-smoke-baseline.json` và `DUI09-load-smoke.json`. Cùng endpoint `/api/v1/storefront`, database demo khoảng 1.000 đơn, warm-up riêng, 20 request đồng thời, 200 request đo. Máy Windows, PHP 8.4 development server một worker, cache database; không phải Redis/FPM/Nginx/CDN production.
+Nguồn đo lịch sử đã lưu ngoài repo: member `docs/qa/DUI09-load-smoke-baseline.json` và `docs/qa/DUI09-load-smoke.json` trong [manifest cleanup](CLEANUP-2026-10-24.json). Cùng endpoint `/api/v1/storefront`, database demo khoảng 1.000 đơn, warm-up riêng, 20 request đồng thời, 200 request đo. Máy Windows, PHP 8.4 development server một worker, cache database; không phải Redis/FPM/Nginx/CDN production.
 
 | Chỉ số | Chưa bật extension OPcache | Đã bật OPcache CLI |
 |---|---:|---:|
@@ -32,11 +32,7 @@ Nguồn: `docs/qa/DUI09-load-smoke-baseline.json` và `DUI09-load-smoke.json`. C
 
 Đây là phép đo thành phần trên máy hiện tại, không suy rộng tuyến tính thành năng lực 10k. Test cache array/Redis-like warm hit có 0 query DB; cache database local vẫn cần đọc bảng cache. CPU/RAM/IO production, CDN hit rate và checkout throughput chưa đo. Các con số trên không bao gồm download toàn bộ ảnh/banner hoặc provider thanh toán.
 
-Lặp smoke chỉ trên local:
-
-```powershell
-node scripts/load/smoke.mjs http://localhost:18081/api/v1/storefront 20 200
-```
+Script smoke dùng một lần đã dọn; giữ load profile k6 ở phần nghiệm thu bên dưới để đo lại khi có staging.
 
 ## Cấu hình triển khai mẫu
 

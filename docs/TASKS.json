@@ -340,7 +340,7 @@
       "functions": [],
       "files": [
         "docs/openapi.json",
-        "docs/TEST-PLAN.md",
+        "docs/VERIFICATION.md",
         "docs/STATUS.json",
         "docs/HANDOFF.md"
       ],
@@ -373,8 +373,8 @@
       ],
       "functions": [],
       "files": [
-        "docs/FIGMA-HANDOFF.md",
-        "docs/PRODUCT-IMPORT-AUDIT.md",
+        "thu-thanh-figma-clicon/HUONG-DAN.md",
+        "docs/REPOSITORY-MAP.md",
         "docs/VERIFICATION.md"
       ],
       "acceptance": [
@@ -953,6 +953,52 @@
         "verification": "CRC/SHA before delete; check_pack passed; zero broken local Markdown links; git diff --check passed",
         "application_tests": "not rerun: documentation and document-check configuration only"
       }
+    },
+    {
+      "id": "DUI10",
+      "title": "D51 footer map/contact, customer email recovery, accessible targets and admin analytics (local)",
+      "phase": "FRONTEND",
+      "status": "done",
+      "depends_on": [
+        "DUI08"
+      ],
+      "functions": [
+        "F01",
+        "F06",
+        "F07",
+        "F17",
+        "F22"
+      ],
+      "files": [
+        "backend/app/",
+        "backend/routes/",
+        "backend/config/app.php",
+        "backend/tests/Feature/PasswordRecoveryTest.php",
+        "frontend/src/",
+        "frontend/next.config.ts",
+        "docs/"
+      ],
+      "acceptance": [
+        "Backend customer recovery with hashed expiring single-use token, CSRF/rate limits, session invalidation and no enumeration before UI",
+        "Owner map pin/contact/hours and UX07/08 form behavior",
+        "Admin distinct icons and truthful responsive chart axes/readout/keyboard/range/CSV; existing money/stock rules preserved"
+      ],
+      "required_checks": [
+        "password-recovery-and-auth-regression",
+        "api-contract",
+        "frontend-build-typecheck-api-tests",
+        "isolated-browser-map-reset-admin-responsive",
+        "data-preservation",
+        "docs-consistency"
+      ],
+      "evidence": [
+        "118backendtests1675assertions0fail/skip;CLI32.41s/JUnit31.902844s;fullPintpassed",
+        "7clienttests,productionbuild,typecheckpassed",
+        "docs/qa/D51-browser.json;docs/qa/D51-data-preservation.json;admin original demo hash restored;1000paid/136active/zeroreserved",
+        "OpenAPI43paths;no schema migration or dev data changes"
+      ],
+      "actual_commit": null,
+      "notes": "Done scoped local implementation only; SMTP inbox delivery, SMS and Redis runtime/deploy acceptance not run. User real admin unchanged; demo fixture reset then restored. Figma unchanged; no provider/payment/refund or GitHub mutation."
     }
   ],
   "github_schedule_sync": {
@@ -964,8 +1010,8 @@
     "tasks": 18,
     "created_tasks": 11,
     "created_master": 1,
-    "evidence": "docs/qa/github-schedule-sync.json",
-    "verified_at": "2026-10-24T00:42:21+07:00"
+    "verified_at": "2026-10-24T00:42:21+07:00",
+    "archived_evidence": "docs/qa/github-schedule-sync.json"
   },
   "source_publication": {
     "decision": "D48",
@@ -974,8 +1020,47 @@
     "branch": "main",
     "source_commit": "33428a4a1a42cf20dea27d5ce5f63b94441a2f94",
     "source_remote_verified_at": "2026-10-24T00:53:45+07:00",
-    "evidence": "docs/qa/source-publication.json",
     "ci": "started_pending",
-    "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint."
-  }
+    "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
+    "archived_evidence": "docs/qa/source-publication.json"
+  },
+  "team_commit_guide": {
+    "decision": "D49",
+    "status": "done",
+    "guide": "docs/PHAN-CONG-VA-COMMIT.md",
+    "assignment_status": "proposed_9tasks36points_each_names_confirmed_usernames_pending",
+    "application_changes": false,
+    "archived_audit": "docs/qa/team-guide-audit.json"
+  },
+  "weekly_report": {
+    "decision": "D52",
+    "status": "done",
+    "period_start": "2026-10-11",
+    "period_end": "2026-10-31",
+    "artifact": "docs/reports/Bao-cao-Dong-Thien_11-31-10-2026.xlsx",
+    "assignment": "D49_proposed_9tasks36points_each_not_historical_authorship",
+    "completion_basis": "GitHub_CLOSED_and_COMPLETED_separate_from_local_implementation",
+    "snapshot_at": "2026-10-24T15:40:27+07:00",
+    "accepted_tasks": {
+      "Đông": 0,
+      "Thiện": 0
+    },
+    "github_mutation": false,
+    "application_changes": false,
+    "archived_audit": "docs/qa/weekly-report-audit.json",
+    "archived_snapshot": "docs/qa/weekly-report-github.json"
+  },
+  "maintenance_cleanup": {
+    "decision": "D53",
+    "status": "done",
+    "manifest": "docs/CLEANUP-2026-10-24.json",
+    "removed_files": 39,
+    "archived_bytes": 2025068,
+    "app_runtime_fetch": "preserved",
+    "automated_tests_and_ci": "preserved",
+    "data_env_uploads": "preserved",
+    "readme": "updated_2026-10-24",
+    "commit": "pending_after_staged_review"
+  },
+  "archived_evidence_manifest": "docs/CLEANUP-2026-10-24.json"
 }
