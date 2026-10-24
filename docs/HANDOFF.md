@@ -1,3 +1,13 @@
+# D54 — GitHub progress đã đồng bộ (2026-10-24T17:11:32+07:00)
+
+Project https://github.com/users/DongDao27/projects/4:18task,8Dev done(T01,T03,T04,T05,T07,T08,T12,T15),10In progress;MASTERIn progress. Đã tick135/176mục implementation/proof có bằng chứng.18issue vẫnOPEN vì chưapeerreview/acceptance;mastercheckbox chưa tick taskchưađóng. Lịchmasterđúng11–17/18–24/25–31/10/2026;khônghồitốngàylàm.
+
+T13thiếucộtgiátronginventory,T14thiếupaymenthistorytạichi tiếtđơn nênInprogress. T06SMTP,T02canvas,T09merchant/UIretry,T10QRadapter,T11provider,T16coverage/Sandbox,T17userresearch,T18hosting/demo vẫnchờ;chi tiết/linksource/test/CI nằm ngaytrongissue. Current CI Backend/Frontend63d84adđều success,local118/7D53giữnguồnngàykiểm cũ.
+
+KiểmAPIreadback19issuebody/status,assignees/milestones và20itemIDkhôngđổi,item#2Closedgiữ. ExistingautomationDevdone tựcloseissue:đãreopenchỉnhcácauto-close tronglượtnày,giữpendingreview;khônggiảreviewhoặcđổiworkflowtoànboard. Rawbackups/proof ở.runtime/github-progress-update bịignore; currentmapping trongTASKS/STATUS vàguidehai người,khôngtạoQA reportmới.
+
+Khôngthayapp/DB/env/Figma/gates vàkhôngchạyapp testslạikhichỉmetadata. Tiếptheo:hai người reviewcáctaskDevdone,bổsungcácphầnthiếuđãghitrongissue;chỉClosedkhiđủacceptance. Sourceđãpush63d84ad;checkpointD54chỉtài liệu liên quanđồngbộboard. GiữMySQL/demo/realworkbook/uploads nhưtrước.
+
 # D53 — dọn repo/README hoàn tất, source đã commit (2026-10-24T16:35:11+07:00)
 
 Đã dọn39file kiểmCRC/SHA vào archive ngoài repo tại manifest docs/CLEANUP-2026-10-24.json. Bỏ đánh giá/đề xuất/testplan dư,snapshotQA và scriptfetch/import/fixturebrowser dùng một lần; giữ bộtest tự động/CI,HTTP+opssmoke,k6profile,đặc tả/runbook,guidehai người. XLSX11–31/10 đã bị xóa khỏi workspace sau commit, giữ việc xóa và ghi cách khôi phục từ Git `3e1b0fb`. Không xóa data/env/workbook/uploads hoặc ảnh web/Figma. Các đường dẫnQA trong checkpoint cũ là member archive, không file hoạt động.

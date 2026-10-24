@@ -2,13 +2,13 @@
 
 Cập nhật 24/10/2026. Source chính: [DongDao27/Payment](https://github.com/DongDao27/Payment). [Project #4](https://github.com/users/DongDao27/projects/4) và T01–T18 đang thuộc repo [Thu-Thanh-bookstore](https://github.com/DongDao27/Thu-Thanh-bookstore/issues). Hai repo có vai trò khác nhau; không tạo bản code thứ hai trong repo issue.
 
-Báo cáo ba tuần **11–31/10/2026**: Excel Đông / Thiện (đã đưa khỏi workspace; khôi phục từ commit `3e1b0fb`). Snapshot GitHub24/10: cả18issue vẫn OPEN/To do, nên tỷ lệ nghiệm thu GitHub là0% mỗi người; hiện trạng source local được ghi riêng. Workbook có5sheet, công thức theo task/điểm, kế hoạch25–31/10 và hướng dẫn cập nhật. Đây là phân công đề xuất, không xác nhận tác giả code cũ. Số liệu kỹ thuật D49 bên dưới là snapshot trước D51; hiện D51 có27task kỹ thuật và118backendtests, không phải cùng mẫu số18task GitHub.
+Báo cáo ba tuần **11–31/10/2026**: Excel Đông / Thiện (đã đưa khỏi workspace; khôi phục từ commit `3e1b0fb`). Cập nhật GitHubD54:18issue vẫn OPEN;8Dev done,10In progress;đã tick135/176mục checklist có bằng chứng. Tỷ lệ task được đóng vẫn0% vì thiếu review/acceptance; checkbox không phải phần trăm hoàn thiện sản phẩm. Workbook có5sheet, công thức theo task/điểm, kế hoạch25–31/10 và hướng dẫn cập nhật. Đây là phân công đề xuất, không xác nhận tác giả code cũ. Số liệu kỹ thuật D49 bên dưới là snapshot trước D51; hiện D51 có27task kỹ thuật và118backendtests, không phải cùng mẫu số18task GitHub.
 
 Đây là phân công đề xuất cho giai đoạn tiếp theo, theo tên hai thành viên chủ dự án cung cấp. Chưa có xác nhận username của Thiện, nên chưa tự gán tài khoản trên GitHub hoặc gửi lời mời. Đông/Thiện thống nhất bảng này rồi dùng assignee và PR để ghi nhận công việc thực tế.
 
 ## 1. Dự án đã làm được gì?
 
-Source được kiểm tại `503ca3d14b392428011e02d31e5c9ec927ce9724`. Commit nền ứng dụng là `33428a4a1a42cf20dea27d5ce5f63b94441a2f94`. Local lần D48: 118 backend tests/1.675 assertions (D51 local; D48 trước đó111/1626), 7 frontend API-client tests, Pint, TypeScript và production build đạt. [Backend CI](https://github.com/DongDao27/Payment/actions/runs/39998837701) và [Frontend CI](https://github.com/DongDao27/Payment/actions/runs/39998837722) của commit503ca3d đều success, đã đọc lại qua GitHub CLI trong lần cập nhật này. Không chạy lại application tests khi chỉ viết tài liệu.
+Source được đối chiếu tại `63d84ad4096f83802ab800760d380900cbc09924`; code D51 trong commit `3e1b0fb`. D53 local118backendtests/1.675assertions,7APIclienttests,Pint/build/typecheck,HTTPcookie/CSRF11checks vàops5checks đạt. [Backend CI](https://github.com/DongDao27/Payment/actions/runs/40082807261) và [Frontend CI](https://github.com/DongDao27/Payment/actions/runs/40082807245) của63d84ad đều success, đọc trực tiếp trongD54. Không chạy lại app tests khi chỉ cập nhật task GitHub/tài liệu.
 
 TASKS.json hiện có27task kỹ thuật: **19done,3in_progress,4externally_blocked,1todo**. Đây không phải 19/27 tiêu chí chấm điểm và không đồng nghĩa hoàn thành 70% sản phẩm. Nhiều task done là các phiên cải tiến Figma/UI; một task chưa xong như thanh toán thật có thể ảnh hưởng nhiều luồng.
 
@@ -31,21 +31,21 @@ Doanh thu đã chốt D44 và report local đã có; B09 là trạng thái gate 
 | T03 — Nền tảng/API | Laravel/Next/MySQL/schema/43 API paths/CI có; cần xác nhận Thiện chạy được trên máy riêng |
 | T04 — Catalog/home | Ba feed, tìm/lọc/sort/page, 136 SKU; browser local đã kiểm |
 | T05 — Quickview | Guest xem, mua mới login, giữ số lượng; browser đã kiểm |
-| T06 — Auth/quyền | Cookie/CSRF/role/ownership, customer/admin; có tests và browser evidence |
+| T06 — Auth/quyền | Auth lõi/recovery local có tests; SMTP thật chưa nghiệm thu |
 | T07 — Giỏ | Nhiều món/thay số lượng/xóa, quote/check tồn; đã kiểm |
 | T08 — Checkout | Tạo đơn/giữ tồn/snapshot/idempotency, giao25k/pickup0; đã kiểm local |
-| T09 — Online payment | Adapter/test có; VNPAY merchant/Sandbox thật đang hoãn, chưa đóng |
-| T10 — Pickup/QR | Đặt trước và prototype QR có; thanh toán QR thật còn phụ thuộc T09 |
+| T09 — Online payment | Adapter/fixture có; chưa merchant Sandbox và UI retry/redirect hoạt động |
+| T10 — Pickup/QR | Đặt trước/QR mẫu có; QR thực chưa có adapter, trả503/qr_content=null |
 | T11 — Theo dõi/hủy/hết hạn | Source, quyền, reconciliation, expiry/race tests có; cần nghiệm thu với provider thật |
 | T12 — Sản phẩm/ảnh | Create/update/archive/restore, % giảm, upload; đã kiểm local |
-| T13 — Tồn | Điều chỉnh/ledger/row lock, phân biệt tồn vật lý/giữ/có thể bán; có concurrency tests |
-| T14 — Đơn admin | Lọc/chi tiết/chuyển trạng thái/đối soát có; không cho hoàn tất đơn unpaid |
+| T13 — Tồn | Điều chỉnh/ledger/lock/concurrency có; bảng tồn chưa hiển thị giá, chưa có trang lịch sử riêng |
+| T14 — Đơn admin | Lọc/flow/guard/logDB có; chi tiết đơn chưa hiển thị lịch sử attempts/receipts thanh toán |
 | T15 — Dashboard/doanh thu | Chart/filter/CSV/tiền hàng sau giảm, ship riêng; demo synthetic riêng |
-| T16 — Kiểm thử | Local111/7 và remote CI đạt; coverage, toàn bộ Sandbox/staging chưa nghiệm thu |
+| T16 — Kiểm thử | Local118/7 và CI63d84ad đạt; coverage/Sandbox/staging chưa nghiệm thu |
 | T17 — User testing | Đã có browser QA kỹ thuật; chưa có bằng chứng người dùng đại diện thực hiện nhiệm vụ |
 | T18 — Deploy/bàn giao | Source GitHub/guide/config có; chưa có hosting/HTTPS/restore/load production/video bàn giao |
 
-Toàn bộ T01–T18 vẫn OPEN trên GitHub tại thời điểm kiểm tra. Chỉ chuyển Dev done/In review và đóng khi có bằng chứng ứng với acceptance; không tick toàn bộ chỉ dựa vào bảng này. Source/tests cụ thể: `backend/app/Services`, `backend/tests`, `frontend/src/app`, `frontend/src/components`, `docs/VERIFICATION.md`.
+Toàn bộ T01–T18 vẫn OPEN sau cập nhậtD54;8Dev done và10In progress. Chỉ chuyển Dev done/In review và đóng khi có bằng chứng ứng với acceptance; không tick toàn bộ chỉ dựa vào bảng này. Source/tests cụ thể: `backend/app/Services`, `backend/tests`, `frontend/src/app`, `frontend/src/components`, `docs/VERIFICATION.md`.
 
 ## 3. Bảng phân công 9 task/người
 
@@ -209,3 +209,30 @@ Ghi tên/username thật, task chủ trì/review, PR URL, commit SHA thật, ng�
 Không đưa `.env`, password, token, APP_KEY, database dump hoặc customer data thật vào Git/PR/log. File mẫu có giá trị trống được giữ. Không bật VNPAY/deploy để tạo bằng chứng nếu chưa có yêu cầu và đủ điều kiện. Danh sách nguồn/giới hạn xem [KNOWN-LIMITATIONS](KNOWN-LIMITATIONS.md) và [PERFORMANCE](PERFORMANCE.md).
 
 Các snapshot QA/audit cũ đã lưu ngoài repo theo [manifest dọn source](CLEANUP-2026-10-24.json); báo cáo Excel snapshot ngày24/10 có thể khôi phục từ commit `3e1b0fb`.
+
+## Project sau cập nhật D54
+
+Các tick ở task tài chính thể hiện adapter/fixture local. Review thành viên còn lại giữ chưa tick; không tạo PR/review giả. Master đã đổi về lịch11–31/10/2026 được chủ dự án chốt; checklist tổng chỉ tick khi task được nghiệm thu/đóng.
+
+| Task | Project Status | Mục đã tick/tổng |
+|---|---|---:|
+| [T01](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/1) | Dev done | 8/9 |
+| [T02](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/4) | In progress | 6/8 |
+| [T03](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/5) | Dev done | 8/9 |
+| [T04](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/6) | Dev done | 7/8 |
+| [T05](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/7) | Dev done | 8/9 |
+| [T06](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/8) | In progress | 10/12 |
+| [T07](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/9) | Dev done | 8/9 |
+| [T08](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/10) | Dev done | 10/11 |
+| [T09](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/11) | In progress | 8/11 |
+| [T10](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/12) | In progress | 4/10 |
+| [T11](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/13) | In progress | 10/11 |
+| [T12](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/14) | Dev done | 8/9 |
+| [T13](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/15) | In progress | 7/9 |
+| [T14](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/16) | In progress | 8/10 |
+| [T15](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/17) | Dev done | 9/10 |
+| [T16](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/18) | In progress | 8/10 |
+| [T17](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/19) | In progress | 3/10 |
+| [T18](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/20) | In progress | 5/11 |
+
+Board hiện tự đóng issue khi chuyển Dev done. Những lần đóng tự động trong lượt này đã mở lại, giữ statusDev done và pendingreview; không sửa workflow toàn Project. Assignee/milestone/item cũ giữ nguyên.

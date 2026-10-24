@@ -11,9 +11,9 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "3e1b0fb13a6d1bdfefb6589a07dea848ab6f3fed",
+  "last_verified_commit": "63d84ad4096f83802ab800760d380900cbc09924",
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-24T16:38:46+07:00",
+  "last_checkpoint_at": "2026-10-24T17:11:32+07:00",
   "last_test_run": {
     "at": "2026-10-24T16:35:11+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
@@ -232,7 +232,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "Captured while recording the post-commit documentation checkpoint; source commit was clean. Use git status for live state after the checkpoint commit.",
+  "git_dirty_note": "D54 GitHub progress documentation checkpoint; application source unchanged. Use git status for live state after documentation commit.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -289,5 +289,45 @@
     "readme": "updated_2026-10-24",
     "commit": "3e1b0fb13a6d1bdfefb6589a07dea848ab6f3fed"
   },
-  "archived_evidence_manifest": "docs/CLEANUP-2026-10-24.json"
+  "archived_evidence_manifest": "docs/CLEANUP-2026-10-24.json",
+  "github_progress_sync": {
+    "decision": "D54",
+    "status": "done",
+    "verified_at": "2026-10-24T17:10:40+07:00",
+    "project": "https://github.com/users/DongDao27/projects/4",
+    "issue_repository": "DongDao27/Thu-Thanh-bookstore",
+    "source_commit": "63d84ad4096f83802ab800760d380900cbc09924",
+    "task_status_counts": {
+      "Dev done": 8,
+      "In progress": 10
+    },
+    "checked_items": 135,
+    "total_items": 176,
+    "master_status": "In progress",
+    "final_closed_tasks": 0,
+    "review_signoff": "pending_all_tasks",
+    "project_automation": "Dev_done_auto_closes_issue; reopened_only_these_new_automatic_closures_to_preserve_acceptance_pending",
+    "automation_reopened_tasks": [
+      "T01",
+      "T03",
+      "T04",
+      "T05",
+      "T07",
+      "T08",
+      "T12",
+      "T15"
+    ],
+    "preservation": "preserved",
+    "application_changes": false,
+    "application_tests": "not_rerun_document_and_GitHub_metadata_only",
+    "tracking_document": "docs/PHAN-CONG-VA-COMMIT.md"
+  },
+  "current_source_ci": {
+    "commit": "63d84ad4096f83802ab800760d380900cbc09924",
+    "backend": "success",
+    "frontend": "success",
+    "backend_url": "https://github.com/DongDao27/Payment/actions/runs/40082807261",
+    "frontend_url": "https://github.com/DongDao27/Payment/actions/runs/40082807245",
+    "verified_at": "2026-10-24T17:10:40+07:00"
+  }
 }

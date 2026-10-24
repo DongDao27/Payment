@@ -321,3 +321,9 @@ Kiểm thực tế:118backendtests/1675assertions/0error/failure/skip,CLI38.42s/
 Commit được chuẩn bị sau stagedsecret/runtime/size/diff review. Chưa ghi hash giả; next checkpoint sẽ ghi hash thật sau commit. Backend/release gate và policy không đổi.
 
 D53 commit source thật: `3e1b0fb13a6d1bdfefb6589a07dea848ab6f3fed`. Staged review52file thêm/sửa, loạiOffice lock/runtime/env/dependencies, kiểm6giátrịsecret local chỉ báo count/khônginsecret; diffcheck passed. Sau commit, folderreports/XLSX bị xóa khỏi workspace; giữ thay đổi mới này, sửa link và ghi recovery từ Git commit thay vì dựng lại. Checkpoint tài liệu này ghi hash thật sau sourcecommit; không đổi app hoặc chạy lại suite đã đạt.
+
+## D54 — 2026-10-24T17:11:32+07:00: checklist và trạng thái GitHub đã đồng bộ
+
+Đã cập nhật18issue T01–T18 vàMASTER21 củaThu-Thanh-bookstore/Project4. Tick135/176mục có bằng chứng,8Dev done(T01,T03,T04,T05,T07,T08,T12,T15),10In progress;MASTERIn progress/lịch11–31/10. Không đóng task theo acceptance:18issue cuối vẫnOPEN,peerreview chưa tick. Đã thêm source/test/CI63d84ad và phần thiếu cụ thể;T13thiếugiátrongbảngtồn,T14thiếupaymenthistory trênUI,T09thiếuUIretry/T10QRadapter503,SMTP/canvas/userresearch/provider/hosting giữchờ.
+
+Snapshot và bodyfile trước/sau chỉ trong.runtime; không tạo QA report rời. Kiểm freshbody/updatedAt trướcghi,APIreadback từngissue,assignee/milestone bấtbiến,20ProjectitemID vàitem#2Closed giữ. GitHub chuẩn hóaLF→CRLF nên so body theo canonical newline. Existing automation đóng issue khiDevdone: đã mở lại những issue mới bịauto-close, không đổiworkflow toànboard; cuối kiểmstatus vàissueOPEN. CI Backend/Frontend của63d84ad đều success; local118/7 làD53, không chạy lại suite khi chỉGitHub/tài liệu. Gatebackend/release và27taskkỹthuật giữ nguyên.
