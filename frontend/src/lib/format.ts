@@ -19,6 +19,17 @@ const errors: Record<string, string> = {
   QUOTE_EXPIRED: "Báo giá đã hết hạn. Vui lòng lấy báo giá mới.",
   PAYMENT_INTEGRATION_DEFERRED:
     "Thanh toán VNPAY chưa được mở. Đơn hàng chưa được thanh toán.",
+  GATEWAY_NOT_CONFIGURED:
+    "Thanh toán VNPAY chưa được cấu hình trên máy chủ. Đơn hàng chưa được thanh toán.",
+  PAYMENT_ENV_NOT_AUTHORIZED:
+    "Môi trường thanh toán VNPAY chưa được cho phép. Đơn hàng chưa được thanh toán.",
+  ORDER_NOT_PAYABLE:
+    "Đơn đã được thanh toán, đã đóng hoặc đã hết thời gian giữ hàng.",
+  PAYMENT_RECONCILIATION_REQUIRED:
+    "Giao dịch trước đang chờ nhà sách đối soát. Vui lòng không thanh toán lại.",
+  INVALID_PAYMENT_RETURN:
+    "Kết quả thanh toán không hợp lệ. Vui lòng kiểm tra trạng thái trong đơn hàng.",
+  PAYMENT_NOT_FOUND: "Không tìm thấy giao dịch thanh toán tương ứng.",
   REVENUE_POLICY_NOT_APPROVED:
     "Báo cáo doanh thu chưa mở vì cách tính chưa được xác nhận.",
   TOO_MANY_REQUESTS:

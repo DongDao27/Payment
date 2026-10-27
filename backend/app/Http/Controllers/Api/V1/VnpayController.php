@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Payments\PaymentGateway;
 use App\Services\PaymentService;
+use App\Services\ReconciliationService;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,13 +28,18 @@ class VnpayController extends Controller
         return response()->json(['RspCode' => $code, 'Message' => $messages[$code]]);
     }
 
-    public function returned(Request $request, PaymentGateway $gateway): JsonResponse
+    public function returned(Request $request, PaymentGateway $gateway, ReconciliationService $reconciliation): JsonResponse
     {
-        if (! $gateway->verifyCallback($request->query())) {
+        $verified = $gateway->verifyCallback($request->query());
+        if (! $verified) {
             return ApiResponse::error('INVALID_PAYMENT_RETURN', 'Payment return signature is invalid.', 422);
         }
+        $order = $reconciliation->confirmReturn($verified);
+        if (! $order) {
+            return ApiResponse::error('PAYMENT_NOT_FOUND', 'No payment attempt matches this return.', 404);
+        }
 
-        // Browser-controlled return only reports verification; IPN/query alone can allocate money.
-        return ApiResponse::data(['verified' => true, 'message' => 'Check the authenticated order payment status for the verified result.']);
+        // Browser-controlled return only reports; IPN/query alone can allocate money.
+        return ApiResponse::data(['verified' => true, 'order_code' => $order->order_code, 'result' => $verified->state, 'payment_status' => $order->payment_status]);
     }
 }

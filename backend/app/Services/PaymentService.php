@@ -34,7 +34,8 @@ class PaymentService
             if ($order->lifecycle !== 'open' || $order->payment_status === 'paid' || now()->gte($order->expires_at)) {
                 throw new BusinessException('ORDER_NOT_PAYABLE', 'The order is paid, closed or expired.');
             }
-            if (($qr && $order->fulfillment_method !== 'pickup') || (! $qr && $order->fulfillment_method !== 'delivery')) {
+            // D55: customers pay delivery and pickup online; admin in-store QR stays pickup-only.
+            if ($qr && $order->fulfillment_method !== 'pickup') {
                 throw new BusinessException('PAYMENT_CHANNEL_INVALID', 'Payment channel does not match order fulfillment.');
             }
             $operation = 'payment:'.$order->id;

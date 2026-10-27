@@ -36,8 +36,9 @@ export default function PoliciesPage() {
           bằng chứng thanh toán.
         </p>
         <p>
-          VNPAY hiện chưa mở. Hệ thống không tự ghi nhận đã thanh toán và chưa
-          hỗ trợ thanh toán khi nhận hàng.
+          Thanh toán trực tuyến qua VNPAY cho cả đơn giao hàng và nhận tại cửa
+          hàng. Đơn chỉ được ghi nhận đã thanh toán khi VNPAY xác minh giao
+          dịch; chưa hỗ trợ thanh toán khi nhận hàng.
         </p>
       </section>
       <section id="privacy">

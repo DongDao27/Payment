@@ -108,3 +108,18 @@ export type Order = {
   totals: Totals;
   version: number;
 };
+export type PaymentAttempt = {
+  id: string;
+  order_code: string;
+  status: string;
+  expires_at: string;
+  payment_url: string | null;
+  qr_content: string | null;
+  provider: string;
+};
+export type VnpayReturn = {
+  verified: boolean;
+  order_code: string;
+  result: "succeeded" | "failed" | "unknown";
+  payment_status: string;
+};

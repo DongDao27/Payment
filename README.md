@@ -6,7 +6,7 @@ Website bán sách và quản lý nhà sách, sử dụng **Next.js 16 / React 1
 
 - Trang chủ: **Bán chạy nhất**, **Sản phẩm mới**, **Gợi ý cho bạn**. Bán chạy xếp theo tổng số lượng đã bán trong đơn thanh toán hợp lệ; sản phẩm mới xếp theo ngày tạo/ID mới nhất.
 - Tìm kiếm, lọc, sắp xếp, phân trang; ảnh sách lớn, xem nhanh, chọn số lượng, tiếp tục mua sau đăng nhập.
-- Đăng ký/đăng nhập, giỏ nhiều sản phẩm, báo giá, đặt hàng, theo dõi/hủy/đặt lại đơn. Khôi phục mật khẩu khách qua email, hiện/ẩn mật khẩu và thông báo lỗi tại trường nhập.
+- Đăng ký/đăng nhập, giỏ nhiều sản phẩm, báo giá, đặt hàng, thanh toán VNPAY Sandbox cho đơn giao hàng và nhận tại cửa hàng, theo dõi/hủy/đặt lại đơn. Khôi phục mật khẩu khách qua email, hiện/ẩn mật khẩu và thông báo lỗi tại trường nhập.
 - Admin: sản phẩm/ảnh/giảm giá/ngừng bán/mở bán lại; danh mục; điều chỉnh và lịch sử tồn kho; đơn hàng; đối soát; biểu đồ doanh thu, bộ lọc và xuất CSV.
 - Footer: bản tin, Google Maps, **295 Tôn Đức Thắng, Hòa Khánh, Đà Nẵng**, **0915466951**, **07:30–21:30 hằng ngày**.
 
@@ -73,11 +73,11 @@ npm run build
 npm run typecheck
 ```
 
-Từ gốc repo: `python scripts/check_pack.py`. Bộ test tự động và các smoke test HTTP/worker/scheduler của GitHub Actions vẫn được giữ. Kết quả local mới nhất: **118 backend tests / 1.675 assertions**, **7 frontend API-client tests**, Pint, build và typecheck đạt. [Kiểm chứng và giới hạn](docs/VERIFICATION.md).
+Từ gốc repo: `python scripts/check_pack.py`. Bộ test tự động và các smoke test HTTP/worker/scheduler của GitHub Actions vẫn được giữ. Kết quả local mới nhất (27/10/2026, macOS, MySQL 9.6): **123 backend tests / 1.719 assertions**, **7 frontend API-client tests**, Pint, build và typecheck đạt. [Kiểm chứng và giới hạn](docs/VERIFICATION.md).
 
 ## Triển khai
 
-Cấu hình Docker, Next standalone, Nginx, PHP-FPM/OPcache và Redis ở [deploy/](deploy/README.md). **Chưa triển khai hoặc nghiệm thu production**. VNPAY/QR thật tiếp tục hoãn; đơn mới không tự được xác nhận đã thanh toán. Email recovery cần SMTP thật và worker; chưa nghiệm thu gửi email thật. Mục tiêu **10.000 người đồng thời chưa được chứng minh** trên hạ tầng thực.
+Cấu hình Docker, Next standalone, Nginx, PHP-FPM/OPcache và Redis ở [deploy/](deploy/README.md). **Chưa triển khai hoặc nghiệm thu production**. VNPAY Sandbox đã có trong code (D55) và chỉ bật khi `.env` private có TMN code/hash secret Sandbox của bạn ([cách cấu hình](docs/CHAY-WEB-VA-LARAVEL.md#thanh-toán-vnpay-sandbox)); VNPAY Production và QR tại quầy chưa mở, đơn không bao giờ tự được xác nhận đã thanh toán. Email recovery cần SMTP thật và worker; chưa nghiệm thu gửi email thật. Mục tiêu **10.000 người đồng thời chưa được chứng minh** trên hạ tầng thực.
 
 [Runbook vận hành](docs/OPERATIONS.md) · [Hiệu năng](docs/PERFORMANCE.md) · [Giới hạn hiện hành](docs/KNOWN-LIMITATIONS.md). Giữ secret trong env private; không commit database, token, mật khẩu, `vendor`, `node_modules` hoặc output build.
 

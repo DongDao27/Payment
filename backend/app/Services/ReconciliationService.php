@@ -10,6 +10,7 @@ use App\Models\PaymentEvent;
 use App\Models\ReconciliationCase;
 use App\Models\Refund;
 use App\Payments\PaymentGateway;
+use App\Payments\VerifiedPayment;
 use Illuminate\Support\Facades\DB;
 
 class ReconciliationService
@@ -19,17 +20,7 @@ class ReconciliationService
     public function refresh(Order $order): Order
     {
         foreach ($order->attempts()->whereIn('status', ['created', 'pending', 'unknown'])->orderBy('created_at')->limit(3)->get() as $candidate) {
-            $attempt = DB::transaction(function () use ($order, $candidate) {
-                $locked = Order::whereKey($order->id)->lockForUpdate()->firstOrFail();
-                $attempt = PaymentAttempt::whereKey($candidate->id)->lockForUpdate()->firstOrFail();
-                if ($locked->payment_status === 'paid' || ! in_array($attempt->status, ['created', 'pending', 'unknown'], true)
-                    || ($attempt->query_requested_at && $attempt->query_requested_at->gt(now()->subMinutes(5)))) {
-                    return null;
-                }
-                $attempt->update(['query_requested_at' => now()]);
-
-                return $attempt;
-            }, 3);
+            $attempt = $this->claimQuery($candidate);
             if (! $attempt) {
                 continue;
             }
@@ -54,6 +45,49 @@ class ReconciliationService
         }
 
         return $order->fresh();
+    }
+
+    public function confirmReturn(VerifiedPayment $returned): ?Order
+    {
+        $candidate = PaymentAttempt::where('provider_reference', $returned->reference)->first();
+        if (! $candidate) {
+            return null;
+        }
+        // A signed browser return never marks paid. A signed failure frees the order for retry;
+        // anything else only triggers a provider query, and uncertainty stays pending for IPN/scheduler.
+        if ($returned->state === 'failed') {
+            $this->payments->apply($returned, 'return');
+
+            return $candidate->order()->firstOrFail();
+        }
+        $attempt = $this->claimQuery($candidate);
+        if ($attempt) {
+            try {
+                $verified = $this->gateway->query($attempt);
+            } catch (BusinessException) {
+                $verified = null;
+            }
+            if ($verified) {
+                $this->payments->apply($verified, 'query');
+            }
+        }
+
+        return $candidate->order()->firstOrFail();
+    }
+
+    private function claimQuery(PaymentAttempt $candidate): ?PaymentAttempt
+    {
+        return DB::transaction(function () use ($candidate) {
+            $locked = Order::whereKey($candidate->order_id)->lockForUpdate()->firstOrFail();
+            $attempt = PaymentAttempt::whereKey($candidate->id)->lockForUpdate()->firstOrFail();
+            if ($locked->payment_status === 'paid' || ! in_array($attempt->status, ['created', 'pending', 'unknown'], true)
+                || ($attempt->query_requested_at && $attempt->query_requested_at->gt(now()->subMinutes(5)))) {
+                return null;
+            }
+            $attempt->update(['query_requested_at' => now()]);
+
+            return $attempt;
+        }, 3);
     }
 
     public function close(Order $order, bool $cancel = false, ?int $actorId = null): Order

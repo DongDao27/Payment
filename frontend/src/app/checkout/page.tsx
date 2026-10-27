@@ -103,8 +103,8 @@ function Checkout() {
       </div>
       <h1>Thông tin nhận hàng</h1>
       <Notice>
-        Thanh toán trực tuyến hiện chưa mở. Đơn hàng tạo mới chưa được thanh toán
-        và chưa thể hoàn tất.
+        Sau khi đặt hàng, bạn thanh toán qua VNPAY ở trang chi tiết đơn trong
+        thời gian giữ hàng. Đơn chỉ được xử lý khi thanh toán được xác minh.
       </Notice>
       {error && (
         <Notice error>

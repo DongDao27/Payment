@@ -86,6 +86,31 @@ Không có `--env=demo` thì đây là database thật local; lệnh thay mật 
 
 Trong form sản phẩm: nhập **giá bìa**, chọn **Nhập phần trăm giảm giá**, nhập số nguyên 0–100. Ví dụ 35.000đ giảm 5% thành 33.250đ. Laravel tính giá bán bằng số nguyên VND, làm tròn gần nhất; không nhận đồng thời hai nguồn sale_price và discount_percent. Giá gốc gạch ngang/badge chỉ hiện khi có giảm thật. Chế độ Nhập giá bán giữ khả năng nhập giá chính xác. Thay giá không làm đổi snapshot các đơn cũ.
 
+## Thanh toán VNPAY Sandbox
+
+D55 mở thanh toán VNPAY **Sandbox** cho khách, áp dụng cho cả đơn giao hàng và nhận tại cửa hàng. Production và QR tại quầy chưa mở. Không dùng TMN code/hash secret lấy từ bài viết hay repo công khai; mỗi người đăng ký merchant Sandbox riêng.
+
+1. Đăng ký tại https://sandbox.vnpayment.vn/devreg/ và lấy `vnp_TmnCode`, `vnp_HashSecret` trong email VNPAY gửi.
+2. Trong `backend/.env` (không commit), điền:
+
+```dotenv
+VNPAY_ENV=sandbox
+VNPAY_TMN_CODE=<mã của bạn>
+VNPAY_HASH_SECRET=<secret của bạn>
+VNPAY_PAYMENT_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+VNPAY_QUERY_URL=https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+VNPAY_RETURN_URL=http://localhost:3000/payment/vnpay-return
+VNPAY_DEFERRED=false
+```
+
+3. Trong `backend/` chạy `php artisan config:clear`; không cần khởi động lại Next.js.
+4. Đặt hàng → **Chi tiết đơn** → **Thanh toán qua VNPAY** → trả bằng thẻ test trong tài liệu/email Sandbox của VNPAY.
+5. VNPAY chuyển về `/payment/vnpay-return`. Laravel kiểm chữ ký rồi tự hỏi VNPAY (querydr); chỉ kết quả query hoặc IPN đã ký mới chuyển đơn sang **Đã thanh toán** và trừ tồn.
+
+Thiếu TMN code/secret: nút thanh toán báo "chưa được cấu hình", không tạo giao dịch. Hủy trên trang VNPAY: đơn về chưa thanh toán và có thể trả lại khi còn hạn. Đơn giao hàng chỉ giữ 5 phút, nên hoàn tất thanh toán trong thời gian đếm ngược.
+
+IPN: VNPAY không gọi được `localhost`. Khi có URL public (hosting hoặc tunnel), khai báo `https://<backend>/api/v1/payments/vnpay/ipn` trong trang merchant Sandbox. Nếu khách đóng tab VNPAY mà không quay về, `php artisan schedule:work` sẽ query khi đơn đến hạn; kết quả không xác định được chuyển vào **/admin/reconciliation** để đối soát.
+
 ## Scheduler và queue
 
 Muốn kiểm tra hết hạn/đối soát nền, mở thêm hai terminal trong backend:

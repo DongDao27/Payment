@@ -32,9 +32,9 @@ Không giả phone_verified_at; không gửi OTP giả. Reset email là extensio
 | GET | /orders, /orders/{order} | Customer owner; order = order_code |
 | POST | /orders/{order}/cancel | Customer owner, còn hợp lệ |
 | POST | /orders/{order}/reorder | Customer owner, copy vào giỏ theo dữ liệu mới, không tạo đơn/giữ tồn |
-| POST | /orders/{order}/payment-attempts | Owner delivery còn hạn; Idempotency-Key |
+| POST | /orders/{order}/payment-attempts | Owner delivery hoặc pickup còn hạn (D55); Idempotency-Key |
 | GET | /orders/{order}/payment-status | Owner; polling bounded |
-| GET | /payments/vnpay/return, /payments/vnpay/ipn | Provider/public, chữ ký và validation riêng |
+| GET | /payments/vnpay/return, /payments/vnpay/ipn | Provider/public, chữ ký và validation riêng; return throttle 30/phút |
 | GET/POST/PATCH | /admin/categories, /admin/categories/{category} | Admin |
 | GET/POST/PATCH | /admin/products, /admin/products/{product} | Admin |
 | POST | /admin/products/{product}/images | Admin multipart |
@@ -64,6 +64,7 @@ PaymentAttempt response: id, order_code, status, expires_at, payment_url nullabl
 qr_content chỉ có nếu merchant product cấp đúng tính năng; nếu không trả capability-unavailable, không tự chế QR từ payment URL và gọi là verified bank QR.
 PaymentStatus: payment_status, latest_attempt_status, expires_at, can_retry, reconciliation_required, server_time.
 Tiền provider x100 chỉ ở adapter, API mọi amount là VND nguyên.
+PaymentReturn (D55): verified, order_code, result (succeeded|failed|unknown, chỉ hiển thị), payment_status. VNPAY_RETURN_URL trỏ trang Next `/payment/vnpay-return`, trang này chuyển nguyên tham số `vnp_*` tới `GET /payments/vnpay/return`. Chữ ký sai422 INVALID_PAYMENT_RETURN, reference lạ404 PAYMENT_NOT_FOUND, cả hai không gọi provider. Return success/unknown chỉ kích hoạt querydr ngoài khóa DB (một lần/5 phút/attempt); query không xác định giữ pending, không mở case. Return failed đã ký ghi attempt failed để khách tạo attempt mới.
 Unknown/pending trả dữ liệu rõ, không trả paid từ return params.
 ADMIN có quyền mở pickup QR, không tự sửa paid. Callback xử lý cả khi user logout.
 
@@ -83,7 +84,7 @@ Cookie auth uses explicit web middleware on first-party API, including CSRF with
 B09 proposal D27 adds unallocated_refunds to revenue totals/series; only accepted-receipt refunds reduce net_sales. Reports are policy-gated503 by default. Private refund evidence is supplied by operator as a filename under storage/app/private/evidence; endpoint verifies the file exists and never accepts an arbitrary path or transfers money.
 
 ## Current owner policy (D29–D32)
-Delivery defaults25000 VND, pickup0; client totals remain prohibited. Refund writes return403 REFUNDS_NOT_SUPPORTED under no_returns_no_refunds, including when legacy env toggle is true. Historical private evidence remains admin-only. New payment attempt creation returns503 PAYMENT_INTEGRATION_DEFERRED without inserting attempts; provider fixture tests remain separate from real integration. Figma local source is available, canvas not yet visually verified.
+Delivery defaults25000 VND, pickup0; client totals remain prohibited. Refund writes return403 REFUNDS_NOT_SUPPORTED under no_returns_no_refunds, including when legacy env toggle is true. Historical private evidence remains admin-only. New payment attempt creation returns503 PAYMENT_INTEGRATION_DEFERRED without inserting attempts while VNPAY_DEFERRED=true (code/template default); D55 enables local Sandbox only through a private env with the merchant's own credentials, otherwise503 GATEWAY_NOT_CONFIGURED. Provider fixture tests remain separate from real Sandbox evidence. Figma local source is available, canvas not yet visually verified.
 
 ## Frontend/import local 22/10/2026
 

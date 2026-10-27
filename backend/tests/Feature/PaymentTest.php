@@ -141,6 +141,75 @@ class PaymentTest extends TestCase
         $this->assertSame(1, $product->fresh()->stock_reserved);
     }
 
+    public function test_customer_pays_pickup_order_online(): void
+    {
+        $product = Product::factory()->create(['stock_on_hand' => 1]);
+        $order = $this->orderFor([$product]);
+        app(InventoryService::class)->reserve($order);
+        $this->actingAs($order->user);
+        $response = $this->postJson('/api/v1/orders/'.$order->order_code.'/payment-attempts', [], ['Idempotency-Key' => 'pickup-payment-key'])->assertOk()->assertJsonPath('data.status', 'pending');
+        $this->assertStringStartsWith('https://sandbox.example.test/pay?', $response->json('data.payment_url'));
+        $this->assertSame('pending', $order->fresh()->payment_status);
+    }
+
+    public function test_return_with_bad_signature_or_unknown_reference_never_queries_provider(): void
+    {
+        [$order, $product, $attempt] = $this->attempt();
+        Http::fake();
+        $this->returned([...$this->payload($attempt), 'vnp_SecureHash' => str_repeat('a', 128)])->assertStatus(422)->assertJsonPath('error.code', 'INVALID_PAYMENT_RETURN');
+        $this->returned($this->payload($attempt, ['vnp_TxnRef' => 'not-found']))->assertNotFound()->assertJsonPath('error.code', 'PAYMENT_NOT_FOUND');
+        Http::assertNothingSent();
+        $this->assertNull($attempt->fresh()->query_requested_at);
+        $this->assertSame('pending', $order->fresh()->payment_status);
+    }
+
+    public function test_signed_success_return_allocates_only_through_verified_query_once(): void
+    {
+        [$order, $product, $attempt] = $this->attempt();
+        Http::fake(['https://sandbox.example.test/query' => $this->queryResponse($attempt)]);
+        $payload = $this->payload($attempt);
+        $this->returned($payload)->assertOk()->assertJsonPath('data.order_code', $order->order_code)->assertJsonPath('data.payment_status', 'paid');
+        $this->returned($payload)->assertOk()->assertJsonPath('data.payment_status', 'paid');
+        Http::assertSentCount(1);
+        $this->assertDatabaseCount('payment_receipts', 1);
+        $this->assertDatabaseHas('payment_events', ['source' => 'query', 'disposition' => 'accepted']);
+        $this->assertDatabaseMissing('payment_events', ['source' => 'return']);
+        $this->assertSame(0, $product->fresh()->stock_on_hand);
+        $this->assertSame(0, $product->fresh()->stock_reserved);
+    }
+
+    public function test_unconfirmed_success_return_stays_pending_without_reconciliation_or_requery(): void
+    {
+        [$order, $product, $attempt] = $this->attempt();
+        Http::fake(['https://sandbox.example.test/query' => Http::failedConnection()]);
+        $this->returned($this->payload($attempt))->assertOk()->assertJsonPath('data.payment_status', 'pending');
+        $this->returned($this->payload($attempt))->assertOk();
+        Http::assertSentCount(1);
+        $this->assertSame('pending', $attempt->fresh()->status);
+        $this->assertDatabaseCount('payment_receipts', 0);
+        $this->assertDatabaseCount('reconciliation_cases', 0);
+        $this->assertSame(1, $product->fresh()->stock_reserved);
+    }
+
+    public function test_signed_failed_return_frees_order_for_a_new_attempt(): void
+    {
+        [$order, $product, $attempt] = $this->attempt();
+        Http::fake();
+        $failed = $this->payload($attempt, ['vnp_ResponseCode' => '24', 'vnp_TransactionStatus' => '02', 'vnp_TransactionNo' => '0']);
+        $this->returned($failed)->assertOk()->assertJsonPath('data.result', 'failed')->assertJsonPath('data.payment_status', 'unpaid');
+        $this->returned($failed)->assertOk()->assertJsonPath('data.payment_status', 'unpaid');
+        Http::assertNothingSent();
+        $this->assertSame('failed', $attempt->fresh()->status);
+        $this->assertDatabaseCount('payment_events', 1);
+        $this->assertTrue(app(PaymentService::class)->status($order->fresh())['can_retry']);
+        $this->actingAs($order->user);
+        $retry = $this->postJson('/api/v1/orders/'.$order->order_code.'/payment-attempts', [], ['Idempotency-Key' => 'retry-payment-key'])->assertOk();
+        $this->assertNotSame($attempt->id, $retry->json('data.id'));
+        $this->assertNotSame($attempt->provider_reference, PaymentAttempt::findOrFail($retry->json('data.id'))->provider_reference);
+        $this->assertSame('pending', $order->fresh()->payment_status);
+        $this->assertSame(1, $product->fresh()->stock_reserved);
+    }
+
     private function attempt(): array
     {
         $product = Product::factory()->create(['stock_on_hand' => 1]);
@@ -160,8 +229,21 @@ class PaymentTest extends TestCase
         return $payload;
     }
 
+    private function queryResponse(PaymentAttempt $attempt): array
+    {
+        $response = ['vnp_ResponseId' => 'query-response', 'vnp_Command' => 'querydr', 'vnp_ResponseCode' => '00', 'vnp_Message' => 'Fixture result', 'vnp_TmnCode' => 'TESTMERCH', 'vnp_TxnRef' => $attempt->provider_reference, 'vnp_Amount' => (string) ($attempt->requested_amount * 100), 'vnp_BankCode' => 'NCB', 'vnp_PayDate' => now('Asia/Ho_Chi_Minh')->format('YmdHis'), 'vnp_TransactionNo' => '111111', 'vnp_TransactionType' => '01', 'vnp_TransactionStatus' => '00', 'vnp_OrderInfo' => 'Fixture', 'vnp_PromotionCode' => '', 'vnp_PromotionAmount' => ''];
+        $response['vnp_SecureHash'] = hash_hmac('sha512', implode('|', array_values($response)), 'test-only-secret');
+
+        return $response;
+    }
+
     private function ipn(array $payload)
     {
         return $this->getJson('/api/v1/payments/vnpay/ipn?'.http_build_query($payload));
+    }
+
+    private function returned(array $payload)
+    {
+        return $this->getJson('/api/v1/payments/vnpay/return?'.http_build_query($payload));
     }
 }

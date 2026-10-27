@@ -1,3 +1,11 @@
+# D55 — VNPAY Sandbox code sẵn sàng, chờ credentials (2026-10-27T18:35:15+07:00)
+
+Task hiện tại B07 (externally_blocked) và F02 (in_progress). Source đổi: `PaymentService` (pickup trả online), `ReconciliationService::confirmReturn/claimQuery`, `VnpayController::returned`, route return throttle, `PaymentTest` +5 test; frontend `orders/[code]`, `payment/vnpay-return`, `format/types`, copy checkout/policies/admin, header `next.config`; env mẫu thêm URL Sandbox. Tài liệu: D55, API, DOMAIN-RULES, openapi, README, CHAY-WEB-VA-LARAVEL.
+
+Đã kiểm: full backend123/1719 passed (MySQL9.6.0 macOS), Pint, test:api7, typecheck, build, check_pack, smoke HTTP server đang chạy. Chưa kiểm: giao dịch Sandbox thật, IPN public, browser e2e thanh toán. `.env` local đã có `VNPAY_DEFERRED=false` và URL Sandbox nhưng thiếu `VNPAY_TMN_CODE`/`VNPAY_HASH_SECRET`, nên tạo attempt trả503 GATEWAY_NOT_CONFIGURED.
+
+Lệnh tiếp: người dùng đăng ký https://sandbox.vnpayment.vn/devreg/, điền hai biến vào `backend/.env`, `php artisan config:clear`, chạy `php artisan admin:create` nếu cần admin; đặt một đơn với tài khoản khách → Thanh toán qua VNPAY → thẻ test Sandbox; ghi kết quả success/hủy/query vào B07 rồi mới xét đổi trạng thái. Giữ DB `thu_thanh` (12 sách) và `thu_thanh_test`, `.env`/`.env.testing` private. Source chưa commit; last_verified_commit null.
+
 # D54 — GitHub progress đã đồng bộ (2026-10-24T17:11:32+07:00)
 
 Project https://github.com/users/DongDao27/projects/4:18task,8Dev done(T01,T03,T04,T05,T07,T08,T12,T15),10In progress;MASTERIn progress. Đã tick135/176mục implementation/proof có bằng chứng.18issue vẫnOPEN vì chưapeerreview/acceptance;mastercheckbox chưa tick taskchưađóng. Lịchmasterđúng11–17/18–24/25–31/10/2026;khônghồitốngàylàm.

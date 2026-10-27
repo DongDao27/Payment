@@ -223,8 +223,8 @@ function AdminOrders() {
             <strong>{money(selected.totals.payable_total)}</strong>
           </div>
           <Notice>
-            VNPAY và QR thật chưa mở. Không bàn giao khi chưa có thanh toán được
-            hệ thống xác minh.
+            Khách thanh toán qua VNPAY; QR tại quầy chưa mở. Không bàn giao khi
+            chưa có thanh toán được hệ thống xác minh.
           </Notice>
           {error && <Notice error>{error}</Notice>}
           {selected.lifecycle === "open" && (

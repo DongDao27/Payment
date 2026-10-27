@@ -2421,7 +2421,7 @@
     },
     "/orders/{order}/payment-attempts": {
       "post": {
-        "summary": "Tạo/tiếp tục payment delivery",
+        "summary": "Tạo/tiếp tục payment VNPAY cho đơn delivery hoặc pickup (D55)",
         "tags": [
           "Payments"
         ],
@@ -2581,7 +2581,7 @@
             }
           }
         },
-        "description": " Current owner policy: VNPAY_DEFERRED=true; new attempts return503 PAYMENT_INTEGRATION_DEFERRED without creating an attempt or marking paid."
+        "description": " VNPAY_DEFERRED mặc định true: 503 PAYMENT_INTEGRATION_DEFERRED, không tạo attempt. D55 bật Sandbox local khi private env có merchant; thiếu cấu hình 503 GATEWAY_NOT_CONFIGURED. Không bao giờ tự paid."
       }
     },
     "/orders/{order}/payment-status": {
@@ -2716,7 +2716,7 @@
     },
     "/payments/vnpay/return": {
       "get": {
-        "summary": "Return: hiển thị/redirect, không tự paid",
+        "summary": "Return: xác minh chữ ký, kích hoạt query; không tự paid",
         "tags": [
           "Payments"
         ],
@@ -2724,7 +2724,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Signed return validation only, no payment state mutation",
+            "description": "Chữ ký hợp lệ. Success/unknown chỉ kích hoạt querydr server (tối đa 1 lần/5 phút/attempt); receipt/paid chỉ từ query hoặc IPN đã ký. Failed (TransactionStatus 02) ghi attempt failed để thử lại.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2748,6 +2748,26 @@
           },
           "422": {
             "description": "Validation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PAYMENT_NOT_FOUND: không có attempt khớp vnp_TxnRef",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Throttle 30/phút",
             "content": {
               "application/json": {
                 "schema": {
@@ -7639,13 +7659,33 @@
           "verified": {
             "type": "boolean"
           },
-          "message": {
+          "order_code": {
             "type": "string"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "unknown"
+            ],
+            "description": "Kết quả VNPAY ký trong return, chỉ để hiển thị; không phải bằng chứng paid."
+          },
+          "payment_status": {
+            "type": "string",
+            "enum": [
+              "unpaid",
+              "pending",
+              "paid",
+              "reconciliation_required"
+            ]
           }
         },
         "required": [
           "verified",
-          "message"
+          "order_code",
+          "result",
+          "payment_status"
         ],
         "additionalProperties": false
       },

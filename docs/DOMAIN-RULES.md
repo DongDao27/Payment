@@ -53,6 +53,7 @@ Adapter dựa tài liệu gateway merchant được cấp; không tự gán gene
 VND trong DB, chuyển vnp_Amount nhân 100 tại adapter theo tài liệu; kiểm roundtrip, không nhân hai lần. HMAC/canonicalization đúng provider và test bằng fixture.
 Validate merchant, signature constant-time, reference, amount, currency nếu provider trả, response/transaction status và unique transaction id.
 Return URL chỉ verify input để hiển thị/trigger query; không mutate payment success. IPN/server query verified mới tạo receipt.
+D55: return đã ký có TransactionStatus02 được ghi như failure đã ký (attempt failed, không receipt) để khách thử lại bằng attempt/reference mới; query kích hoạt từ return mà không xác định thì giữ pending cho IPN/scheduler, không mở reconciliation case. Khách thanh toán online cho cả delivery và pickup; QR tại quầy của admin vẫn503 tới khi có capability merchant.
 Luôn ACK IPN theo provider contract riêng, KHÔNG dùng JSON envelope chung của API. Lặp callback hợp lệ được ACK idempotent. Test exact response for invalid signature/order/amount/duplicate.
 Provider có thể gửi unsigned noise: ghi security counter/log đã lọc; không ghi toàn payload không kiểm soát. Unique fingerprint giảm event lặp, không thay receipt uniqueness.
 Tạo attempt: serialize theo order. Nếu attempt trước pending/unknown thì query/status thay vì tạo yêu cầu thu mới. Chỉ retry khi attempt cũ được xác nhận thất bại/đóng hoặc quy trình provider cho phép và đã test.
@@ -79,7 +80,7 @@ Ngày theo Asia/Ho_Chi_Minh, chuyển boundary UTC để query; from inclusive, 
 ### Report clarification for implementation (D27, proposal only)
 Only refunds associated with accepted receipts reduce sales/shipping totals. Refunds of duplicate/late/mismatch receipts are unallocated_refunds, separate from net_sales. unallocated_receipts reports gross receipts during the period, not an outstanding balance. These defaults are test fixtures until revenue/refund policies are approved.
 
-D30/D31 supersede refund proposal for current operations: no customer returns/refunds; refund writes403 even if old env enables them. Existing ledgers/evidence remain intact. VNPAY attempt creation is deferred503, while verified historical callbacks/reconciliation remain evidence-based.
+D30/D31 supersede refund proposal for current operations: no customer returns/refunds; refund writes403 even if old env enables them. Existing ledgers/evidence remain intact. VNPAY attempt creation is deferred503 by default; D55 opens local Sandbox only when a private env disables the deferral and carries the merchant's own credentials. Verified callbacks/reconciliation remain evidence-based.
 
 
 ## D45 — phần trăm giảm giá

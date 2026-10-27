@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 
 Route::get('v1/payments/vnpay/ipn', [VnpayController::class, 'ipn']);
-Route::get('v1/payments/vnpay/return', [VnpayController::class, 'returned']);
+Route::get('v1/payments/vnpay/return', [VnpayController::class, 'returned'])->middleware('throttle:30,1');
 
 // These public reads never start or write a session. Personalized home remains private.
 Route::get('v1/storefront', [ProductController::class, 'storefront']);

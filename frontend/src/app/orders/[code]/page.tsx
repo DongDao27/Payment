@@ -6,7 +6,7 @@ import { AccountGate } from "@/components/account-gate";
 import { useStore } from "@/components/store-provider";
 import { Loading, Notice } from "@/components/ui";
 import { api } from "@/lib/api-client";
-import type { Order } from "@/lib/types";
+import type { Order, PaymentAttempt } from "@/lib/types";
 import { errorMessage, money, statusLabel } from "@/lib/format";
 
 export default function OrderPage() {
@@ -71,12 +71,42 @@ function Detail() {
       lock.current = false;
     }
   }
+  async function pay() {
+    if (lock.current) return;
+    lock.current = true;
+    setBusy(true);
+    setError("");
+    try {
+      const result = await api<PaymentAttempt>(
+        `/orders/${encodeURIComponent(code)}/payment-attempts`,
+        { method: "POST", idempotencyKey: crypto.randomUUID() },
+      );
+      const url = result.data.payment_url;
+      if (url && new URL(url).protocol === "https:") {
+        window.location.assign(url);
+        return;
+      }
+      setError(
+        "Giao dịch trước đang được VNPAY xác minh. Vui lòng cập nhật trạng thái sau ít phút.",
+      );
+      await load();
+    } catch (error) {
+      setError(errorMessage(error));
+    } finally {
+      setBusy(false);
+      lock.current = false;
+    }
+  }
   const seconds = order
     ? Math.max(
         0,
         Math.ceil((Date.parse(order.expires_at) - now - offset) / 1000),
       )
     : 0;
+  const payable =
+    order?.lifecycle === "open" &&
+    ["unpaid", "pending"].includes(order.payment_status) &&
+    seconds > 0;
   return (
     <div className="container page-section">
       <div className="breadcrumb">
@@ -100,10 +130,19 @@ function Detail() {
               {statusLabel[order.payment_status] ?? order.payment_status}
             </span>
           </div>
-          {order.payment_status !== "paid" && (
+          {order.payment_status === "paid" ? (
+            <Notice>Đơn đã được thanh toán và xác minh qua VNPAY.</Notice>
+          ) : order.payment_status === "reconciliation_required" ? (
             <Notice>
-              Đơn chưa được thanh toán. VNPAY hiện chưa mở; mã đơn hoặc thông
-              báo đặt hàng không phải xác nhận đã trả tiền.
+              Giao dịch VNPAY của đơn đang chờ nhà sách đối soát. Vui lòng không
+              thanh toán lại; trạng thái sẽ được cập nhật sau khi xác minh.
+            </Notice>
+          ) : (
+            <Notice>
+              Đơn chưa được thanh toán.{" "}
+              {payable
+                ? "Hãy thanh toán qua VNPAY trước khi hết thời gian giữ hàng."
+                : "Mã đơn hoặc thông báo đặt hàng không phải xác nhận đã trả tiền."}
             </Notice>
           )}
           <div className="checkout-layout">
@@ -150,6 +189,15 @@ function Detail() {
                 ))}
               </div>
               <div className="button-row">
+                {payable && (
+                  <button
+                    className="button primary"
+                    disabled={busy}
+                    onClick={pay}
+                  >
+                    Thanh toán qua VNPAY
+                  </button>
+                )}
                 {order.lifecycle === "open" &&
                   order.payment_status === "unpaid" && (
                     <button

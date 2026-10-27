@@ -260,10 +260,11 @@
         "provider-sandbox-evidence"
       ],
       "evidence": [
-        "PaymentTest9 tests56 assertions passed; VnpaySignatureTest2 tests6 assertions passed including independent Python HMAC fixture and signed query response; return never allocates, mismatch/duplicate/late and unknown time tested; real merchant Sandbox not_run."
+        "PaymentTest9 tests56 assertions passed; VnpaySignatureTest2 tests6 assertions passed including independent Python HMAC fixture and signed query response; return never allocates, mismatch/duplicate/late and unknown time tested; real merchant Sandbox not_run.",
+        "D55 2026-10-27T18:35:15+07:00: customer attempts for delivery+pickup; signed return triggers querydr outside DB locks, never paid by itself; signed failure frees retry; uncertain return query stays pending without case. PaymentTest 14 tests passed; full backend 123 tests/1719 assertions passed on MySQL 9.6.0 thu_thanh_test (macOS); Pint passed. Real merchant Sandbox transaction not_run: TMN code/hash secret not yet provided."
       ],
       "actual_commit": null,
-      "notes": "D31 owner explicitly deferred real VNPAY; new attempts503 PAYMENT_INTEGRATION_DEFERRED, no fake paid. Adapter/signature/IPN/query fixture tests retained and passed. Real Sandbox/QR remains not_run; do not request credentials now or mark integration passed."
+      "notes": "D55 supersedes D31 deferral for local Sandbox: code/template default VNPAY_DEFERRED=true stays fail-safe; private env enables Sandbox with the merchant's own credentials. Status stays externally_blocked until a real Sandbox success/fail/query run is recorded. Production and admin in-store QR remain closed."
     },
     {
       "id": "B08",
@@ -462,7 +463,8 @@
         "mobile-qa"
       ],
       "evidence": [
-        "Real browser: delivery25000/pickup0 server quotes/orders, double-submit exactly1 order, cart clear after success, cancel/reorder, owner/admin denial; expired countdown uses server_time/expires_at; all orders remain unpaid without verified payment."
+        "Real browser: delivery25000/pickup0 server quotes/orders, double-submit exactly1 order, cart clear after success, cancel/reorder, owner/admin denial; expired countdown uses server_time/expires_at; all orders remain unpaid without verified payment.",
+        "D55 2026-10-27T18:35:15+07:00: order detail \"Thanh toán qua VNPAY\" redirects to server payment_url (https only); /payment/vnpay-return forwards vnp_* to Laravel and shows verified status; Vietnamese messages for not configured/not payable/reconciliation; checkout/policies/admin copy updated. test:api 7 passed, typecheck and next build passed (Node 24.22.1). Browser e2e against real Sandbox not_run (credentials pending)."
       ],
       "actual_commit": null,
       "notes": "Non-payment checkout/order UI implemented and locally verified. Payment/result/QR actual integration deferred D31; not all acceptance checks passed, not done."
