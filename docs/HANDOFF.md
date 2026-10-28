@@ -1,5 +1,7 @@
 # D58 — Footer, banner và lên đầu trang đã kiểm tra local (2026-10-28T20:19:54+07:00)
 
+Source đã kiểm tra: `4a9b5242ffd147272575d8a8e9d9d0e40aa0c457`. Receipt hiện tại chỉ cập nhật tài liệu; giữ thay đổi next-env.d.ts có từ trước.
+
 Phần việc D58 hoàn tất trong phạm vi storefront. Source đổi: store-shell/home-storefront; component campaign-banner/scroll-to-top; cấu hình store-banners; 4 ảnh campaign; CSS footer được gom về storefront và bỏ39 selector cũ; verifier/asset sources/README/AGENTS/checkpoint đồng bộ. Không đổi backend, schema, nghiệp vụ hoặc canvas Figma.
 
 Kết quả:7 client tests/build21route/typecheck đạt trong copy preview riêng,64source file khớp. Browser375/768/1024/1440 không overflow; footer chỉ1 liên hệ/map/bản tin, map300×164 ngay dưới logo; banner giữa3feed, nguồn mobile/desktop đúng, link category thật; nút48px bình thường/reduced motion/keyboard trả y0 và focus main, dock ở footer để không đè form; xem nhanh/Escape/landscape và admin header đạt. Newsletter chỉ kiểm UI bằng2 mocked response, không gửi đăng ký xuống DB; mock đã gỡ.0 pageerror,1console422 có chủ ý. Asset hashes và readonly136giá/tồn khớp; không chạy lại backend suite (D56:127/1773).

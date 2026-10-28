@@ -11,7 +11,7 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "4a9b5242ffd147272575d8a8e9d9d0e40aa0c457",
   "git_dirty": true,
   "last_checkpoint_at": "2026-10-28T20:19:54+07:00",
   "last_test_run": {
@@ -231,7 +231,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "D58 before source commit; pre-existing generated frontend/next-env.d.ts preserved and excluded from task commit.",
+  "git_dirty_note": "D58 source committed; receipt currently being written. Pre-existing generated frontend/next-env.d.ts remains dirty and excluded intentionally.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -460,6 +460,6 @@
     },
     "preserved_user_work": "frontend/next-env.d.ts had .next/dev imports before work; bytes preserved and excluded from this task commit; original 3000/8000 processes never stopped by agent",
     "local_services": "Owned 3100/18082 and browsers stopped; final observed only MySQL3307; owner processes exited independently during work",
-    "source_commit": null
+    "source_commit": "4a9b5242ffd147272575d8a8e9d9d0e40aa0c457"
   }
 }
