@@ -20,6 +20,7 @@ GET /sanctum/csrf-cookie nằm ngoài prefix; browser nhận XSRF-TOKEN, gửi X
 | POST | /auth/login | identifier/password; regenerate session |
 | POST | /auth/logout | Hủy session và tái tạo CSRF |
 | GET | /auth/me | Chỉ trường user an toàn |
+| PATCH | /auth/profile | Chính mình; name,email,phone (ít nhất một email/phone); current_password khi đổi định danh; chuẩn hóa/unique, cấm role/user_id/password; đổi email xóa token reset cũ và chưa coi là đã xác minh |
 | POST | /auth/forgot-password | Generic202; email khách, CSRF/throttle, không lộ tài khoản tồn tại |
 | POST | /auth/reset-password | Token hash/hết hạn/một lần; đổi mật khẩu và thu hồi phiên cũ |
 

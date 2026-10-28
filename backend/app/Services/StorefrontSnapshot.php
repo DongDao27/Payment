@@ -33,7 +33,8 @@ class StorefrontSnapshot
                     $data = [
                         'categories' => CategoryResource::collection(Category::where('is_active', true)->orderBy('sort_order')->orderBy('id')->get())->resolve(),
                         'hot' => ProductResource::collection($catalog->query(['section' => 'hot'])->limit(12)->get())->resolve(),
-                        'bestseller' => ProductResource::collection($catalog->query(['section' => 'bestseller'])->limit(12)->get())->resolve(),
+                        'bestseller' => ProductResource::collection($catalog->query(['section' => 'bestseller'])->limit(7)->get())->resolve(),
+                        'brands' => $catalog->brands(),
                         'new' => ProductResource::collection($catalog->query(['section' => 'new'])->limit(12)->get())->resolve(),
                         'recommended' => ProductResource::collection($catalog->recommendations(null))->resolve(),
                     ];

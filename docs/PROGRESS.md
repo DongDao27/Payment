@@ -401,3 +401,13 @@ Tìm kiếm gợi ý từ API thật (250ms/6 kết quả), hủy phản hồi c
 PHP máy thật mặc định2M; thêm ini riêng uploads5M/post8M, scripts/start-backend.ps1 truyền scan-dir với --no-reload, Docker COPY và demo -d tương ứng. Browser PNG thật3.147.861byte upload201 qua tiến trình con; pdo_mysql/ini gốc giữ. Docker build/deploy chưa chạy. Dữ liệu chính chỉ đọc:136SKU/giá/tồn khớp, không sửa env/APP_KEY/workbook hoặc provider. QA session đã đóng/MySQL giữ; Figma V25 chưa cập nhật D60. Hướng dẫn/README/API/OpenAPI đồng bộ.
 
 D60 source đã commit: daf83026c31c7f5e2b4aab1709018b83fe418d8a.28file quét secret/runtime/env/size đạt; receipt chỉ ghi checkpoint, next-env.d.ts của owner giữ nguyên và không commit.
+
+D61 local_verified — 2026-10-29T02:51:26+07:00
+
+Bỏ welcome/header ad; nav Tất cả danh mục/Trang chủ/Đơn hàng; footer carousel lấy33thương hiệu/NXB có sản phẩm active từ metadata catalog, native scroll/nút44px, filter brand thật và cache storefront. Profile /account + PATCH/auth/profile cập nhật chính user MySQL, normalize/unique/ít nhất1identity, password hiện tại khi đổi định danh, xóa token reset email cũ, không đổi role/password/history; Store context/header và reload đồng bộ. Bỏ admin caption/eyebrow và chart doanh thu ở compact overview; báo cáo riêng giữ chart/filter/CSV.
+
+User chốt giảm ởDBchính và gỡdoanh số giả: đã giảm7SKU lần lượt11–17% (audit private), giữ137sản phẩm (136nguồn+1owner thêm),136tồnnguồn khớp,129giá khác giữ. Bán chạy max7paid/accepted theo lượng bán, hiện0do chưa có paid thật; không tạo fake fallback. BackupSQLprivate3.295.023byte, xóa1.000đơnDEMO và receipts/dependencies; giữ1đơn ngoài tập đó, khôngDROP database. Gỡ6file source demo/flag/style; test nghiệp vụ giữ.
+
+130backend tests/1777assertions/Pint đạt;7client/build22routes/typecheck đạt, 67sourcefrontend khớp copy QA, next-env củaowner giữ. Browser desktop/mobile carousel/filter, profile save/reload/password-error/identity update/customer+admin, report/CSV và route-smoke;0pageerror/0imagewarning. Không claim mọi thao tác hoặc provider thật đã chạy.
+
+FigmaV26:3page132frame/130prototype,7flow mỗi nền tảng,24SKU,2754reaction; landing riêng, max12screen/hàng từ trái sang phải, không boardbao; header/nav/profile/search/discount/footerbrands đồng bộ. Mock geometry/no-overlap/money/quantity5outcomes3channels/manual preservation/rollback/cancel đạt.66SVG tĩnh; browser desktop/home/profile và mobile/profile đã xem. ZIP6file CRC/source match SHA77d04fe6fff17d21638526b0f17ea41632d82ac07545219502c06545ffe96f54; output/figma/thuthanh-figma-clicon-v26-2026-10-29.zip. Canvas thật chưa mở, cần owner import/run/Present. External merchant/SMTP/deploy10k/Docker cònnot_run. QAserver/browser đã dừng, MySQL giữ.

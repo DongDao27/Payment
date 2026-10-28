@@ -34,7 +34,15 @@ function Catalog() {
     setError("");
     setSearch(params.get("q") ?? "");
     const safe = new URLSearchParams({ per_page: "12" });
-    for (const key of ["q", "category_id", "grade", "section", "sort", "page"])
+    for (const key of [
+      "q",
+      "brand",
+      "category_id",
+      "grade",
+      "section",
+      "sort",
+      "page",
+    ])
       if (params.get(key)) safe.set(key, params.get(key)!);
     api<Product[]>(`/products?${safe}`, { signal: abort.signal })
       .then((result) => {
@@ -72,7 +80,7 @@ function Catalog() {
         <span>
           {params.get("q")
             ? "Kết quả tìm kiếm"
-            : (category?.name ?? "Tất cả sản phẩm")}
+            : (params.get("brand") ?? category?.name ?? "Tất cả sản phẩm")}
         </span>
       </div>
       <div className="page-heading">
@@ -81,7 +89,7 @@ function Catalog() {
           <h1>
             {params.get("q")
               ? "Kết quả tìm kiếm"
-              : (category?.name ?? "Tất cả sản phẩm")}
+              : (params.get("brand") ?? category?.name ?? "Tất cả sản phẩm")}
           </h1>
           <p className="muted">
             {params.get("q")

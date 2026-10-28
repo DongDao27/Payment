@@ -6,8 +6,10 @@ use App\Actions\Auth\NormalizeIdentity;
 use App\Actions\Auth\RegisterCustomer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Services\ProfileService;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -44,6 +46,14 @@ class AuthController extends Controller
     public function me(Request $request): JsonResponse
     {
         return ApiResponse::data(new UserResource($request->user()));
+    }
+
+    public function updateProfile(ProfileRequest $request, ProfileService $profiles): JsonResponse
+    {
+        $user = $profiles->update($request->user()->id, $request->validated());
+        Auth::guard('web')->setUser($user);
+
+        return ApiResponse::data(new UserResource($user));
     }
 
     public function logout(Request $request): Response

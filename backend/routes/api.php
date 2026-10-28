@@ -35,6 +35,7 @@ Route::prefix('v1')->middleware(['web', AuthenticateSession::class])->group(func
     Route::post('auth/reset-password', [PasswordRecoveryController::class, 'reset'])->middleware('throttle:password-recovery');
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('auth/me', [AuthController::class, 'me']);
+        Route::patch('auth/profile', [AuthController::class, 'updateProfile'])->middleware('throttle:10,1');
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::middleware('role:customer')->group(function () {
             Route::get('cart', [CartController::class, 'index']);

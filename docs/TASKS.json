@@ -1328,5 +1328,85 @@
       "Figma V25 unchanged; D60 web differences require a later plugin sync"
     ],
     "runtime": "Owned browser and3100/18082 QA servers stopped; MySQL retained; isolated fixtures in thu_thanh_test only"
+  },
+  "storefront_account_completion": {
+    "decision": "D61",
+    "status": "done",
+    "verified_at": "2026-10-29T02:51:26+07:00",
+    "source_commit": null,
+    "scope": "Remove header strip, actual brand carousel/filter, DB-backed profile, concise admin, real-only bestseller max7, approved main discounts, synthetic-data removal, offline FigmaV26",
+    "backend": {
+      "tests": 130,
+      "assertions": 1777,
+      "result": "passed",
+      "duration_seconds": 21.662453,
+      "database": "MySQL8.4.13 thu_thanh_test",
+      "pint": "passed"
+    },
+    "frontend": {
+      "client_tests": 7,
+      "production_build": "passed22routes",
+      "typecheck": "passed",
+      "isolated_source_parity_files": 67,
+      "owner_next_env": "preserved/excluded"
+    },
+    "browser": {
+      "responsive": "375/768/1024/1440 no document overflow or welcome",
+      "carousel": "previous/next scrolling, brand filter returns matching catalog",
+      "profile": "save name, /auth/me reflects DB, reload persists, wrong current password rejected, correct password/email update, customer/admin account routes",
+      "admin": "overview has no daily revenue chart/caption, report link and CSV work, product/category/inventory/order/reconciliation pages accessible",
+      "routes": "home/products/policies/cart/checkout/orders/account/forgot/reset/login/admin/revenue and5admin pages smoke checked; see ignored .runtime/d61-browser.js",
+      "pageerrors": 0,
+      "image_warnings": 0,
+      "limitations": "No claim that every possible UI action or external provider was exercised.3rdparty map/SMTP/VNPAY remain external."
+    },
+    "data": {
+      "main_products": 137,
+      "original_stock_matches": 136,
+      "main_discounts": {
+        "TT-VH-001": 11,
+        "TT-VPP-001": 12,
+        "TT-DC-001": 13,
+        "TT-TT-001": 14,
+        "TT-QLN-001": 15,
+        "TT-VH-002": 16,
+        "TT-VPP-002": 17
+      },
+      "other_original_prices_unchanged": 129,
+      "bestseller": "0 currently; max7 ordered by accepted paid quantity, no fake fallback",
+      "synthetic_orders_removed": 1000,
+      "synthetic_receipts_remaining": 0,
+      "non_synthetic_order_preserved": 1,
+      "backup_private": ".runtime/archive/d61-thu-thanh-demo.sql",
+      "dedicated_demo_source": "seeder/command/test/router/start/prepare removed; frontend demo flag/style removed; ordinary business tests retained",
+      "no_main_data_reset": true
+    },
+    "figma": {
+      "version": "V26",
+      "pages": 3,
+      "frames": 132,
+      "prototype_frames": 130,
+      "flows_per_platform": 7,
+      "products": 24,
+      "rows": "left-to-right max12screens/row; landing review page separate",
+      "reactions": 2754,
+      "mock": "passed geometry/quantity/payment5outcomes3channels/manual images/atomic rollback/cancel",
+      "svg_browser": "desktop home/profile and mobile profile rendered; static preview only; temporary server favicon404/client disconnect not app issue",
+      "preview_files": 66,
+      "package": {
+        "artifact": "output/figma/thuthanh-figma-clicon-v26-2026-10-29.zip",
+        "sha256": "77d04fe6fff17d21638526b0f17ea41632d82ac07545219502c06545ffe96f54",
+        "files": 6,
+        "svg_previews": 66,
+        "svg_previews_packaged": 0,
+        "bytes": 14838243,
+        "crc": "passed",
+        "source_byte_match": "passed",
+        "manifest_count": 1
+      },
+      "live_canvas": "not_run; import plugin and Present required"
+    },
+    "external": "Merchant VNPAY, SMTP, Docker deploy and staging10k not_run; release gate unchanged",
+    "runtime": "QA browsers/3100/18082/18091 stopped; MySQL retained; main private env/key/uploads/workbook and manual product137 preserved"
   }
 }

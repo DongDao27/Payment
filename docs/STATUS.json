@@ -5,42 +5,41 @@
   "phase": "FRONTEND",
   "current_task_id": "F03",
   "next_task_id": "B07",
-  "implementation_state": "D60_web_fixes_locally_verified_external_acceptance_pending",
+  "implementation_state": "D61_web_and_FigmaV26_locally_verified_external_acceptance_pending",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "daf83026c31c7f5e2b4aab1709018b83fe418d8a",
+  "last_verified_commit": null,
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-29T00:56:33+07:00",
+  "last_checkpoint_at": "2026-10-29T02:51:26+07:00",
   "last_test_run": {
-    "at": "2026-10-29T00:38:36+07:00",
+    "at": "2026-10-29T02:51:26+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
     "result": "passed",
-    "tests": 129,
-    "assertions": 1812,
-    "duration_seconds": 29.830237,
+    "tests": 130,
+    "assertions": 1777,
     "database": "MySQL8.4.13 thu_thanh_test Windows127.0.0.1:3307",
     "evidence": "backend/storage/logs/phpunit.xml"
   },
   "figma": {
-    "status": "V25_local_verified_owner_canvas_pending",
+    "status": "V26_local_verified_owner_canvas_pending",
     "url": null,
     "node_ids": [],
     "source": "thu-thanh-figma-clicon",
-    "manifest_version": "V25",
-    "authorization_decision": "D59",
+    "manifest_version": "V26",
+    "authorization_decision": "D61",
     "reference_url": "https://nhasachphuongnam.com/",
     "reference_nodes": [],
     "flow_count_per_platform": 7,
-    "screen_count": 126,
-    "prototype_link_count": 2518,
+    "screen_count": 132,
+    "prototype_link_count": 2754,
     "products": 24,
-    "artifact": "output/figma/thuthanh-figma-clicon-v25-2026-10-28.zip",
+    "artifact": "output/figma/thuthanh-figma-clicon-v26-2026-10-29.zip",
     "products_per_category": 4,
     "purchase_demo_sku": "TT-SGK-002",
-    "artifact_sha256": "08fbf133dd1c1b9c0e25830c6aaed16349e7b9ae946d92d43b1b426377ba5aa5",
+    "artifact_sha256": "77d04fe6fff17d21638526b0f17ea41632d82ac07545219502c06545ffe96f54",
     "sample_qr_count": 3,
     "prototype_screen_count": 124,
     "review_frame_count": 2,
@@ -54,7 +53,7 @@
       300,
       164
     ],
-    "web_sync_pending": "D60 header/search/product-editor web fixes not applied to V25"
+    "web_sync_pending": null
   },
   "blockers": [
     "VNPAY Sandbox code ready (D55) but real Sandbox transaction not_run: merchant TMN code/hash secret pending; Production deferred; strict backend gate not passed.",
@@ -575,5 +574,85 @@
       "Figma V25 unchanged; D60 web differences require a later plugin sync"
     ],
     "runtime": "Owned browser and3100/18082 QA servers stopped; MySQL retained; isolated fixtures in thu_thanh_test only"
+  },
+  "storefront_account_completion": {
+    "decision": "D61",
+    "status": "done",
+    "verified_at": "2026-10-29T02:51:26+07:00",
+    "source_commit": null,
+    "scope": "Remove header strip, actual brand carousel/filter, DB-backed profile, concise admin, real-only bestseller max7, approved main discounts, synthetic-data removal, offline FigmaV26",
+    "backend": {
+      "tests": 130,
+      "assertions": 1777,
+      "result": "passed",
+      "duration_seconds": 21.662453,
+      "database": "MySQL8.4.13 thu_thanh_test",
+      "pint": "passed"
+    },
+    "frontend": {
+      "client_tests": 7,
+      "production_build": "passed22routes",
+      "typecheck": "passed",
+      "isolated_source_parity_files": 67,
+      "owner_next_env": "preserved/excluded"
+    },
+    "browser": {
+      "responsive": "375/768/1024/1440 no document overflow or welcome",
+      "carousel": "previous/next scrolling, brand filter returns matching catalog",
+      "profile": "save name, /auth/me reflects DB, reload persists, wrong current password rejected, correct password/email update, customer/admin account routes",
+      "admin": "overview has no daily revenue chart/caption, report link and CSV work, product/category/inventory/order/reconciliation pages accessible",
+      "routes": "home/products/policies/cart/checkout/orders/account/forgot/reset/login/admin/revenue and5admin pages smoke checked; see ignored .runtime/d61-browser.js",
+      "pageerrors": 0,
+      "image_warnings": 0,
+      "limitations": "No claim that every possible UI action or external provider was exercised.3rdparty map/SMTP/VNPAY remain external."
+    },
+    "data": {
+      "main_products": 137,
+      "original_stock_matches": 136,
+      "main_discounts": {
+        "TT-VH-001": 11,
+        "TT-VPP-001": 12,
+        "TT-DC-001": 13,
+        "TT-TT-001": 14,
+        "TT-QLN-001": 15,
+        "TT-VH-002": 16,
+        "TT-VPP-002": 17
+      },
+      "other_original_prices_unchanged": 129,
+      "bestseller": "0 currently; max7 ordered by accepted paid quantity, no fake fallback",
+      "synthetic_orders_removed": 1000,
+      "synthetic_receipts_remaining": 0,
+      "non_synthetic_order_preserved": 1,
+      "backup_private": ".runtime/archive/d61-thu-thanh-demo.sql",
+      "dedicated_demo_source": "seeder/command/test/router/start/prepare removed; frontend demo flag/style removed; ordinary business tests retained",
+      "no_main_data_reset": true
+    },
+    "figma": {
+      "version": "V26",
+      "pages": 3,
+      "frames": 132,
+      "prototype_frames": 130,
+      "flows_per_platform": 7,
+      "products": 24,
+      "rows": "left-to-right max12screens/row; landing review page separate",
+      "reactions": 2754,
+      "mock": "passed geometry/quantity/payment5outcomes3channels/manual images/atomic rollback/cancel",
+      "svg_browser": "desktop home/profile and mobile profile rendered; static preview only; temporary server favicon404/client disconnect not app issue",
+      "preview_files": 66,
+      "package": {
+        "artifact": "output/figma/thuthanh-figma-clicon-v26-2026-10-29.zip",
+        "sha256": "77d04fe6fff17d21638526b0f17ea41632d82ac07545219502c06545ffe96f54",
+        "files": 6,
+        "svg_previews": 66,
+        "svg_previews_packaged": 0,
+        "bytes": 14838243,
+        "crc": "passed",
+        "source_byte_match": "passed",
+        "manifest_count": 1
+      },
+      "live_canvas": "not_run; import plugin and Present required"
+    },
+    "external": "Merchant VNPAY, SMTP, Docker deploy and staging10k not_run; release gate unchanged",
+    "runtime": "QA browsers/3100/18082/18091 stopped; MySQL retained; main private env/key/uploads/workbook and manual product137 preserved"
   }
 }

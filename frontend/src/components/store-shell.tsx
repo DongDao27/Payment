@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import brands from "@/lib/brands.json";
+import { BrandCarousel } from "./brand-carousel";
 import { NewsletterForm } from "./newsletter-form";
 import { usePathname } from "next/navigation";
 import { type ReactNode } from "react";
@@ -37,15 +37,9 @@ export function StoreShell({ children }: { children: ReactNode }) {
   const count = cart?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
   return (
     <>
-      {process.env.NEXT_PUBLIC_DEMO_MODE === "1" && (
-        <div className="demo-environment" role="status">
-          Môi trường demo — dữ liệu bán hàng giả lập
-        </div>
-      )}
       <a href="#main" className="skip-link">
         Đến nội dung chính
       </a>
-      <div className="announcement">Chào mừng đến với nhà sách Thu Thanh</div>
       <header className={`site-header${adminArea ? " admin-site-header" : ""}`}>
         <div className="header-inner">
           {!adminArea && (
@@ -64,6 +58,7 @@ export function StoreShell({ children }: { children: ReactNode }) {
                 </summary>
                 <div className="dropdown">
                   <strong>{user.name}</strong>
+                  <Link href="/account">Thông tin cá nhân</Link>
                   <Link href={user.role === "admin" ? "/admin" : "/orders"}>
                     {user.role === "admin"
                       ? "Quản lý cửa hàng"
@@ -119,7 +114,7 @@ export function StoreShell({ children }: { children: ReactNode }) {
               aria-current={path.startsWith("/orders") ? "page" : undefined}
             >
               <Icon name="box" size={20} />
-              Đơn hàng của tôi
+              Đơn hàng
             </Link>
             <span className="nav-location">Nhà sách tại Đà Nẵng</span>
           </div>
@@ -130,24 +125,7 @@ export function StoreShell({ children }: { children: ReactNode }) {
       </main>
       {!adminArea && (
         <footer className="site-footer">
-          <section
-            className="container footer-brands"
-            aria-label="Các nhãn hàng"
-          >
-            <div className="brand-grid">
-              {brands.map((brand) => (
-                <div className="brand-tile" key={brand.name}>
-                  <Image
-                    src={brand.src}
-                    alt={brand.name}
-                    width={brand.width}
-                    height={brand.height}
-                    sizes="(max-width: 700px) 40vw, 150px"
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
+          <BrandCarousel />
           <div className="container footer-grid">
             <div className="footer-brand">
               <Brand />
@@ -238,7 +216,7 @@ function CategoryMenu() {
     <details className="category-menu">
       <summary>
         <Icon name="menu" />
-        <span>Danh mục</span>
+        <span>Tất cả danh mục</span>
       </summary>
       <nav className="dropdown" aria-label="Danh sách danh mục">
         <Link

@@ -194,10 +194,12 @@ export function RevenuePanel({ compact = false }: { compact?: boolean }) {
           </button>
         </form>
       )}
-      <p className="muted">
-        Tiền hàng sau giảm giá của đơn đã xác nhận thanh toán. Phí giao hàng
-        thống kê riêng. Thời gian theo giờ Việt Nam.
-      </p>
+      {!compact && (
+        <p className="muted">
+          Tiền hàng sau giảm giá của đơn đã xác nhận thanh toán. Phí giao hàng
+          thống kê riêng. Thời gian theo giờ Việt Nam.
+        </p>
+      )}
       {error && (
         <Notice error>
           {error}{" "}
@@ -226,15 +228,17 @@ export function RevenuePanel({ compact = false }: { compact?: boolean }) {
               <strong>{money(data.totals.unallocated_receipts)}</strong>
             </div>
           </div>
-          <TimeSeriesChart
-            title={`Doanh thu theo ${grouping === "week" ? "tuần" : grouping === "month" ? "tháng" : "ngày"}`}
-            points={data.series.map((row) => ({
-              date: row.period,
-              value: row.accepted_sales,
-            }))}
-            currency
-            period={grouping}
-          />
+          {!compact && (
+            <TimeSeriesChart
+              title={`Doanh thu theo ${grouping === "week" ? "tuần" : grouping === "month" ? "tháng" : "ngày"}`}
+              points={data.series.map((row) => ({
+                date: row.period,
+                value: row.accepted_sales,
+              }))}
+              currency
+              period={grouping}
+            />
+          )}
           {!compact && (
             <div className="data-table-wrap">
               <table>

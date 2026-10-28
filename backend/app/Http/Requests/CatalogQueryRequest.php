@@ -20,6 +20,7 @@ class CatalogQueryRequest extends StrictFormRequest
             'page' => ['sometimes', 'integer', 'min:1'],
             'per_page' => ['sometimes', 'integer', 'between:1,100'],
             'q' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'brand' => ['sometimes', 'string', 'max:255'],
             'category_id' => ['sometimes', 'integer', 'min:1'],
             'grade' => ['sometimes', 'integer', 'between:1,12'],
             'section' => ['sometimes', Rule::in(['hot', 'bestseller', 'new'])],

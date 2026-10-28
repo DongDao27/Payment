@@ -16,8 +16,7 @@ class AdminPassword extends Command
 
     public function handle(): int
     {
-        $localDemo = app()->environment('demo') && config('app.env') === 'local' && DB::connection()->getDatabaseName() === 'thu_thanh_demo';
-        if ((! app()->environment(['local', 'testing']) && ! $localDemo) || ! $this->input->isInteractive()) {
+        if (! app()->environment(['local', 'testing']) || ! $this->input->isInteractive()) {
             $this->error('This command requires an interactive local development terminal.');
 
             return self::FAILURE;

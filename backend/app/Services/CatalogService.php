@@ -34,6 +34,10 @@ class CatalogService
                 $query->where('products.'.$field, $filters[$field]);
             }
         }
+        if (isset($filters['brand'])) {
+            $brand = str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $filters['brand']);
+            $query->whereRaw("CONCAT(description, CHAR(10)) LIKE ? ESCAPE '!'", ['%NXB / Thương hiệu: '.$brand."\n%"]);
+        }
         if (($filters['section'] ?? null) === 'hot') {
             $query->where('is_hot', true);
         }
@@ -95,6 +99,17 @@ class CatalogService
         }
 
         return $result;
+    }
+
+    public function brands(): array
+    {
+        return Product::query()->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
+            ->select(['id', 'description'])->toBase()->get()->map(function ($product) {
+                preg_match('/^NXB \/ Thương hiệu: (.+)$/mu', $product->description ?? '', $match);
+
+                return isset($match[1]) ? trim($match[1]) : null;
+            })->filter()->countBy()->sortKeys()->map(fn ($count, $name) => ['name' => $name, 'product_count' => $count])->values()->all();
     }
 
     public function archive(Product $product, int $version): void

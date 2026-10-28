@@ -1,6 +1,6 @@
 # Bắt đầu và tiếp tục dự án
 
-Hiện hành29/10/2026: Next.js16 + Laravel12 + MySQL8.4; web D60 sửa gợi ý tìm kiếm, tạo sản phẩm/ảnh và bỏ banner header. PluginV25 đã đồng bộ đến web D58, chưa cập nhật thay đổi D60. README là trang giới thiệu/cách chạy mới nhất; [hướng dẫn web/admin](docs/CHAY-WEB-VA-LARAVEL.md).
+Hiện hành29/10/2026: web D61 có hồ sơ tài khoản, footer thương hiệu thật, header/nav/admin gọn; pluginV26 đồng bộ, flow tối đa12màn/hàng và landing riêng. README là trang giới thiệu/cách chạy mới nhất; [hướng dẫn web/admin](docs/CHAY-WEB-VA-LARAVEL.md).
 
 ## Đọc đầu phiên
 
@@ -10,7 +10,7 @@ Backend strict gate vẫn externally_blocked; D34 cho phép frontend trong phạ
 
 ## Giữ dữ liệu
 
-`thu_thanh` có136sản phẩm/giá/tồn/admin hiện có; `thu_thanh_demo` có1.000đơn giả lập; `thu_thanh_test` chỉ dành kiểm thử. Không xóa/import lại/reset dữ liệu hoặc tạo thêm admin để sửa giao diện. Giữ env/APP_KEY/uploads/workbook và `.runtime/mysql-data`.
+`thu_thanh` có137sản phẩm; D61 chỉ giảm11–17% cho7SKU theo yêu cầu, giữ tồn/admin; đã xóa1.000đơn giả lập và gỡ code demo; `thu_thanh_test` chỉ dành kiểm thử. Không xóa/import lại/reset dữ liệu hoặc tạo thêm admin để sửa giao diện. Giữ env/APP_KEY/uploads/workbook và `.runtime/mysql-data`.
 
 Giao25k chỉcheckout, pickup0, không đổi trả/hoàn tiền; doanh thu tiền hàng sau giảm, phí giao riêng. VNPAY Sandbox có code D55, user xác nhận chưa giao dịch merchant thật; SMTP/hosting/10k chưa nghiệm thu. Không dùng dữ liệu demo làm bằng chứng doanh thu thật.
 

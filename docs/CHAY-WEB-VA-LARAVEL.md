@@ -2,7 +2,7 @@
 
 ## Máy Windows hiện tại
 
-Không nhập lại sản phẩm hoặc tạo lại APP_KEY. MySQL portable dùng `127.0.0.1:3307`, dữ liệu ở `.runtime/mysql-data`. `thu_thanh` là dữ liệu cửa hàng, `thu_thanh_demo` có 1.000 đơn giả lập riêng, `thu_thanh_test` dành kiểm thử. Không cần XAMPP, MongoDB hoặc extension VS Code.
+Không nhập lại sản phẩm hoặc tạo lại APP_KEY. MySQL portable dùng `127.0.0.1:3307`, dữ liệu ở `.runtime/mysql-data`. `thu_thanh` là dữ liệu cửa hàng, `thu_thanh_test` dành kiểm thử. Không cần XAMPP, MongoDB hoặc extension VS Code.
 
 Terminal 1:
 
@@ -43,13 +43,17 @@ Mở http://localhost:3000/admin. Trong backend: `php artisan admin:account` xem
 
 **Tìm kiếm:** gõ trên header để xem tối đa 6 gợi ý từ catalog; nhấn sản phẩm để xem nhanh. Phím mũi tên/Enter chọn gợi ý, Escape đóng; Enter khi chưa chọn gợi ý hoặc **Xem tất cả kết quả** mở trang **Kết quả tìm kiếm**. Header không còn banner quảng cáo; banner trong trang chủ vẫn giữ.
 
+## Chỉnh sửa thông tin cá nhân
+
+Đăng nhập → Tài khoản → Thông tin cá nhân (`/account`). Sửa tên, email, số điện thoại rồi Lưu thay đổi. Đổi email/phone cần mật khẩu hiện tại; Laravel kiểm unique và cập nhật MySQL, header nhận thông tin mới. Email mới chưa được coi là đã xác minh; token khôi phục cũ bị hủy.
+
 ## Máy mới
 
 1. Clone Payment; cài PHP 8.4, Composer 2, MySQL 8.4, Node 22 và Git; bật pdo_mysql cùng extension theo Composer.
 2. Trong backend chạy `composer install`, copy `.env.example` thành `.env`, tạo database/user riêng và điền credentials. Dùng port MySQL thực tế của máy mới.
-3. Copy `.env.testing.example` thành `.env.testing`, trỏ database **thu_thanh_test** riêng; không dùng database chính hoặc demo.
+3. Copy `.env.testing.example` thành `.env.testing`, trỏ database **thu_thanh_test** riêng; không dùng database chính .
 4. Chỉ chạy `php artisan key:generate` khi env mới chưa có khóa. Review migration rồi chạy `php artisan migrate`, `php artisan db:seed --class=CategorySeeder`, `php artisan storage:link`, `php artisan app:environment-check`.
-5. Tạo admin tương tác nếu cần. Khôi phục database/uploads được cấp hoặc thêm sản phẩm qua admin; clone không tự có 136 SKU/1.000 đơn. Không migrate:fresh database đang dùng.
+5. Tạo admin tương tác nếu cần. Khôi phục database/uploads được cấp hoặc thêm sản phẩm qua admin; clone không tự có dữ liệu catalog. Không migrate:fresh database đang dùng.
 6. Trong frontend chạy `npm ci`; `.env.example` là mẫu tùy chọn cho `.env.local`, mặc định Laravel ở localhost8000. `LARAVEL_INTERNAL_URL` là cấu hình server; không đưa secret vào NEXT_PUBLIC.
 7. Chạy server và kiểm backend test/Pint, frontend test/build/typecheck, docs checker từ gốc repo.
 
@@ -83,24 +87,10 @@ Chủ dự án mới hoàn tất code/cấu hình, chưa giao dịch merchant th
 
 `/forgot-password` nhận email khách, `/reset-password` mở từ link riêng dùng một lần/60 phút. Token được hash; có CSRF, throttle, generic response và thu hồi phiên cũ sau đổi mật khẩu. Phone-only liên hệ nhà sách, chưa có SMS; admin dùng CLI riêng.
 
-Trong backend/.env private, cấu hình MAIL_MAILER=smtp, MAIL_HOST, MAIL_PORT, MAIL_SCHEME, MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM_ADDRESS, MAIL_FROM_NAME và FRONTEND_URL đúng HTTPS khi deploy. Chạy worker; config:clear ở local hoặc rebuild config cache/restart worker khi deploy. Log/array chỉ dành phát triển, production từ chối dùng chúng để giả gửi mail. SMTP thật chưa nghiệm thu; không gửi campaign cho tài khoản demo.
-
-## Demo riêng
-
-Nếu demo đã được chuẩn bị, dừng Next cũ rồi chạy hai terminal từ gốc repo:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/start-demo.ps1 -Component backend
-```
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/start-demo.ps1 -Component frontend
-```
-
-Laravel demo dùng port18081, Next dùng3000; DB/cookie/key/storage riêng. `php scripts/prepare-demo.php` chỉ chuẩn bị portable local có guard/seed idempotent, không dùng trên hosting production. Tự chọn mật khẩu bằng `php artisan admin:password --env=demo`; worker/scheduler thêm --env=demo. Không chạy hai Next cùng thư mục/port hoặc copy env demo đè env thật.
+Trong backend/.env private, cấu hình MAIL_MAILER=smtp, MAIL_HOST, MAIL_PORT, MAIL_SCHEME, MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM_ADDRESS, MAIL_FROM_NAME và FRONTEND_URL đúng HTTPS khi deploy. Chạy worker; config:clear ở local hoặc rebuild config cache/restart worker khi deploy. Log/array chỉ dành phát triển, production từ chối dùng chúng để giả gửi mail. SMTP thật chưa nghiệm thu; chưa mở gửi bản tin hàng loạt.
 
 ## Sao lưu, Figma và deploy
 
-Giữ env/APP_KEY, MySQL data, workbook và uploads. Ảnh thật ở backend/storage/app/public, ảnh demo ở .runtime/demo-storage/app/public; database giữ đường dẫn. Không sửa trực tiếp file mysql-data.
+Giữ env/APP_KEY, MySQL data, workbook và uploads. Ảnh thật ở backend/storage/app/public, database giữ đường dẫn. Không sửa trực tiếp file mysql-data.
 
-[Import plugin Figma V25](../thu-thanh-figma-clicon/HUONG-DAN.md) đã đồng bộ footer/banner D58; canvas không tự cập nhật khi sửa web, cần chạy lại builder. [README](../README.md) ghi tổng quan/giới hạn; [deploy](../deploy/README.md) ghi cấu hình, backup, cache và tải. Chưa nghiệm thu production hoặc 10k người đồng thời.
+[Import plugin Figma V26](../thu-thanh-figma-clicon/HUONG-DAN.md) đã đồng bộ D60–D61; flow tối đa12màn/hàng, landing riêng; canvas không tự cập nhật khi sửa web, cần chạy lại builder. [README](../README.md) ghi tổng quan/giới hạn; [deploy](../deploy/README.md) ghi cấu hình, backup, cache và tải. Chưa nghiệm thu production hoặc 10k người đồng thời.

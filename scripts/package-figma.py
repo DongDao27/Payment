@@ -15,7 +15,7 @@ assert (source / 'code.js').read_text(encoding='utf-8') == expected
 version=int(re.search(r'V(\d+)',json.loads((source/'manifest.json').read_text(encoding='utf-8'))['name']).group(1))
 files = [source / name for name in ['manifest.json', 'code.js', 'ui.html', 'build.py', 'HUONG-DAN.md', 'ICONS-LICENSE.txt', 'LUONG-THIET-KE.json', 'src/plugin.js', 'src/data.json', 'xem-truoc/index.html']]
 previews = sorted((source / 'xem-truoc').glob('*.svg'))
-assert len(previews) == (60 if version >=23 else 58 if version >=22 else 56)
+assert len(previews) == (66 if version >=26 else 60 if version >=23 else 58 if version >=22 else 56)
 for preview in previews:
     ET.parse(preview)
 if version>=22:

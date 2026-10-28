@@ -27,6 +27,13 @@ type Store = {
   authLoading: boolean;
   cart: Cart | null;
   categories: Category[];
+  brands: { name: string; product_count: number }[];
+  updateProfile: (input: {
+    name: string;
+    email: string | null;
+    phone: string | null;
+    current_password?: string;
+  }) => Promise<User>;
   requireLogin: () => void;
   requireRegistration: () => void;
   openProduct: (product: Product) => void;
@@ -49,6 +56,25 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [authLoading, setAuthLoading] = useState(true);
   const [cart, setCart] = useState<Cart | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [brands, setBrands] = useState<
+    { name: string; product_count: number }[]
+  >([]);
+  const updateProfile = useCallback(
+    async (input: {
+      name: string;
+      email: string | null;
+      phone: string | null;
+      current_password?: string;
+    }) => {
+      const result = await api<User>("/auth/profile", {
+        method: "PATCH",
+        body: input,
+      });
+      setUser(result.data);
+      return result.data;
+    },
+    [],
+  );
   const [showAuth, setShowAuth] = useState(false);
   const [authRegister, setAuthRegister] = useState(false);
   const requireLogin = useCallback(() => {
@@ -79,7 +105,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const abort = new AbortController();
     publicStorefront()
       .then((result) => {
-        if (!abort.signal.aborted) setCategories(result.data.categories);
+        if (!abort.signal.aborted) {
+          setCategories(result.data.categories);
+          setBrands(result.data.brands ?? []);
+        }
       })
       .catch(() => {});
     const mayHaveSession = document.cookie
@@ -132,6 +161,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         authLoading,
         cart,
         categories,
+        brands,
+        updateProfile,
         refreshCart,
         refreshCategories,
         requireLogin,

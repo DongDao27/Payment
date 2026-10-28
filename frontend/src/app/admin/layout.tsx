@@ -16,13 +16,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </div>
         <div className="page-heading">
           <div>
-            <span className="eyebrow muted">NHÀ SÁCH THU THANH</span>
             <h1>Quản lý cửa hàng</h1>
           </div>
         </div>
         <div className="admin-workspace">
           <nav className="admin-nav" aria-label="Quản lý cửa hàng">
-            <div className="admin-nav-caption">KHÔNG GIAN QUẢN TRỊ</div>
             {(
               [
                 ["/admin", "Tổng quan", "overview"],

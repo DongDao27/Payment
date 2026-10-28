@@ -1,3 +1,13 @@
+# D61 — Web và pluginV26 đã kiểm tra local (2026-10-29T02:51:26+07:00)
+
+TaskD61 done trong phạm vi source/local; chưa có source commit tại checkpoint này. Sửa shell/carousel/catalog brand/filter, profileAPI/form/context, admin compact view, snapshot max7; gỡ demo source, cập nhật native pluginV26/test/package và hướng dẫn.130test/1777assertion/Pint;7client/build22route/typecheck; browser profileDB+carousel+report/CSV và route-smoke responsive đạt,0pageerror/warning. 67frontend source file khớp QA copy; next-env.d.ts owner giữ/khôngstage.
+
+Main137sản phẩm,7discount11–17% đã chốt trongDECISIONS/auditprivate,136tồnnguồn và129giá không đổi;0paid thật nên bestselling trống và không gán fake. Đãbackup .runtime/archive/d61-thu-thanh-demo.sql, xóa1.000đơnDEMO/receiptgiả/dependencies, giữ1đơn khác; database cũ khôngDROP vì có dòng ngoài tập synthetic. Gỡ seeder/command/router/start/prepare vàflagdemo; giữ ordinary tests. Không reset main/env/key/uploads/workbook hoặc xóa sản phẩm owner vừa thêm.
+
+Gói output/figma/thuthanh-figma-clicon-v26-2026-10-29.zip SHA77d04fe6fff17d21638526b0f17ea41632d82ac07545219502c06545ffe96f54:6file,66SVG ngoàiZIP,3page/132frame/7flow/24SKU. Max12màn/hàng, landingpage riêng; profile/search/success và carousel native. Mock/preview không thay canvas thật; người dùng importmanifestV26 rồi Cập nhật thiết kế/Present. Figma vẫn có các trạng thái thiết kế thanh toán để duyệt, không gọi provider hoặc tạo doanh số.
+
+Chạy: mysql-local.ps1 -Action start; scripts/start-backend.ps1; frontend npm run dev; Ctrl+F5. Hồ sơ /account trong menu Tài khoản. Ship25k checkout/pickup0/no-refund/revenue saugiảm/shipriêng vẫn giữ. QA3100/18082/18091/browser dừng, MySQL giữ. VNPAY merchant/SMTP/Docker/staging10k pending; không tuyên bố mọi chức năng đã nghiệm thu production. Next B07 khi có credentials/hạ tầng.
+
 # D60 — sửa web đã kiểm tra local (2026-10-29T00:38:36+07:00)
 
 Task D60 done trong phạm vi web; source đã kiểm tra `daf83026c31c7f5e2b4aab1709018b83fe418d8a`; receipt chỉ cập nhật checkpoint. Thay đổi: search component/shell/listing, editor ảnh+slug tự sinh, ảnh admin/cart, CatalogService/ProductRequest/admin detail API, upload ini/launcher/Docker/demo và hướng dẫn. Không đổi schema hoặc nghiệp vụ tiền/tồn/quyền.

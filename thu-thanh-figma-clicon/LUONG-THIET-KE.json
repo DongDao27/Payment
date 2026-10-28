@@ -8,20 +8,20 @@
         "name": "Landing page · Máy tính",
         "x": 0,
         "y": 0,
-        "contentHeight": "4695.042410203019"
+        "contentHeight": "4187.042410203019"
       },
       {
         "id": "landingMobile",
         "name": "Landing page · Điện thoại",
         "x": 2400,
         "y": 0,
-        "contentHeight": "5731.740833333333"
+        "contentHeight": "4887.740833333333"
       }
     ]
   },
   {
     "platform": "01 · Máy tính · thuthanh Clicon",
-    "layout": "flat-horizontal",
+    "layout": "flow-rows-max12",
     "flows": [
       {
         "name": "01 · Khám phá sách",
@@ -31,82 +31,89 @@
             "name": "Landing page · Máy tính",
             "x": 740,
             "y": 0,
-            "contentHeight": "4695.042410203019"
+            "contentHeight": "4187.042410203019"
           },
           {
             "id": "catalog",
             "name": "Danh sách sản phẩm",
             "x": 740,
             "y": 1620,
-            "contentHeight": "1988"
+            "contentHeight": "1916"
+          },
+          {
+            "id": "search",
+            "name": "Gợi ý tìm kiếm",
+            "x": 2980,
+            "y": 1620,
+            "contentHeight": "1582"
           },
           {
             "id": "category1",
             "name": "Sách văn học",
-            "x": 2980,
+            "x": 5220,
             "y": 1620,
-            "contentHeight": "1988"
+            "contentHeight": "1916"
           },
           {
             "id": "category2",
             "name": "Văn phòng phẩm",
-            "x": 5220,
+            "x": 7460,
             "y": 1620,
-            "contentHeight": "1988"
+            "contentHeight": "1916"
           },
           {
             "id": "category3",
             "name": "Đồ chơi",
-            "x": 7460,
+            "x": 9700,
             "y": 1620,
-            "contentHeight": "1988"
+            "contentHeight": "1916"
           },
           {
             "id": "category4",
             "name": "Truyện tranh",
-            "x": 9700,
+            "x": 11940,
             "y": 1620,
-            "contentHeight": "1988"
+            "contentHeight": "1916"
           },
           {
             "id": "category5",
             "name": "Quà lưu niệm",
-            "x": 11940,
+            "x": 14180,
             "y": 1620,
-            "contentHeight": "1988"
+            "contentHeight": "1916"
           },
           {
             "id": "detail",
             "name": "Thông tin sách",
-            "x": 14180,
+            "x": 16420,
             "y": 1620,
-            "contentHeight": "2262"
+            "contentHeight": "2190"
           },
           {
             "id": "quick",
-            "name": "Xem nhanh sản phẩm",
-            "x": 16420,
-            "y": 1620,
-            "contentHeight": ""
-          },
-          {
-            "id": "quickTwo",
             "name": "Xem nhanh sản phẩm",
             "x": 18660,
             "y": 1620,
             "contentHeight": ""
           },
           {
-            "id": "quickSigned",
+            "id": "quickTwo",
             "name": "Xem nhanh sản phẩm",
             "x": 20900,
             "y": 1620,
             "contentHeight": ""
           },
           {
-            "id": "quickSignedTwo",
+            "id": "quickSigned",
             "name": "Xem nhanh sản phẩm",
             "x": 23140,
+            "y": 1620,
+            "contentHeight": ""
+          },
+          {
+            "id": "quickSignedTwo",
+            "name": "Xem nhanh sản phẩm",
+            "x": 25380,
             "y": 1620,
             "contentHeight": ""
           }
@@ -120,33 +127,47 @@
             "name": "Đăng nhập",
             "x": 740,
             "y": 3220,
-            "contentHeight": "1652"
+            "contentHeight": "1580"
           },
           {
             "id": "register",
             "name": "Tạo tài khoản",
             "x": 2980,
             "y": 3220,
-            "contentHeight": "1794"
+            "contentHeight": "1722"
+          },
+          {
+            "id": "account",
+            "name": "Thông tin cá nhân",
+            "x": 5220,
+            "y": 3220,
+            "contentHeight": "1676"
+          },
+          {
+            "id": "accountSaved",
+            "name": "Thông tin cá nhân",
+            "x": 7460,
+            "y": 3220,
+            "contentHeight": "1772"
           },
           {
             "id": "loginQuick",
             "name": "Đăng nhập",
-            "x": 5220,
+            "x": 9700,
             "y": 3220,
-            "contentHeight": "1652"
+            "contentHeight": "1580"
           },
           {
             "id": "loginQuickTwo",
             "name": "Đăng nhập",
-            "x": 7460,
+            "x": 11940,
             "y": 3220,
-            "contentHeight": "1652"
+            "contentHeight": "1580"
           },
           {
             "id": "adminLogin",
             "name": "Đăng nhập quản trị",
-            "x": 9700,
+            "x": 14180,
             "y": 3220,
             "contentHeight": "1080"
           }
@@ -160,63 +181,63 @@
             "name": "Giỏ hàng đang trống",
             "x": 740,
             "y": 4820,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "cart",
             "name": "Giỏ hàng",
             "x": 2980,
             "y": 4820,
-            "contentHeight": "1622"
+            "contentHeight": "1550"
           },
           {
             "id": "cartTwo",
             "name": "Giỏ hàng · Hai sản phẩm",
             "x": 5220,
             "y": 4820,
-            "contentHeight": "1622"
+            "contentHeight": "1550"
           },
           {
             "id": "delivery",
             "name": "Đặt hàng · Giao tận nhà",
             "x": 7460,
             "y": 4820,
-            "contentHeight": "1896"
+            "contentHeight": "1824"
           },
           {
             "id": "deliveryTwo",
             "name": "Giao tận nhà · Số lượng 2",
             "x": 9700,
             "y": 4820,
-            "contentHeight": "1896"
+            "contentHeight": "1824"
           },
           {
             "id": "pickup",
             "name": "Đặt hàng · Nhận tại cửa hàng",
             "x": 11940,
             "y": 4820,
-            "contentHeight": "1776"
+            "contentHeight": "1704"
           },
           {
             "id": "pickupTwo",
             "name": "Nhận tại cửa hàng · Số lượng 2",
             "x": 14180,
             "y": 4820,
-            "contentHeight": "1776"
+            "contentHeight": "1704"
           },
           {
             "id": "validation",
             "name": "Kiểm tra thông tin nhận hàng",
             "x": 16420,
             "y": 4820,
-            "contentHeight": "1896"
+            "contentHeight": "1824"
           },
           {
             "id": "pickupSuccess",
             "name": "Đặt trước thành công",
             "x": 18660,
             "y": 4820,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           }
         ]
       },
@@ -225,59 +246,59 @@
         "screens": [
           {
             "id": "orders",
-            "name": "Đơn hàng của tôi",
+            "name": "Đơn hàng",
             "x": 740,
             "y": 6420,
-            "contentHeight": "1548"
+            "contentHeight": "1512"
           },
           {
             "id": "ordersPaid",
-            "name": "Đơn hàng của tôi",
+            "name": "Đơn hàng",
             "x": 2980,
             "y": 6420,
-            "contentHeight": "1548"
+            "contentHeight": "1512"
           },
           {
             "id": "deliveryDetail",
             "name": "Chi tiết đơn giao tận nhà",
             "x": 5220,
             "y": 6420,
-            "contentHeight": "2290"
+            "contentHeight": "2218"
           },
           {
             "id": "pickupDetail",
             "name": "Chi tiết đơn đặt trước",
             "x": 7460,
             "y": 6420,
-            "contentHeight": "2290"
+            "contentHeight": "2218"
           },
           {
             "id": "pickupDetailTwo",
             "name": "Đơn đặt trước · Số lượng 2",
             "x": 9700,
             "y": 6420,
-            "contentHeight": "2290"
+            "contentHeight": "2218"
           },
           {
             "id": "paidOrder",
             "name": "Đơn hàng đã thanh toán",
             "x": 11940,
             "y": 6420,
-            "contentHeight": "2226"
+            "contentHeight": "2154"
           },
           {
             "id": "paidOrderTwo",
             "name": "Đơn đã thanh toán · Số lượng 2",
             "x": 14180,
             "y": 6420,
-            "contentHeight": "2226"
+            "contentHeight": "2154"
           },
           {
             "id": "paidPickupOrder",
             "name": "Đơn nhận tại cửa hàng đã thanh toán",
             "x": 16420,
             "y": 6420,
-            "contentHeight": "2226"
+            "contentHeight": "2154"
           },
           {
             "id": "cancelConfirm",
@@ -296,98 +317,98 @@
             "name": "Thanh toán đơn hàng",
             "x": 740,
             "y": 8020,
-            "contentHeight": "1850"
+            "contentHeight": "1778"
           },
           {
             "id": "paymentQrTwo",
             "name": "Thanh toán đơn hàng",
             "x": 2980,
             "y": 8020,
-            "contentHeight": "1850"
+            "contentHeight": "1778"
           },
           {
             "id": "pickupPaymentQr",
             "name": "Thanh toán tại cửa hàng",
             "x": 5220,
             "y": 8020,
-            "contentHeight": "1850"
+            "contentHeight": "1778"
           },
           {
             "id": "paymentPending",
             "name": "Đang xác nhận thanh toán",
             "x": 7460,
             "y": 8020,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "paymentPendingTwo",
             "name": "Đang xác nhận thanh toán",
             "x": 9700,
             "y": 8020,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "pickupPaymentPending",
             "name": "Đang xác nhận thanh toán",
             "x": 11940,
             "y": 8020,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "paidFuture",
             "name": "Thanh toán thành công",
             "x": 14180,
             "y": 8020,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "paidFutureTwo",
             "name": "Thanh toán thành công",
             "x": 16420,
             "y": 8020,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "pickupPaidFuture",
             "name": "Thanh toán thành công",
             "x": 18660,
             "y": 8020,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "paymentFailed",
             "name": "Thanh toán không thành công",
             "x": 20900,
             "y": 8020,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "paymentFailedTwo",
             "name": "Thanh toán không thành công",
             "x": 23140,
             "y": 8020,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "pickupPaymentFailed",
             "name": "Thanh toán không thành công",
             "x": 25380,
             "y": 8020,
-            "contentHeight": "1641"
+            "contentHeight": "1569"
           },
           {
             "id": "paymentExpired",
             "name": "Phiên thanh toán đã hết hạn",
-            "x": 27620,
-            "y": 8020,
-            "contentHeight": "1641"
+            "x": 740,
+            "y": 9340,
+            "contentHeight": "1569"
           },
           {
             "id": "paymentReview",
             "name": "Giao dịch đang được kiểm tra",
-            "x": 29860,
-            "y": 8020,
-            "contentHeight": "1641"
+            "x": 2980,
+            "y": 9340,
+            "contentHeight": "1569"
           }
         ]
       },
@@ -398,71 +419,71 @@
             "id": "adminDashboard",
             "name": "Tổng quan quản trị",
             "x": 740,
-            "y": 9620,
-            "contentHeight": "1568"
+            "y": 10940,
+            "contentHeight": "1496"
           },
           {
             "id": "adminProducts",
             "name": "Quản lý sản phẩm",
             "x": 2980,
-            "y": 9620,
-            "contentHeight": "1304"
+            "y": 10940,
+            "contentHeight": "1232"
           },
           {
             "id": "adminNew",
             "name": "Thêm sản phẩm",
             "x": 5220,
-            "y": 9620,
-            "contentHeight": "1784"
+            "y": 10940,
+            "contentHeight": "1712"
           },
           {
             "id": "adminEdit",
             "name": "Chỉnh sửa sản phẩm",
             "x": 7460,
-            "y": 9620,
-            "contentHeight": "1784"
+            "y": 10940,
+            "contentHeight": "1712"
           },
           {
             "id": "adminSaveConfirm",
             "name": "Xác nhận lưu sản phẩm",
             "x": 9700,
-            "y": 9620,
+            "y": 10940,
             "contentHeight": ""
           },
           {
             "id": "adminInventory",
             "name": "Tồn kho theo danh mục",
             "x": 11940,
-            "y": 9620,
-            "contentHeight": "1424"
+            "y": 10940,
+            "contentHeight": "1352"
           },
           {
             "id": "stockAdjust",
             "name": "Điều chỉnh tồn kho",
             "x": 14180,
-            "y": 9620,
-            "contentHeight": "1176"
+            "y": 10940,
+            "contentHeight": "1104"
           },
           {
             "id": "adminOrders",
             "name": "Quản lý đơn hàng",
             "x": 16420,
-            "y": 9620,
+            "y": 10940,
             "contentHeight": "1080"
           },
           {
             "id": "adminOrderDetail",
             "name": "Chi tiết đơn quản trị",
             "x": 18660,
-            "y": 9620,
-            "contentHeight": "1706"
+            "y": 10940,
+            "contentHeight": "1634"
           },
           {
             "id": "adminRevenue",
             "name": "Báo cáo doanh thu",
             "x": 20900,
-            "y": 9620,
-            "contentHeight": "1336"
+            "y": 10940,
+            "contentHeight": "1264"
           }
         ]
       },
@@ -473,21 +494,21 @@
             "id": "policies",
             "name": "Chính sách mua hàng",
             "x": 740,
-            "y": 11220,
-            "contentHeight": "1778"
+            "y": 12540,
+            "contentHeight": "1706"
           },
           {
             "id": "uiStates",
             "name": "Trạng thái tương tác và biểu mẫu",
             "x": 2980,
-            "y": 11220,
-            "contentHeight": "2204"
+            "y": 12540,
+            "contentHeight": "2132"
           },
           {
             "id": "newsletterSuccess",
             "name": "Đã ghi nhận đăng ký",
             "x": 5220,
-            "y": 11220,
+            "y": 12540,
             "contentHeight": ""
           }
         ]
@@ -496,7 +517,7 @@
   },
   {
     "platform": "02 · Điện thoại · thuthanh Clicon",
-    "layout": "flat-horizontal",
+    "layout": "flow-rows-max12",
     "flows": [
       {
         "name": "01 · Khám phá sách",
@@ -506,82 +527,89 @@
             "name": "Landing page · Điện thoại",
             "x": 0,
             "y": 0,
-            "contentHeight": "5731.740833333333"
+            "contentHeight": "4887.740833333333"
           },
           {
             "id": "catalog",
             "name": "Danh sách sản phẩm",
             "x": 0,
             "y": 1384,
-            "contentHeight": "2770"
+            "contentHeight": "2718"
+          },
+          {
+            "id": "search",
+            "name": "Gợi ý tìm kiếm",
+            "x": 710,
+            "y": 1384,
+            "contentHeight": "2208"
           },
           {
             "id": "category1",
             "name": "Sách văn học",
-            "x": 710,
+            "x": 1420,
             "y": 1384,
-            "contentHeight": "2770"
+            "contentHeight": "2718"
           },
           {
             "id": "category2",
             "name": "Văn phòng phẩm",
-            "x": 1420,
+            "x": 2130,
             "y": 1384,
-            "contentHeight": "2770"
+            "contentHeight": "2718"
           },
           {
             "id": "category3",
             "name": "Đồ chơi",
-            "x": 2130,
+            "x": 2840,
             "y": 1384,
-            "contentHeight": "2770"
+            "contentHeight": "2718"
           },
           {
             "id": "category4",
             "name": "Truyện tranh",
-            "x": 2840,
+            "x": 3550,
             "y": 1384,
-            "contentHeight": "2770"
+            "contentHeight": "2718"
           },
           {
             "id": "category5",
             "name": "Quà lưu niệm",
-            "x": 3550,
+            "x": 4260,
             "y": 1384,
-            "contentHeight": "2770"
+            "contentHeight": "2718"
           },
           {
             "id": "detail",
             "name": "Thông tin sách",
-            "x": 4260,
+            "x": 4970,
             "y": 1384,
-            "contentHeight": "3622"
+            "contentHeight": "3570"
           },
           {
             "id": "quick",
-            "name": "Xem nhanh sản phẩm",
-            "x": 4970,
-            "y": 1384,
-            "contentHeight": ""
-          },
-          {
-            "id": "quickTwo",
             "name": "Xem nhanh sản phẩm",
             "x": 5680,
             "y": 1384,
             "contentHeight": ""
           },
           {
-            "id": "quickSigned",
+            "id": "quickTwo",
             "name": "Xem nhanh sản phẩm",
             "x": 6390,
             "y": 1384,
             "contentHeight": ""
           },
           {
-            "id": "quickSignedTwo",
+            "id": "quickSigned",
             "name": "Xem nhanh sản phẩm",
             "x": 7100,
+            "y": 1384,
+            "contentHeight": ""
+          },
+          {
+            "id": "quickSignedTwo",
+            "name": "Xem nhanh sản phẩm",
+            "x": 7810,
             "y": 1384,
             "contentHeight": ""
           }
@@ -595,35 +623,49 @@
             "name": "Đăng nhập",
             "x": 0,
             "y": 2748,
-            "contentHeight": "2258"
+            "contentHeight": "2206"
           },
           {
             "id": "register",
             "name": "Tạo tài khoản",
             "x": 710,
             "y": 2748,
-            "contentHeight": "2400"
+            "contentHeight": "2348"
+          },
+          {
+            "id": "account",
+            "name": "Thông tin cá nhân",
+            "x": 1420,
+            "y": 2748,
+            "contentHeight": "2302"
+          },
+          {
+            "id": "accountSaved",
+            "name": "Thông tin cá nhân",
+            "x": 2130,
+            "y": 2748,
+            "contentHeight": "2398"
           },
           {
             "id": "loginQuick",
             "name": "Đăng nhập",
-            "x": 1420,
+            "x": 2840,
             "y": 2748,
-            "contentHeight": "2258"
+            "contentHeight": "2206"
           },
           {
             "id": "loginQuickTwo",
             "name": "Đăng nhập",
-            "x": 2130,
+            "x": 3550,
             "y": 2748,
-            "contentHeight": "2258"
+            "contentHeight": "2206"
           },
           {
             "id": "adminLogin",
             "name": "Đăng nhập quản trị",
-            "x": 2840,
+            "x": 4260,
             "y": 2748,
-            "contentHeight": "1018"
+            "contentHeight": "966"
           }
         ]
       },
@@ -635,63 +677,63 @@
             "name": "Giỏ hàng đang trống",
             "x": 0,
             "y": 4112,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "cart",
             "name": "Giỏ hàng",
             "x": 710,
             "y": 4112,
-            "contentHeight": "2608"
+            "contentHeight": "2556"
           },
           {
             "id": "cartTwo",
             "name": "Giỏ hàng · Hai sản phẩm",
             "x": 1420,
             "y": 4112,
-            "contentHeight": "2608"
+            "contentHeight": "2556"
           },
           {
             "id": "delivery",
             "name": "Đặt hàng · Giao tận nhà",
             "x": 2130,
             "y": 4112,
-            "contentHeight": "3072"
+            "contentHeight": "3020"
           },
           {
             "id": "deliveryTwo",
             "name": "Giao tận nhà · Số lượng 2",
             "x": 2840,
             "y": 4112,
-            "contentHeight": "3072"
+            "contentHeight": "3020"
           },
           {
             "id": "pickup",
             "name": "Đặt hàng · Nhận tại cửa hàng",
             "x": 3550,
             "y": 4112,
-            "contentHeight": "2952"
+            "contentHeight": "2900"
           },
           {
             "id": "pickupTwo",
             "name": "Nhận tại cửa hàng · Số lượng 2",
             "x": 4260,
             "y": 4112,
-            "contentHeight": "2952"
+            "contentHeight": "2900"
           },
           {
             "id": "validation",
             "name": "Kiểm tra thông tin nhận hàng",
             "x": 4970,
             "y": 4112,
-            "contentHeight": "3072"
+            "contentHeight": "3020"
           },
           {
             "id": "pickupSuccess",
             "name": "Đặt trước thành công",
             "x": 5680,
             "y": 4112,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           }
         ]
       },
@@ -700,59 +742,59 @@
         "screens": [
           {
             "id": "orders",
-            "name": "Đơn hàng của tôi",
+            "name": "Đơn hàng",
             "x": 0,
             "y": 5476,
-            "contentHeight": "2398"
+            "contentHeight": "2346"
           },
           {
             "id": "ordersPaid",
-            "name": "Đơn hàng của tôi",
+            "name": "Đơn hàng",
             "x": 710,
             "y": 5476,
-            "contentHeight": "2398"
+            "contentHeight": "2346"
           },
           {
             "id": "deliveryDetail",
             "name": "Chi tiết đơn giao tận nhà",
             "x": 1420,
             "y": 5476,
-            "contentHeight": "3016"
+            "contentHeight": "2964"
           },
           {
             "id": "pickupDetail",
             "name": "Chi tiết đơn đặt trước",
             "x": 2130,
             "y": 5476,
-            "contentHeight": "3016"
+            "contentHeight": "2964"
           },
           {
             "id": "pickupDetailTwo",
             "name": "Đơn đặt trước · Số lượng 2",
             "x": 2840,
             "y": 5476,
-            "contentHeight": "3016"
+            "contentHeight": "2964"
           },
           {
             "id": "paidOrder",
             "name": "Đơn hàng đã thanh toán",
             "x": 3550,
             "y": 5476,
-            "contentHeight": "2952"
+            "contentHeight": "2900"
           },
           {
             "id": "paidOrderTwo",
             "name": "Đơn đã thanh toán · Số lượng 2",
             "x": 4260,
             "y": 5476,
-            "contentHeight": "2952"
+            "contentHeight": "2900"
           },
           {
             "id": "paidPickupOrder",
             "name": "Đơn nhận tại cửa hàng đã thanh toán",
             "x": 4970,
             "y": 5476,
-            "contentHeight": "2952"
+            "contentHeight": "2900"
           },
           {
             "id": "cancelConfirm",
@@ -771,98 +813,98 @@
             "name": "Thanh toán đơn hàng",
             "x": 0,
             "y": 6840,
-            "contentHeight": "2456"
+            "contentHeight": "2404"
           },
           {
             "id": "paymentQrTwo",
             "name": "Thanh toán đơn hàng",
             "x": 710,
             "y": 6840,
-            "contentHeight": "2456"
+            "contentHeight": "2404"
           },
           {
             "id": "pickupPaymentQr",
             "name": "Thanh toán tại cửa hàng",
             "x": 1420,
             "y": 6840,
-            "contentHeight": "2456"
+            "contentHeight": "2404"
           },
           {
             "id": "paymentPending",
             "name": "Đang xác nhận thanh toán",
             "x": 2130,
             "y": 6840,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "paymentPendingTwo",
             "name": "Đang xác nhận thanh toán",
             "x": 2840,
             "y": 6840,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "pickupPaymentPending",
             "name": "Đang xác nhận thanh toán",
             "x": 3550,
             "y": 6840,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "paidFuture",
             "name": "Thanh toán thành công",
             "x": 4260,
             "y": 6840,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "paidFutureTwo",
             "name": "Thanh toán thành công",
             "x": 4970,
             "y": 6840,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "pickupPaidFuture",
             "name": "Thanh toán thành công",
             "x": 5680,
             "y": 6840,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "paymentFailed",
             "name": "Thanh toán không thành công",
             "x": 6390,
             "y": 6840,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "paymentFailedTwo",
             "name": "Thanh toán không thành công",
             "x": 7100,
             "y": 6840,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "pickupPaymentFailed",
             "name": "Thanh toán không thành công",
             "x": 7810,
             "y": 6840,
-            "contentHeight": "2223"
+            "contentHeight": "2171"
           },
           {
             "id": "paymentExpired",
             "name": "Phiên thanh toán đã hết hạn",
-            "x": 8520,
-            "y": 6840,
-            "contentHeight": "2223"
+            "x": 0,
+            "y": 7924,
+            "contentHeight": "2171"
           },
           {
             "id": "paymentReview",
             "name": "Giao dịch đang được kiểm tra",
-            "x": 9230,
-            "y": 6840,
-            "contentHeight": "2223"
+            "x": 710,
+            "y": 7924,
+            "contentHeight": "2171"
           }
         ]
       },
@@ -873,71 +915,71 @@
             "id": "adminDashboard",
             "name": "Tổng quan quản trị",
             "x": 0,
-            "y": 8204,
-            "contentHeight": "1754"
+            "y": 9288,
+            "contentHeight": "1702"
           },
           {
             "id": "adminProducts",
             "name": "Quản lý sản phẩm",
             "x": 710,
-            "y": 8204,
-            "contentHeight": "1488"
+            "y": 9288,
+            "contentHeight": "1436"
           },
           {
             "id": "adminNew",
             "name": "Thêm sản phẩm",
             "x": 1420,
-            "y": 8204,
-            "contentHeight": "1846"
+            "y": 9288,
+            "contentHeight": "1794"
           },
           {
             "id": "adminEdit",
             "name": "Chỉnh sửa sản phẩm",
             "x": 2130,
-            "y": 8204,
-            "contentHeight": "1846"
+            "y": 9288,
+            "contentHeight": "1794"
           },
           {
             "id": "adminSaveConfirm",
             "name": "Xác nhận lưu sản phẩm",
             "x": 2840,
-            "y": 8204,
+            "y": 9288,
             "contentHeight": ""
           },
           {
             "id": "adminInventory",
             "name": "Tồn kho theo danh mục",
             "x": 3550,
-            "y": 8204,
-            "contentHeight": "1608"
+            "y": 9288,
+            "contentHeight": "1556"
           },
           {
             "id": "stockAdjust",
             "name": "Điều chỉnh tồn kho",
             "x": 4260,
-            "y": 8204,
-            "contentHeight": "1238"
+            "y": 9288,
+            "contentHeight": "1186"
           },
           {
             "id": "adminOrders",
             "name": "Quản lý đơn hàng",
             "x": 4970,
-            "y": 8204,
-            "contentHeight": "986"
+            "y": 9288,
+            "contentHeight": "934"
           },
           {
             "id": "adminOrderDetail",
             "name": "Chi tiết đơn quản trị",
             "x": 5680,
-            "y": 8204,
-            "contentHeight": "1804"
+            "y": 9288,
+            "contentHeight": "1752"
           },
           {
             "id": "adminRevenue",
             "name": "Báo cáo doanh thu",
             "x": 6390,
-            "y": 8204,
-            "contentHeight": "1740"
+            "y": 9288,
+            "contentHeight": "1688"
           }
         ]
       },
@@ -948,21 +990,21 @@
             "id": "policies",
             "name": "Chính sách mua hàng",
             "x": 0,
-            "y": 9568,
-            "contentHeight": "2528"
+            "y": 10652,
+            "contentHeight": "2476"
           },
           {
             "id": "uiStates",
             "name": "Trạng thái tương tác và biểu mẫu",
             "x": 710,
-            "y": 9568,
-            "contentHeight": "3250"
+            "y": 10652,
+            "contentHeight": "3198"
           },
           {
             "id": "newsletterSuccess",
             "name": "Đã ghi nhận đăng ký",
             "x": 1420,
-            "y": 9568,
+            "y": 10652,
             "contentHeight": ""
           }
         ]

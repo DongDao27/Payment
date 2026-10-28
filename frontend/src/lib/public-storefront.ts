@@ -2,6 +2,7 @@ import { api } from "./api-client";
 import type { Category, Envelope, Product } from "./types";
 
 export type PublicStorefront = {
+  brands: { name: string; product_count: number }[];
   categories: Category[];
   new: Product[];
   bestseller: Product[];
