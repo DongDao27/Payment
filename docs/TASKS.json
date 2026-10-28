@@ -1132,6 +1132,7 @@
     "payment_merchant_sandbox": "not_run_user_confirmed_code_configuration_only",
     "smtp_delivery": "not_run",
     "production_staging_load": "not_run",
-    "schema_migrations": false
+    "schema_migrations": false,
+    "source_commit": "d06556b2649a860c12afa78ba85daa320046936c"
   }
 }

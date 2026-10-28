@@ -11,7 +11,7 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "d06556b2649a860c12afa78ba85daa320046936c",
   "git_dirty": true,
   "last_checkpoint_at": "2026-10-28T15:17:52+07:00",
   "last_test_run": {
@@ -231,7 +231,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "D56 source/docs changes before commit; use git status for live state after publication.",
+  "git_dirty_note": "Post-commit receipt for tested D56 source; use git status for state after receipt commit/push.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -321,14 +321,6 @@
     "application_tests": "not_rerun_document_and_GitHub_metadata_only",
     "tracking_document": "docs/PHAN-CONG-VA-COMMIT.md"
   },
-  "current_source_ci": {
-    "commit": "63d84ad4096f83802ab800760d380900cbc09924",
-    "backend": "success",
-    "frontend": "success",
-    "backend_url": "https://github.com/DongDao27/Payment/actions/runs/40082807261",
-    "frontend_url": "https://github.com/DongDao27/Payment/actions/runs/40082807245",
-    "verified_at": "2026-10-24T17:10:40+07:00"
-  },
   "vnpay_sandbox_D55": {
     "decision": "D55",
     "requested_by": "repo user KienHungPG 2026-10-27",
@@ -374,6 +366,15 @@
     "payment_merchant_sandbox": "not_run_user_confirmed_code_configuration_only",
     "smtp_delivery": "not_run",
     "production_staging_load": "not_run",
-    "schema_migrations": false
+    "schema_migrations": false,
+    "source_commit": "d06556b2649a860c12afa78ba85daa320046936c"
+  },
+  "previous_source_ci": {
+    "commit": "63d84ad4096f83802ab800760d380900cbc09924",
+    "backend": "success",
+    "frontend": "success",
+    "backend_url": "https://github.com/DongDao27/Payment/actions/runs/40082807261",
+    "frontend_url": "https://github.com/DongDao27/Payment/actions/runs/40082807245",
+    "verified_at": "2026-10-24T17:10:40+07:00"
   }
 }
