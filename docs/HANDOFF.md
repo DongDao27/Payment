@@ -1,6 +1,6 @@
 # D60 — sửa web đã kiểm tra local (2026-10-29T00:38:36+07:00)
 
-Task D60 done trong phạm vi web; source commit chưa có tại checkpoint này. Thay đổi: search component/shell/listing, editor ảnh+slug tự sinh, ảnh admin/cart, CatalogService/ProductRequest/admin detail API, upload ini/launcher/Docker/demo và hướng dẫn. Không đổi schema hoặc nghiệp vụ tiền/tồn/quyền.
+Task D60 done trong phạm vi web; source đã kiểm tra `daf83026c31c7f5e2b4aab1709018b83fe418d8a`; receipt chỉ cập nhật checkpoint. Thay đổi: search component/shell/listing, editor ảnh+slug tự sinh, ảnh admin/cart, CatalogService/ProductRequest/admin detail API, upload ini/launcher/Docker/demo và hướng dẫn. Không đổi schema hoặc nghiệp vụ tiền/tồn/quyền.
 
 Kiểm thực tế:129tests/1812assertions/Pint;7client/build21route/typecheck; 65frontend source file khớp preview, docs/diff đạt. Browserdesktop/mobile có/không dấu, stale/retry, keyboard/quickview, tạo sản phẩm cùng ảnh/giảm15%/tồn20, sửa sau upload, SKUtrùng, ảnh lỗi retry chỉ1create, ảnh3.147.861byte upload201; admin/cart không warning sau sửa.503mock/422cố ý không tính là lỗi bất ngờ. MainDB136giá/tồn khớp read-only.
 
