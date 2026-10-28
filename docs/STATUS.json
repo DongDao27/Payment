@@ -11,7 +11,7 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "82d2431b46c735225e868b3d01fe4981ab1ab85c",
   "git_dirty": true,
   "last_checkpoint_at": "2026-10-29T03:47:15+07:00",
   "last_test_run": {
@@ -236,7 +236,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "D59 source committed; receipt being written. Existing frontend/next-env.d.ts remains intentionally uncommitted.",
+  "git_dirty_note": "Owner frontend/next-env.d.ts retained/excluded; receipt records D62 source, remote CI pending push at checkpoint.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -659,7 +659,7 @@
     "decision": "D62",
     "status": "local_verified_external_payment_pending",
     "verified_at": "2026-10-29T03:47:15+07:00",
-    "source_commit": null,
+    "source_commit": "82d2431b46c735225e868b3d01fe4981ab1ab85c",
     "evidence": "D62: admin create/edit is_bestseller checkbox persists; curated OR genuine accepted-paid quantity, real quantity first/max7/no fake sold badge. Main137products/3orders/0receipts unchanged; selected7 existing products, stock/prices preserved. Backend134tests/1878assertions/Pint/auth-cookie11/ops passed; frontend7client/build22routes/typecheck passed. Browser create/reload/unselect, mobile375 label44px/no overflow,0pageerrors/0warnings passed. symfony/mime7.4.22 only compatible lock patch; Composer validate/platform/audit passed. Isolated Sandbox137products/0orders/0receipts/admin1 prepared, no customer history copied; merchant credentials/deferred activation pending, real payment not_run.",
     "skus": [
       "TT-VH-001",
