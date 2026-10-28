@@ -57,12 +57,14 @@ Route::prefix('v1')->middleware(['web', AuthenticateSession::class])->group(func
             Route::get('refund-records/{refund}/evidence', [Admin\RefundController::class, 'evidence']);
             Route::get('orders', [Admin\OrderController::class, 'index']);
             Route::get('orders/{order}', [Admin\OrderController::class, 'show']);
+            Route::get('orders/{order}/history', [Admin\OrderController::class, 'history']);
             Route::patch('orders/{order}/fulfillment', [Admin\OrderController::class, 'update']);
             Route::get('reconciliation-cases', [Admin\ReconciliationController::class, 'index']);
             Route::patch('reconciliation-cases/{case}', [Admin\ReconciliationController::class, 'update']);
             Route::post('orders/{order}/payment-attempts', [PaymentController::class, 'store'])->middleware('throttle:30,1');
             Route::get('orders/{order}/payment-status', [PaymentController::class, 'show'])->middleware('throttle:60,1');
             Route::get('inventory', [Admin\InventoryController::class, 'index']);
+            Route::get('inventory/{product}/movements', [Admin\InventoryController::class, 'movements']);
             Route::post('inventory/{product}/adjustments', [Admin\InventoryController::class, 'store']);
             Route::get('categories', [Admin\CategoryController::class, 'index']);
             Route::post('categories', [Admin\CategoryController::class, 'store']);

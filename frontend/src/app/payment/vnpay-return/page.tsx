@@ -57,7 +57,13 @@ export default function VnpayReturnPage() {
               {statusLabel[result.payment_status] ?? result.payment_status}
             </strong>
           </p>
-          <Notice error={result.result === "failed"}>{message}</Notice>
+          <Notice
+            error={
+              result.payment_status !== "paid" && result.result === "failed"
+            }
+          >
+            {message}
+          </Notice>
         </div>
       )}
       <div className="button-row">

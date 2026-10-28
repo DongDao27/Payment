@@ -26,7 +26,7 @@ foreach (['thu_thanh' => $development, 'thu_thanh_test' => $testing] as $databas
     $sql .= "GRANT ALL PRIVILEGES ON `$database`.* TO '$database'@'127.0.0.1';\n";
 }
 file_put_contents($runtime.'/mysql-init.sql', $sql);
-$template = file_get_contents($root.'/templates/backend.env.example');
+$template = file_get_contents($root.'/backend/.env.example');
 preg_match('/^APP_KEY=(.*)$/m', $current, $matches);
 $env = preg_replace('/^APP_KEY=.*$/m', 'APP_KEY='.trim($matches[1] ?? ''), $template);
 $env = str_replace(['DB_PORT=3306', 'DB_USERNAME=', 'DB_PASSWORD='], ['DB_PORT=3307', 'DB_USERNAME=thu_thanh', 'DB_PASSWORD='.$development], $env);

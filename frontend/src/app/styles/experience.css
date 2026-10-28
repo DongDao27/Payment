@@ -458,3 +458,38 @@ a.dashboard-stat:hover {
     transition-duration: 0.01ms;
   }
 }
+/* Read-only admin histories share the same touch targets and responsive table. */
+.history-panel {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+.history-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+.history-filters .button {
+  min-height: 44px;
+  line-height: 1.4;
+}
+.history-results {
+  min-width: 0;
+}
+.history-table {
+  min-width: 720px;
+  font-size: 13px;
+}
+.history-table td,
+.history-table th {
+  white-space: normal;
+  vertical-align: top;
+}
+.history-table time {
+  white-space: nowrap;
+}
+.history-table td {
+  min-width: 100px;
+  overflow-wrap: break-word;
+}

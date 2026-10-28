@@ -34,18 +34,18 @@ Doanh thu đã chốt D44 và report local đã có; B09 là trạng thái gate 
 | T06 — Auth/quyền | Auth lõi/recovery local có tests; SMTP thật chưa nghiệm thu |
 | T07 — Giỏ | Nhiều món/thay số lượng/xóa, quote/check tồn; đã kiểm |
 | T08 — Checkout | Tạo đơn/giữ tồn/snapshot/idempotency, giao25k/pickup0; đã kiểm local |
-| T09 — Online payment | Adapter/fixture có; chưa merchant Sandbox và UI retry/redirect hoạt động |
+| T09 — Online payment | D55 có retry/redirect/return/query, D56 sửa màu kết quả; merchant Sandbox thực tế chưa chạy |
 | T10 — Pickup/QR | Đặt trước/QR mẫu có; QR thực chưa có adapter, trả503/qr_content=null |
 | T11 — Theo dõi/hủy/hết hạn | Source, quyền, reconciliation, expiry/race tests có; cần nghiệm thu với provider thật |
 | T12 — Sản phẩm/ảnh | Create/update/archive/restore, % giảm, upload; đã kiểm local |
-| T13 — Tồn | Điều chỉnh/ledger/lock/concurrency có; bảng tồn chưa hiển thị giá, chưa có trang lịch sử riêng |
-| T14 — Đơn admin | Lọc/flow/guard/logDB có; chi tiết đơn chưa hiển thị lịch sử attempts/receipts thanh toán |
+| T13 — Tồn | D56 có giá trong bảng tồn, ledger phân trang/actor/order; quyền/phân trang và browser local đạt |
+| T14 — Đơn admin | D56 có lịch sử attempts/receipts/trạng thái phân trang; giữ guard unpaid và resource whitelist |
 | T15 — Dashboard/doanh thu | Chart/filter/CSV/tiền hàng sau giảm, ship riêng; demo synthetic riêng |
 | T16 — Kiểm thử | Local118/7 và CI63d84ad đạt; coverage/Sandbox/staging chưa nghiệm thu |
 | T17 — User testing | Đã có browser QA kỹ thuật; chưa có bằng chứng người dùng đại diện thực hiện nhiệm vụ |
 | T18 — Deploy/bàn giao | Source GitHub/guide/config có; chưa có hosting/HTTPS/restore/load production/video bàn giao |
 
-Toàn bộ T01–T18 vẫn OPEN sau cập nhậtD54;8Dev done và10In progress. Chỉ chuyển Dev done/In review và đóng khi có bằng chứng ứng với acceptance; không tick toàn bộ chỉ dựa vào bảng này. Source/tests cụ thể: `backend/app/Services`, `backend/tests`, `frontend/src/app`, `frontend/src/components`, `docs/VERIFICATION.md`.
+Toàn bộ T01–T18 vẫn OPEN sau cập nhậtD54;8Dev done và10In progress. Chỉ chuyển Dev done/In review và đóng khi có bằng chứng ứng với acceptance; không tick toàn bộ chỉ dựa vào bảng này. Source/tests cụ thể: `backend/app/Services`, `backend/tests`, `frontend/src/app`, `frontend/src/components`, `README.md`.
 
 ## 3. Bảng phân công 9 task/người
 
@@ -118,7 +118,7 @@ gh auth status
 
 Máy Đông hiện có checkout `D:\ThuThanh-WebDesign` với origin đúng Payment, có thể dùng luôn, không bắt buộc clone thêm. Không sửa/xóa `frontend/next-env.d.ts` đang bị Next dev thay đổi để dọn tree; xem `git diff` trước và chỉ stage file thuộc task. Không chuyển branch khi còn việc chưa lưu mà chưa xử lý.
 
-Clone Git không mang theo `.env`, thư viện, MySQL hay 1.000 đơn demo. Theo [LOCAL-SETUP](LOCAL-SETUP.md) để chuẩn bị PHP8.4/MySQL/Composer/Node; dùng `composer install` trong backend và `npm ci` trong frontend. Tạo env từ template, tự chọn secret và admin local. Chỉ chạy migrate sau khi kiểm tra đúng database của máy mình; tạo APP_KEY một lần khi env mới chưa có key. Dữ liệu demo cần chạy công cụ chuẩn bị riêng theo [hướng dẫn chạy](CHAY-WEB-VA-LARAVEL.md), không copy/commit `.env.demo` hoặc database. `prepare-demo.php` dựa local MySQL provisioning hiện có; với MySQL khác phải cấu hình và kiểm tra trước, không giả định clone xong tự có dữ liệu.
+Clone Git không mang theo `.env`, thư viện, MySQL hay 1.000 đơn demo. Theo [LOCAL-SETUP](CHAY-WEB-VA-LARAVEL.md) để chuẩn bị PHP8.4/MySQL/Composer/Node; dùng `composer install` trong backend và `npm ci` trong frontend. Tạo env từ template, tự chọn secret và admin local. Chỉ chạy migrate sau khi kiểm tra đúng database của máy mình; tạo APP_KEY một lần khi env mới chưa có key. Dữ liệu demo cần chạy công cụ chuẩn bị riêng theo [hướng dẫn chạy](CHAY-WEB-VA-LARAVEL.md), không copy/commit `.env.demo` hoặc database. `prepare-demo.php` dựa local MySQL provisioning hiện có; với MySQL khác phải cấu hình và kiểm tra trước, không giả định clone xong tự có dữ liệu.
 
 ## 6. Một task → một nhánh → một PR
 
@@ -206,7 +206,7 @@ Nếu nhánh task đang làm cần code mới từ main: commit công việc hi�
 
 Ghi tên/username thật, task chủ trì/review, PR URL, commit SHA thật, ngày merge và lệnh/test result. Phân biệt code baseline có sẵn với phần mỗi người sửa từ sau phân công. Ảnh/video demo phải đúng bản commit đã chạy. Không có yêu cầu hai người phải bằng nhau về số commit; bảng36điểm là kế hoạch cân bằng, kết quả thực tế báo cáo trung thực theo PR.
 
-Không đưa `.env`, password, token, APP_KEY, database dump hoặc customer data thật vào Git/PR/log. File mẫu có giá trị trống được giữ. Không bật VNPAY/deploy để tạo bằng chứng nếu chưa có yêu cầu và đủ điều kiện. Danh sách nguồn/giới hạn xem [KNOWN-LIMITATIONS](KNOWN-LIMITATIONS.md) và [PERFORMANCE](PERFORMANCE.md).
+Không đưa `.env`, password, token, APP_KEY, database dump hoặc customer data thật vào Git/PR/log. File mẫu có giá trị trống được giữ. Không bật VNPAY/deploy để tạo bằng chứng nếu chưa có yêu cầu và đủ điều kiện. Danh sách nguồn/giới hạn xem [KNOWN-LIMITATIONS](../README.md) và [PERFORMANCE](../deploy/README.md).
 
 Các snapshot QA/audit cũ đã lưu ngoài repo theo [manifest dọn source](CLEANUP-2026-10-24.json); báo cáo Excel snapshot ngày24/10 có thể khôi phục từ commit `3e1b0fb`.
 
@@ -236,3 +236,8 @@ Các tick ở task tài chính thể hiện adapter/fixture local. Review thành
 | [T18](https://github.com/DongDao27/Thu-Thanh-bookstore/issues/20) | In progress | 5/11 |
 
 Board hiện tự đóng issue khi chuyển Dev done. Những lần đóng tự động trong lượt này đã mở lại, giữ statusDev done và pendingreview; không sửa workflow toàn Project. Assignee/milestone/item cũ giữ nguyên.
+
+
+## Cập nhật code ngày 28/10 — D56
+
+T13/T14 đã bổ sung các phần UI/API còn thiếu, đạt kiểm tra local. Payment mới hoàn tất code/cấu hình theo xác nhận chủ dự án; chưa merchant thực tế. Local127backendtests/1.773assertions,7clienttests,build/typecheck/Pint và browser scoped đạt; bảng Project D54 phía trên là snapshot, chưa tự coi đã review/đóng task. Các việc SMTP/canvas/user testing/staging/restore/10k còn điều kiện ngoài. Hướng dẫn hiện hành ở README/CHAY-WEB-VA-LARAVEL/deploy README; không cần template trùng đã dọn.

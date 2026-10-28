@@ -79,7 +79,7 @@ Không thêm cột discount_percent: chỉ persist list_price/sale_price/catalog
 
 `thu_thanh_demo` được tạo local riêng với user DB/private env/APP_KEY/cookie/storage riêng; clone read-only catalog từ thu_thanh, không clone khách/đơn thật. Seed1000paidorders/accepted demo receipts và stock movements qua reserve/consume, totals/quantity đúng, business keys chống trùng. Tạo giá giảm/tồn mô phỏng chỉ trong demo. Dùng provider=demo, không fake chữ ký VNPAY. Prepare-demo/seed từ chối production và DB thật; chạy lại cùngseed bỏ qua1000đơn. Các bản ghi QA local không thuộc doanh số thực.
 
-Production overlay chuyển cache/session/queue sang Redis chia sẻ; MySQL vẫn quyết định tiền/tồn và unique/locks. Cache invalidation sau commit, không giữ global cache-row lock trong transaction tồn kho. Xem PERFORMANCE.md cho phần chưa đo trên production.
+Production overlay chuyển cache/session/queue sang Redis chia sẻ; MySQL vẫn quyết định tiền/tồn và unique/locks. Cache invalidation sau commit, không giữ global cache-row lock trong transaction tồn kho. Xem deploy/README.md cho phần chưa đo trên production.
 
 ## D51 — Password reset, không thêm migration
 

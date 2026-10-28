@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { api } from "@/lib/api-client";
-import { errorMessage } from "@/lib/format";
+import { errorMessage, money } from "@/lib/format";
+import { InventoryHistory } from "@/components/admin-history";
 import { useStore } from "@/components/store-provider";
 import { Loading, Modal, Notice } from "@/components/ui";
 import type { Pagination } from "@/lib/types";
@@ -9,6 +10,9 @@ type Stock = {
   product_id: number;
   sku: string;
   name: string;
+  list_price: number;
+  sale_price: number | null;
+  unit_price: number;
   stock_on_hand: number;
   stock_reserved: number;
   available_quantity: number;
@@ -22,6 +26,7 @@ export default function InventoryPage() {
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [error, setError] = useState("");
   const [editing, setEditing] = useState<Stock | null>(null);
+  const [history, setHistory] = useState<Stock | null>(null);
   const [busy, setBusy] = useState(false);
   const [revision, setRevision] = useState(0);
   const lock = useRef(false);
@@ -99,6 +104,7 @@ export default function InventoryPage() {
             <thead>
               <tr>
                 <th>Sản phẩm</th>
+                <th>Giá bán</th>
                 <th>Tồn thực</th>
                 <th>Đang giữ</th>
                 <th>Có thể bán</th>
@@ -113,6 +119,15 @@ export default function InventoryPage() {
                     <br />
                     <small>{item.sku}</small>
                   </td>
+                  <td>
+                    <strong>{money(item.unit_price)}</strong>
+                    {item.unit_price < item.list_price && (
+                      <>
+                        <br />
+                        <s className="muted">{money(item.list_price)}</s>
+                      </>
+                    )}
+                  </td>
                   <td>{item.stock_on_hand}</td>
                   <td>{item.stock_reserved}</td>
                   <td>{item.available_quantity}</td>
@@ -125,6 +140,12 @@ export default function InventoryPage() {
                       }}
                     >
                       Điều chỉnh
+                    </button>
+                    <button
+                      className="text-button"
+                      onClick={() => setHistory(item)}
+                    >
+                      Lịch sử
                     </button>
                   </td>
                 </tr>
@@ -200,6 +221,14 @@ export default function InventoryPage() {
               {busy ? "Đang lưu…" : "Xác nhận điều chỉnh"}
             </button>
           </form>
+        </Modal>
+      )}
+      {history && (
+        <Modal
+          title={`Lịch sử tồn kho — ${history.name}`}
+          onClose={() => setHistory(null)}
+        >
+          <InventoryHistory productId={history.product_id} />
         </Modal>
       )}
     </>

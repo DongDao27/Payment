@@ -1,4 +1,5 @@
 "use client";
+import { AdminOrderHistory } from "@/components/admin-history";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { api } from "@/lib/api-client";
@@ -272,6 +273,11 @@ function AdminOrders() {
               )}
             </div>
           )}
+          <AdminOrderHistory
+            key={selected.order_code}
+            orderCode={selected.order_code}
+            version={selected.version}
+          />
         </Modal>
       )}
     </>

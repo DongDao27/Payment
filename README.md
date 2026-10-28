@@ -1,22 +1,19 @@
 # Nhà sách Thu Thanh
 
-Website bán sách và quản lý nhà sách, sử dụng **Next.js 16 / React 19 / TypeScript / Tailwind 4** cho giao diện và **Laravel 12 / PHP 8.4 / MySQL 8.4** cho API. Laravel kiểm soát quyền, giá, tồn kho, thanh toán và trạng thái đơn; trình duyệt dùng session cookie và CSRF.
+Website bán sách và quản lý cửa hàng, cập nhật **28/10/2026**. Frontend dùng **Next.js 16, React 19, TypeScript, Tailwind 4**; backend dùng **Laravel 12, PHP 8.4, MySQL 8.4**. Laravel quyết định quyền, giá, tồn kho và trạng thái đơn; trình duyệt dùng session cookie và CSRF.
 
 ## Chức năng hiện có
 
-- Trang chủ: **Bán chạy nhất**, **Sản phẩm mới**, **Gợi ý cho bạn**. Bán chạy xếp theo tổng số lượng đã bán trong đơn thanh toán hợp lệ; sản phẩm mới xếp theo ngày tạo/ID mới nhất.
-- Tìm kiếm, lọc, sắp xếp, phân trang; ảnh sách lớn, xem nhanh, chọn số lượng, tiếp tục mua sau đăng nhập.
-- Đăng ký/đăng nhập, giỏ nhiều sản phẩm, báo giá, đặt hàng, thanh toán VNPAY Sandbox cho đơn giao hàng và nhận tại cửa hàng, theo dõi/hủy/đặt lại đơn. Khôi phục mật khẩu khách qua email, hiện/ẩn mật khẩu và thông báo lỗi tại trường nhập.
-- Admin: sản phẩm/ảnh/giảm giá/ngừng bán/mở bán lại; danh mục; điều chỉnh và lịch sử tồn kho; đơn hàng; đối soát; biểu đồ doanh thu, bộ lọc và xuất CSV.
-- Footer: bản tin, Google Maps, **295 Tôn Đức Thắng, Hòa Khánh, Đà Nẵng**, **0915466951**, **07:30–21:30 hằng ngày**.
+- Trang chủ gồm Bán chạy nhất, Sản phẩm mới, Gợi ý cho bạn; có tìm kiếm, lọc, sắp xếp, phân trang và xem nhanh. Bán chạy xếp theo lượng bán trong đơn paid/accepted, sản phẩm mới xếp theo ngày tạo.
+- Tài khoản khách, khôi phục mật khẩu email, giỏ nhiều món, báo giá, đặt hàng, VNPAY Sandbox cho hai cách nhận hàng, theo dõi/hủy/đặt lại đơn.
+- Admin quản lý sản phẩm, ảnh, giảm giá, archive/restore, danh mục; giá và lịch sử tồn kho; đơn và lịch sử thanh toán/receipt/trạng thái; đối soát, biểu đồ doanh thu, bộ lọc và CSV.
+- Footer có Google Maps, bản tin, nhãn hàng; địa chỉ **295 Tôn Đức Thắng, Hòa Khánh, Đà Nẵng**, điện thoại **0915466951**, mở cửa **07:30–21:30 hằng ngày**.
 
-Phí giao hàng **25.000đ/đơn**, nhận tại cửa hàng **0đ**; phí xuất hiện khi checkout/đơn hàng. Không đổi trả/hoàn tiền. Doanh thu là **tiền hàng sau giảm giá**, thống kê phí giao hàng riêng. Giá gốc gạch ngang và phần trăm giảm chỉ hiển thị khi có giảm giá thật.
+Giao hàng **25.000đ/đơn**, nhận tại cửa hàng **0đ**; phí chỉ hiện ở checkout/đơn. Không đổi trả/hoàn tiền. Doanh thu là tiền hàng sau giảm giá, phí giao thống kê riêng. Tạo đơn giữ hàng 5 phút khi giao, 24 giờ khi nhận cửa hàng; thanh toán lại không gia hạn.
 
-## Chạy trên máy hiện tại
+## Chạy trên máy Windows hiện tại
 
-Máy hiện tại đã có dependencies, MySQL và 136 sản phẩm/ảnh. Không cần tải lại dữ liệu hoặc import workbook để chạy web.
-
-Terminal 1, bật MySQL rồi chạy Laravel:
+Terminal 1:
 
 ```powershell
 cd D:\ThuThanh-WebDesign
@@ -25,73 +22,51 @@ cd backend
 php artisan serve --host=localhost --port=8000
 ```
 
-Terminal 2, chạy Next.js:
+Terminal 2:
 
 ```powershell
 cd D:\ThuThanh-WebDesign\frontend
 npm run dev
 ```
 
-Mở **http://localhost:3000**; trang quản trị ở **http://localhost:3000/admin**. Dùng hostname `localhost` nhất quán để cookie/CSRF hoạt động đúng. Trong `backend/`, dùng `php artisan admin:account` để xem định danh admin hiện có; nếu cần tự đặt lại mật khẩu local, chạy `php artisan admin:password`. Không có mật khẩu quản trị công khai và không cần tạo thêm admin trên máy này.
+Mở **http://localhost:3000**, quản trị tại **http://localhost:3000/admin**. Trong backend, `php artisan admin:account` xem định danh admin, `php artisan admin:password` tự đổi mật khẩu local nếu cần. Máy này đã có admin; không có mật khẩu mặc định công khai.
 
-Để xử lý email/xóa ảnh và hết hạn/đối soát nền, mở hai terminal riêng trong `backend/`:
+Chạy thêm `php artisan queue:work database --tries=5 --timeout=60` và `php artisan schedule:work` ở hai terminal backend riêng cho email, xóa ảnh, hết hạn và đối soát.
 
-```powershell
-php artisan queue:work database --tries=5 --timeout=60
-```
+[Hướng dẫn máy mới, demo, email và VNPAY](docs/CHAY-WEB-VA-LARAVEL.md).
 
-```powershell
-php artisan schedule:work
-```
+## Dữ liệu và kiến trúc
 
-[Hướng dẫn chạy, demo và email](docs/CHAY-WEB-VA-LARAVEL.md) · [Thiết lập máy mới](docs/LOCAL-SETUP.md).
+Trình duyệt → Next.js/proxy → Laravel API → MySQL. Eloquent/migration quản lý bảng; MySQL lưu dữ liệu bền vững. Máy Windows dùng `127.0.0.1:3307`, lưu tại `.runtime/mysql-data`, không cần XAMPP hoặc MongoDB.
 
-## Dữ liệu và môi trường
-
-| Môi trường | Database | Mục đích |
-|---|---|---|
-| Local chính | `thu_thanh` | 136 sản phẩm, giá/tồn và tài khoản hiện có |
-| Demo riêng | `thu_thanh_demo` | 1.000 đơn giả lập; không phải doanh số kinh doanh thật |
-| Kiểm thử | `thu_thanh_test` | Test nghiệp vụ và test cạnh tranh tồn kho |
-
-MySQL portable của máy này dùng `127.0.0.1:3307`, lưu trong `.runtime/mysql-data`; không cần XAMPP hoặc MongoDB. Ảnh upload nằm trong Laravel storage, metadata nằm trong MySQL. Không xóa `.runtime`, đổi `APP_KEY` hoặc chạy `migrate:fresh` trên database đang sử dụng. Cập nhật sản phẩm qua admin; các script tải ảnh/import workbook một lần đã được dọn.
-
-## Kiểm tra trước khi commit
-
-Trong `backend/`:
-
-```powershell
-php artisan test
-php vendor/bin/pint --test
-```
-
-Trong `frontend/`:
-
-```powershell
-npm run test:api
-npm run build
-npm run typecheck
-```
-
-Từ gốc repo: `python scripts/check_pack.py`. Bộ test tự động và các smoke test HTTP/worker/scheduler của GitHub Actions vẫn được giữ. Kết quả local mới nhất (27/10/2026, macOS, MySQL 9.6): **123 backend tests / 1.719 assertions**, **7 frontend API-client tests**, Pint, build và typecheck đạt. [Kiểm chứng và giới hạn](docs/VERIFICATION.md).
-
-## Triển khai
-
-Cấu hình Docker, Next standalone, Nginx, PHP-FPM/OPcache và Redis ở [deploy/](deploy/README.md). **Chưa triển khai hoặc nghiệm thu production**. VNPAY Sandbox đã có trong code (D55) và chỉ bật khi `.env` private có TMN code/hash secret Sandbox của bạn ([cách cấu hình](docs/CHAY-WEB-VA-LARAVEL.md#thanh-toán-vnpay-sandbox)); VNPAY Production và QR tại quầy chưa mở, đơn không bao giờ tự được xác nhận đã thanh toán. Email recovery cần SMTP thật và worker; chưa nghiệm thu gửi email thật. Mục tiêu **10.000 người đồng thời chưa được chứng minh** trên hạ tầng thực.
-
-[Runbook vận hành](docs/OPERATIONS.md) · [Hiệu năng](docs/PERFORMANCE.md) · [Giới hạn hiện hành](docs/KNOWN-LIMITATIONS.md). Giữ secret trong env private; không commit database, token, mật khẩu, `vendor`, `node_modules` hoặc output build.
-
-## Cấu trúc và tài liệu
-
-| Thư mục | Nội dung |
+| Database | Mục đích |
 |---|---|
-| `backend/` | API Laravel, nghiệp vụ, migration và bộ test |
-| `frontend/` | Các trang khách/admin và component Next.js |
-| `deploy/` | Cấu hình triển khai và môi trường mẫu |
-| `scripts/` | Chạy local/demo, kiểm tài liệu/asset, smoke CI và load profile |
-| `thu-thanh-figma-clicon/` | Plugin thiết kế V24; [hướng dẫn import](thu-thanh-figma-clicon/HUONG-DAN.md) |
-| `docs/` | Đặc tả, hướng dẫn, checkpoint bảo trì |
+| `thu_thanh` | Dữ liệu cửa hàng hiện có; bộ nguồn 136 sản phẩm/ảnh |
+| `thu_thanh_demo` | 1.000 đơn giả lập riêng, không phải doanh số thật |
+| `thu_thanh_test` | Test tự động và QA, tách dữ liệu chính/demo |
 
-[API](docs/API.md) · [Database](docs/DATABASE.md) · [Kiến trúc](docs/ARCHITECTURE.md) · [Nghiệp vụ](docs/DOMAIN-RULES.md) · [Phân công Đông/Thiện](docs/PHAN-CONG-VA-COMMIT.md).
+Clone source không tự sao chép database. Cập nhật sản phẩm qua admin; giữ env, APP_KEY, database, workbook và uploads khi chuyển máy. Không import lại hoặc chạy `migrate:fresh` để sửa UI. Laravel dùng FormRequest/Policy/Service, transaction, row lock và idempotency để bảo vệ tiền/tồn.
 
-Source: [DongDao27/Payment](https://github.com/DongDao27/Payment). Task: [GitHub Project #4](https://github.com/users/DongDao27/projects/4), issue thuộc repo Thu-Thanh-bookstore. Các báo cáo đánh giá/đề xuất, snapshot QA và công cụ lấy dữ liệu dùng một lần đã được lưu ngoài repo; xem [bản đồ và khôi phục](docs/REPOSITORY-MAP.md).
+## Kiểm tra
+
+Trong backend: `php artisan test`, `php vendor/bin/pint --test`.
+Trong frontend: `npm run test:api`, `npm run build`, `npm run typecheck`.
+Từ gốc: `python scripts/check_pack.py`; CI còn kiểm HTTP cookie/CSRF và worker/scheduler.
+
+Ngày 28/10: **127 backend tests / 1.773 assertions**, **7 client tests**, build/typecheck đạt trên Windows/PHP 8.4/MySQL 8.4. Test tài chính dùng fixture; chưa thay giao dịch merchant Sandbox thực tế. Kết quả hiện hành ở STATUS/PROGRESS; output kiểm thử tạm được Git ignore.
+
+## Cần cấu hình và nghiệm thu thêm
+
+- Payment đã hoàn tất code/cấu hình; chủ dự án xác nhận chưa chạy giao dịch merchant thật. Máy Windows chưa có TMN/hash secret. Cần tự điền env private và kiểm success/hủy/query/IPN Sandbox. VNPAY Production và QR tại quầy chưa mở; không có nút fake-paid.
+- Email recovery cần SMTP thật và worker; chưa có SMS cho tài khoản chỉ dùng điện thoại.
+- Canvas Figma cần duyệt riêng; user testing cần người dùng đại diện. Docker, staging, HTTPS, backup/restore và mục tiêu 10.000 người đồng thời chưa nghiệm thu. [Runbook deploy](deploy/README.md).
+
+## Bảo trì
+
+Source ở `backend/`, `frontend/`; cấu hình triển khai ở `deploy/`; công cụ chạy/kiểm ở `scripts/`; plugin thiết kế ở `thu-thanh-figma-clicon/`; đặc tả và checkpoint ở `docs/`.
+
+[API](docs/API.md) · [OpenAPI](docs/openapi.json) · [Database](docs/DATABASE.md) · [Nghiệp vụ](docs/DOMAIN-RULES.md) · [PRD](docs/PRD.md) · [Đông/Thiện](docs/PHAN-CONG-VA-COMMIT.md) · [Nguồn asset](docs/ASSET-SOURCES.md) · [Import Figma](thu-thanh-figma-clicon/HUONG-DAN.md).
+
+Giữ env mẫu theo từng môi trường trong backend/frontend/deploy để cài đặt và CI. Không commit env thật, token, private key, database, vendor, node_modules hoặc build output. Đã gộp và dọn 13 file trùng ngày 28/10; ZIP ngoài repo và hash ở [manifest khôi phục](docs/CLEANUP-2026-10-28.json). Giải nén riêng file cần vào thư mục tạm, kiểm hash/diff rồi mới phục hồi; không ghi đè toàn repo. Checkpoint lịch sử có thể dẫn member đã archive.
+
+Source: [DongDao27/Payment](https://github.com/DongDao27/Payment). Task: [GitHub Project #4](https://github.com/users/DongDao27/projects/4). Phân công không xác nhận tác giả code cũ; CI xanh không tự thay review/acceptance.

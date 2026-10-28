@@ -9,13 +9,12 @@ def load(name):
     return json.loads((ROOT/name).read_text(encoding="utf-8"))
 def main():
     required = ["README.md","AGENTS.md","START-HERE.md","docs/PRD.md",
-        "docs/ARCHITECTURE.md","docs/DATABASE.md","docs/DOMAIN-RULES.md",
+        "docs/DATABASE.md","docs/DOMAIN-RULES.md",
         "docs/API.md","docs/openapi.json",
         "docs/TASKS.json","docs/STATUS.json","docs/HANDOFF.md","docs/PROGRESS.md",
-        "docs/DECISIONS.md","docs/OPERATIONS.md",
-        "docs/SECURITY.md","docs/KNOWN-LIMITATIONS.md",
-        "docs/SOURCES.md","docs/CHAY-WEB-VA-LARAVEL.md","docs/VERIFICATION.md","docs/CLEANUP-2026-10-24.json",
-        "templates/backend.env.example","templates/frontend.env.example"]
+        "docs/DECISIONS.md","docs/CHAY-WEB-VA-LARAVEL.md","docs/CLEANUP-2026-10-28.json",
+        "backend/.env.example","backend/.env.testing.example","frontend/.env.example",
+        "deploy/.env.example","deploy/.env.backend.example"]
     for name in required: assert (ROOT/name).is_file(),name
     doc=load("docs/TASKS.json")
     tasks={t["id"]:t for t in doc["tasks"]}
@@ -75,13 +74,16 @@ def main():
     for name in ("auth-cookie-smoke.php", "ops-smoke.php"):
         assert (ROOT/"scripts"/name).is_file(),name
         assert name in (ROOT/".github/workflows/backend.yml").read_text(encoding="utf-8"),name
-    cleanup=load("docs/CLEANUP-2026-10-24.json")
-    archived={entry["path"] for entry in cleanup["files"]}
-    assert len(archived)==cleanup["file_count"]
-    assert all(len(entry["sha256"])==64 for entry in cleanup["files"])
+    archived=set()
+    for manifest in ("docs/CLEANUP-2026-10-24.json","docs/CLEANUP-2026-10-28.json"):
+        cleanup=load(manifest)
+        members={entry["path"] for entry in cleanup["files"]}
+        assert len(members)==cleanup["file_count"]
+        assert all(len(entry["sha256"])==64 for entry in cleanup["files"])
+        archived.update(members)
     markdown = [ROOT/"README.md", ROOT/"AGENTS.md", ROOT/"START-HERE.md"]
     markdown += list((ROOT/"docs").rglob("*.md"))
-    markdown += [ROOT/"frontend/README.md",ROOT/"frontend/AGENTS.md",ROOT/"deploy/README.md",ROOT/"thu-thanh-figma-clicon/HUONG-DAN.md"]
+    markdown += [ROOT/"frontend/AGENTS.md",ROOT/"deploy/README.md",ROOT/"thu-thanh-figma-clicon/HUONG-DAN.md"]
     links=0
     for file in markdown:
         content=file.read_text(encoding="utf-8")
@@ -96,7 +98,7 @@ def main():
             archived_target=path.is_relative_to(ROOT) and path.relative_to(ROOT).as_posix() in archived
             assert path.exists() or (historical and archived_target),(str(file),target)
             links+=1
-    for env in (ROOT/"templates").glob("*.env.example"):
+    for env in (ROOT/"backend/.env.example", ROOT/"frontend/.env.example", ROOT/"deploy/.env.backend.example"):
         for line in env.read_text().splitlines():
             if line.startswith(("VNPAY_HASH_SECRET=","ADMIN_PASSWORD=","DB_PASSWORD=")):
                 assert not line.split("=",1)[1],str(env)

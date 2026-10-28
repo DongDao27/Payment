@@ -1,0 +1,88 @@
+{
+  "decision": "D56",
+  "date": "2026-10-28",
+  "file_count": 13,
+  "files": [
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 4613,
+      "sha256": "8bbfc704c59ef37c347a8970073f8ebe989aedffa6e1cc4d7ff5130cd06b51ca"
+    },
+    {
+      "path": "docs/LOCAL-SETUP.md",
+      "bytes": 3568,
+      "sha256": "9f3e99f57d1c640a98bd5b9e42daa79eef432075c9f156a90d53b789254457ec"
+    },
+    {
+      "path": "docs/OPERATIONS.md",
+      "bytes": 4613,
+      "sha256": "25a282894d5cb8c2b1ad72df4cf241e6cb4caa04139e2478d765713b64ea2b47"
+    },
+    {
+      "path": "docs/SECURITY.md",
+      "bytes": 2624,
+      "sha256": "92798a7307443d34db85a8f7122440a30dc1965afc92c8ed9024e64f66bb89d1"
+    },
+    {
+      "path": "docs/PERFORMANCE.md",
+      "bytes": 8233,
+      "sha256": "ab2612c43abb99644391d16e82cc1d6ecf4706e6c12cc949836a79032f709d03"
+    },
+    {
+      "path": "docs/KNOWN-LIMITATIONS.md",
+      "bytes": 1888,
+      "sha256": "0b3b6057dc6cc2ee0df9a36d2fbc7e768865581ed64bccda4a926c8befa21f3a"
+    },
+    {
+      "path": "docs/SOURCES.md",
+      "bytes": 2396,
+      "sha256": "4cfd242239734800876003251072689b5066eab33c06762a26a9148a42013967"
+    },
+    {
+      "path": "docs/VERIFICATION.md",
+      "bytes": 1937,
+      "sha256": "746035e723352b7e0fcdf928a54a6022e12116e9d45180f54807d5aa678a63e5"
+    },
+    {
+      "path": "docs/REPOSITORY-MAP.md",
+      "bytes": 3124,
+      "sha256": "5a0f2c48976a122f863e21e4b0a76cb852b91d7930c67cd33de902bd0063e8b3"
+    },
+    {
+      "path": "frontend/README.md",
+      "bytes": 1248,
+      "sha256": "c9d92df2479df8de1c97d017d58f07caa52f4e82208f25ca14fea1c46a7d4bf5"
+    },
+    {
+      "path": "templates/backend.env.example",
+      "bytes": 2162,
+      "sha256": "0019a41ee7308abc9b0b01343aa08402fed8622602b01a4fa6cfe097a3893f70"
+    },
+    {
+      "path": "templates/frontend.env.example",
+      "bytes": 322,
+      "sha256": "de62621edee4a0d62fb8eac530d2163a4f89c9c08a461435ae76481592203d9c"
+    },
+    {
+      "path": "backend/README.md",
+      "bytes": 976,
+      "sha256": "5a5bb77e24e48c9a9b3e895b861c65287ca5d04ba6ec0938ce1fc380b0118498"
+    }
+  ],
+  "archive": "D:\\ThuThanh-Archives\\thu-thanh-docs-20261028-144924.zip",
+  "archive_sha256": "2b12de88181286e436a8857217ed24b8f8b1e968fc99d247a55d864b205d86db",
+  "merged_into": [
+    "README.md",
+    "docs/CHAY-WEB-VA-LARAVEL.md",
+    "deploy/README.md",
+    "docs/ASSET-SOURCES.md"
+  ],
+  "canonical_environment_examples": [
+    "backend/.env.example",
+    "backend/.env.testing.example",
+    "frontend/.env.example",
+    "deploy/.env.example",
+    "deploy/.env.backend.example"
+  ],
+  "verification": "CRC and per-file SHA256 before removal; private env/database/uploads/tests/assets preserved"
+}

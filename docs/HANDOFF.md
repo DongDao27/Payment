@@ -1,3 +1,13 @@
+# D56 — local hoàn tất, ngoại vi còn chờ (2026-10-28T15:17:52+07:00)
+
+Task hiện tạiF03;phầnadminD56đãkiểmAPItrướcUI. Cógiá/lịch sửtồnvàlầnthanhtoán/receipt/trạngtháiđơnphântrangđầyđủ,adminonly/whitelist/bounded;khôngmigrationhoặcđổiluậttiền/tồn. PaymentD55giữ;D56sửaerrorstylekhiURLfailurecũnhưngserverpaid. Người dùng xácnhậnchưamerchanttransaction,Windowschưacredentials;khônggiảclaimpayment/releasegatepassed.
+
+Kiểmthực:127backendtests1773assertions0fail/skip CLI44.19s;Pint/Composervalidate/platform;7clienttests/build/typecheck;HTTP-CSRF11/ops5passed. BrowserDBtest1440/390:giá,ledger12records/2pages,3historytypes,offline/retry,Escapefocus,no-pageoverflow;4returnUIstateschỉresponsefixtures,mockđãgỡ. PrivateQAserver/browser do phiên này mở được đóng khi xong;MySQL giữ để người dùng chạyweb. Real136SKU/6cat/1admin và136giá/tồn khớp;env/APP_KEY/upload/workbook khôngđổi.
+
+Dọn13filetrùng,cóCRC/SHAarchive ngoài repo/manifestCLEANUP-2026-10-28.json. README/CHAYguide/deployREADME là3đầu vàochính;corePRD/domain/API/schema/checkpoint/assetrefs/phâncông giữ. Envcanonical ởbackend/frontend/deploy,templatestrùngbỏ;prepare-local-db vàcheck_packđãđồngbộ. Historicalcheckpointlinks resolve qua manifest,khôngdựng QA reportmới. SourceD56chưacommitởlúcghi checkpoint;giữmọithayđổiD55đãcommit1247330,khôngrewriteauthor.
+
+Tiếptheo:điềnmerchantSandbox trongenvprivate,tắtdeferredkhiđủcấu hình vàtestgiao dịchsuccess/hủy/query/IPNthật;SMTP/worker deliverythật;canvasduyệt/userresearch/staging/restore/load10kcầnđầuvàobênngoài. Khôngyêucầukháchgửisecretquachat. TaskF02/F03/B07–B10/DUI09/gatesgiữnguyênpendingđúngphạmvi. ChạywebWindows theoCHAYguide,cònmacOSD55làevidence lịch sửmáykhác.
+
 # D55 — VNPAY Sandbox code sẵn sàng, chờ credentials (2026-10-27T18:35:15+07:00)
 
 Task hiện tại B07 (externally_blocked) và F02 (in_progress). Source đổi: `PaymentService` (pickup trả online), `ReconciliationService::confirmReturn/claimQuery`, `VnpayController::returned`, route return throttle, `PaymentTest` +5 test; frontend `orders/[code]`, `payment/vnpay-return`, `format/types`, copy checkout/policies/admin, header `next.config`; env mẫu thêm URL Sandbox. Tài liệu: D55, API, DOMAIN-RULES, openapi, README, CHAY-WEB-VA-LARAVEL.

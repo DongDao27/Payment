@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminHistoryRequest;
 use App\Http\Requests\AdminOrderQueryRequest;
 use App\Http\Requests\FulfillmentRequest;
+use App\Http\Resources\AdminOrderHistoryResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\OrderStatusHistory;
+use App\Models\PaymentAttempt;
+use App\Models\PaymentReceipt;
 use App\Services\OrderService;
 use App\Support\ApiResponse;
 use Carbon\CarbonImmutable;
@@ -14,6 +19,20 @@ use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller
 {
+    public function history(AdminHistoryRequest $request, Order $order): JsonResponse
+    {
+        $query = match ($request->input('type', 'attempts')) {
+            'receipts' => PaymentReceipt::query(),
+            'statuses' => OrderStatusHistory::query(),
+            default => PaymentAttempt::query(),
+        };
+        $page = $query->where('order_id', $order->id)
+            ->orderByDesc('created_at')->orderByDesc('id')
+            ->paginate($request->integer('per_page', 15));
+
+        return ApiResponse::page($page, AdminOrderHistoryResource::class);
+    }
+
     public function index(AdminOrderQueryRequest $request): JsonResponse
     {
         $query = Order::with('items');

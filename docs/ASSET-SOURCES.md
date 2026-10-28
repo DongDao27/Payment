@@ -9,3 +9,9 @@ Footer8nhãn hàng: Thiên Long,Faber-Castell,KEYROAD,Maped,MILAN,Pentel,Pilot,B
 136ảnh sản phẩm vẫn là ảnh gốc của đúngSKU theo URL workbook,580/600/1200 vuông; thumbnail145vuông. PRODUCT-IMAGE-SOURCES.json lưu URL/hash/dimensions và meanRGBdifference tối đa3.928/255 so thumbnail sau chuẩn hóa64vuông. Không upscale/đổi bìa. Mapping chỉ bộ import SHA ae2ca77c6543732131739c830b5595c207c28f5398a9eb9a8131a30ee5fb0deb; giữ ảnh admin upload/import khác.24ảnh Figma chuyển PNG lossless, pixel/dimensions giữ nguyên theo yêu cầu createImage PNG/JPEG/GIF; lưu cả hash nguồn/hashPNG. Brand/banner nhúng giúp plugin chạy offline.
 
 Kiểm `python scripts/verify-store-assets.py`: ảnh gốc136,PNG24,logo2,banner3,brand8 và bytes ảnh nhúng Figma. Không sửa workbook,giá,tồn,ledger hoặc snapshot đơn cũ.
+
+## Tài liệu kỹ thuật tham chiếu
+
+Laravel12: https://laravel.com/docs/12.x/sanctum, https://laravel.com/docs/12.x/database, https://laravel.com/docs/12.x/queries, https://laravel.com/docs/12.x/validation, https://laravel.com/docs/12.x/scheduling, https://laravel.com/docs/12.x/deployment.
+Next.js: https://nextjs.org/docs/app. VNPAY: https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html và https://sandbox.vnpayment.vn/apis/docs/truy-van-hoan-tien/querydr%26refund.html.
+Các link tham khảo không chứng minh merchant/callback/production đã nghiệm thu; kết quả thực tế ghi ởSTATUS/PROGRESS. Tài liệu cũ đãgộp/archivetheoCLEANUP-2026-10-28.json.

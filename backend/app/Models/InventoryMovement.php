@@ -41,4 +41,9 @@ class InventoryMovement extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function actor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'actor_id');
+    }
 }

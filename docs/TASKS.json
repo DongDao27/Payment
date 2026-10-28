@@ -328,7 +328,7 @@
         "RevenueRefundTest4 tests33 assertions passed; VN day boundary/from-inclusive-to-exclusive and gross unallocated receipts/refunds separated; evidence/caps/reference/authorization/no-restock tested; reports and writes gated by default."
       ],
       "actual_commit": null,
-      "notes": "D29 shipping25000/pickup0 approved. D30 no returns/refunds; new refund writes403 even legacy toggle enabled; retain historical ledger/evidence. D15/D27 revenue formula still OPEN; report remains gated. Provider dependency not verified."
+      "notes": "D44 approved merchandise revenue after discounts; shipping separate. Report/CSV verified locally. Refund writes forbidden; historical evidence retained. Broader dependency/provider acceptance remains unverified."
     },
     {
       "id": "B10",
@@ -341,7 +341,7 @@
       "functions": [],
       "files": [
         "docs/openapi.json",
-        "docs/VERIFICATION.md",
+        "README.md",
         "docs/STATUS.json",
         "docs/HANDOFF.md"
       ],
@@ -362,7 +362,7 @@
         "Course rubric audit21/10/2026 completed read-only: source patterns mapped and all24 weighted subcriteria assessed in COURSE-RUBRIC-AUDIT.md; course compliance incomplete, coverage not measured. No application/test result changed; D33 conflicts OPEN."
       ],
       "actual_commit": null,
-      "notes": "Local owner-requested audit complete; strict gate not passed because provider real integration deferred by owner and revenue formula OPEN. Local Figma prototype found/audited; canvas visual not verified. No frontend implementation."
+      "notes": "Code/API/tests/MySQL concurrency/HTTP/ops verified locally; strict acceptance still pending real Sandbox merchant, admin QR capability and external release evidence. Revenue policy approved D44; Next.js authorized D34/D56."
     },
     {
       "id": "F00",
@@ -375,8 +375,7 @@
       "functions": [],
       "files": [
         "thu-thanh-figma-clicon/HUONG-DAN.md",
-        "docs/REPOSITORY-MAP.md",
-        "docs/VERIFICATION.md"
+        "README.md"
       ],
       "acceptance": [
         "Nguồn plugin local được chủ dự án chọn tại D35 hoặc URL/node thật; map Web/Mobile/API và ghi giới hạn visual",
@@ -467,7 +466,7 @@
         "D55 2026-10-27T18:35:15+07:00: order detail \"Thanh toán qua VNPAY\" redirects to server payment_url (https only); /payment/vnpay-return forwards vnp_* to Laravel and shows verified status; Vietnamese messages for not configured/not payable/reconciliation; checkout/policies/admin copy updated. test:api 7 passed, typecheck and next build passed (Node 24.22.1). Browser e2e against real Sandbox not_run (credentials pending)."
       ],
       "actual_commit": null,
-      "notes": "Non-payment checkout/order UI implemented and locally verified. Payment/result/QR actual integration deferred D31; not all acceptance checks passed, not done."
+      "notes": "D55 customer VNPAY online for delivery and pickup, signed return/server query and retry implemented. D56 UI result fixtures cover success/failure/pending/stale-failure-paid. Merchant/browser end-to-end remains unverified; admin QR needs adapter."
     },
     {
       "id": "F03",
@@ -489,7 +488,9 @@
         "frontend/src/app/admin/layout.tsx",
         "frontend/src/app/admin/products/page.tsx",
         "frontend/src/app/admin/inventory/page.tsx",
-        "frontend/src/app/admin/orders/page.tsx"
+        "frontend/src/app/admin/orders/page.tsx",
+        "frontend/src/components/admin-history.tsx",
+        "backend/tests/Feature/AdminHistoryTest.php"
       ],
       "acceptance": [
         "Category→stock, product upload, order QR và revenue đúng API",
@@ -504,7 +505,7 @@
         "Admin shared login/redirect, real MySQL catalog update/create/hide/upload/version refresh, stock doubleclick adjusts once, order detail and no manual-paid control verified. Role gates backend403 and UI denied for customer."
       ],
       "actual_commit": null,
-      "notes": "Core catalog/inventory/orders UI implemented. Category admin/reconciliation/evidence specialized UI and real revenue/QR not complete; no fake revenue or paid action."
+      "notes": "Catalog/categories/orders/revenue/reconciliation UI implemented; D56 adds server prices, inventory ledger and admin payment/status history with role/pagination/privacy tests and scoped browser checks. Merchant QR and full canvas/accessibility acceptance remain pending."
     },
     {
       "id": "R00",
@@ -516,7 +517,7 @@
       ],
       "functions": [],
       "files": [
-        "docs/OPERATIONS.md",
+        "deploy/README.md",
         "docs/PROGRESS.md",
         "README.md",
         "deploy/"
@@ -1098,5 +1099,39 @@
     "application_changes": false,
     "application_tests": "not_rerun_document_and_GitHub_metadata_only",
     "tracking_document": "docs/PHAN-CONG-VA-COMMIT.md"
+  },
+  "completion_polish": {
+    "decision": "D56",
+    "status": "local_complete_external_acceptance_pending",
+    "verified_at": "2026-10-28T15:17:52+07:00",
+    "admin_inventory": "server prices and paginated ledger with actor/order; admin-only",
+    "admin_order_history": "paginated attempts, receipts, status transitions; explicit field whitelist; admin-only",
+    "payment_return": "paid server status takes precedence over a stale failed return for message and error styling",
+    "backend_tests": 127,
+    "assertions": 1773,
+    "backend_cli_seconds": 44.19,
+    "backend_junit_seconds": 38.23302,
+    "frontend_client_tests": 7,
+    "frontend_build": "passed",
+    "frontend_typecheck": "passed",
+    "pint": "passed",
+    "http_cookie_csrf_checks": 11,
+    "operational_checks": 5,
+    "compose": "YAML parsed; Docker runtime not run",
+    "browser": "isolated thu_thanh_test; prices/history, 12-record pagination, 3 order-history tabs, offline retry, Escape focus, 390/1440 no page overflow",
+    "payment_browser": "4 mocked response states: success/cancelled/pending/stale failure with server paid; no merchant call",
+    "real_data_readonly": {
+      "products": 136,
+      "categories": 6,
+      "admins": 1,
+      "source_prices_matched": 136,
+      "source_stocks_matched": 136
+    },
+    "cleanup_manifest": "docs/CLEANUP-2026-10-28.json",
+    "removed_files": 13,
+    "payment_merchant_sandbox": "not_run_user_confirmed_code_configuration_only",
+    "smtp_delivery": "not_run",
+    "production_staging_load": "not_run",
+    "schema_migrations": false
   }
 }

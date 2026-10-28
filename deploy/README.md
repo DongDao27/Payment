@@ -1,35 +1,42 @@
-# Backend staging template
+# Triển khai và vận hành
 
-Đã chuẩn bị source cho PHP-FPM8.4, Nginx, MySQL8.4, database worker và scheduler. Máy Windows hiện chưa có Docker: **chưa chạy build hoặc deploy container**, chưa kiểm backup/restore. Đây là cấu hình staging cần kiểm chứng, chưa phải bằng chứng sẵn sàng production. Frontend chưa được xây vì gate backend còn chặn bởi merchant/QR/policies.
+Cấu hình tham chiếu gồm PHP-FPM 8.4, MySQL 8.4, Nginx, worker/scheduler; overlay scale thêm Next standalone, edge và Redis. **Chưa nghiệm thu Docker runtime, staging, backup/restore hoặc tải 10k trên máy chủ thật.** Máy Windows hiện chưa có Docker/k6.
 
-Chạy tại gốc repo trên máy staging có Docker Engine + Compose v2. Cấu hình này chỉ mở HTTP trên loopback8080; MySQL/FPM không publish cổng host.
+## Chuẩn bị staging
 
-1. Copy `deploy/.env.example` thành `deploy/.env`, đặt hai mật khẩu ngẫu nhiên khác nhau cho ứng dụng và root MySQL. File này chỉ dùng Compose, không cấp root password vào app.
-2. Copy `deploy/.env.backend.example` thành `deploy/.env.backend`; tạo APP_KEY riêng cho staging, không lấy khóa của local hoặc môi trường khác. Giữ lại khóa khi redeploy. Điền URL/cookies và merchant Sandbox của staging nếu được cấp. Không bật chính sách thu tiền/report/refund khi chưa được duyệt.
-3. Review migrations, chuẩn bị backup nếu database đã có dữ liệu, rồi chạy:
+1. Cài Docker Engine/Compose v2 trên hạ tầng được cấp. Copy deploy/.env.example thành deploy/.env cho Compose; deploy/.env.backend.example thành deploy/.env.backend cho Laravel. Hai file khác vai trò env local; app không dùng tài khoản root DB.
+2. Đặt APP_KEY ổn định riêng, mật khẩu DB/root/Redis riêng, APP_DEBUG=false; cấu hình APP_URL, FRONTEND_URL, Sanctum, cookie và trusted proxy theo domain HTTPS thực tế. Không copy env hoặc dữ liệu demo sang production.
+3. Review migration, backup nếu đã có dữ liệu, kiểm cấu hình/build rồi chạy database và migration như thao tác operator riêng. Entrypoint không tự migrate/seed.
 
 ```sh
-docker compose --env-file deploy/.env -f deploy/compose.yml build
-docker compose --env-file deploy/.env -f deploy/compose.yml up -d db
-docker compose --env-file deploy/.env -f deploy/compose.yml run --rm app php artisan migrate --force
-docker compose --env-file deploy/.env -f deploy/compose.yml run --rm app php artisan db:seed --force
-docker compose --env-file deploy/.env -f deploy/compose.yml run --rm app php artisan admin:create
-docker compose --env-file deploy/.env -f deploy/compose.yml up -d app web worker scheduler
-curl --fail http://localhost:8080/up
-curl --fail http://localhost:8080/api/v1/categories
+docker compose --env-file deploy/.env -f deploy/compose.yml -f deploy/compose.scale.yml config --quiet
+docker compose --env-file deploy/.env -f deploy/compose.yml -f deploy/compose.scale.yml build
+docker compose --env-file deploy/.env -f deploy/compose.yml -f deploy/compose.scale.yml up -d db
+docker compose --env-file deploy/.env -f deploy/compose.yml -f deploy/compose.scale.yml run --rm app php artisan migrate --force
 ```
 
-`db:seed` chỉ tạo danh mục idempotent. `admin:create` hỏi bí mật tương tác và không đổi mật khẩu admin đã tồn tại. Có thể tạo APP_KEY bằng PHP local `php -r 'echo "base64:".base64_encode(random_bytes(32)).PHP_EOL;'`, rồi nhập trực tiếp vào file env riêng; không gửi khóa qua chat/log.
+Chỉ seed category/admin khi môi trường mới cần. Khởi động các service theo Compose đã review; edge loopback8081 cần TLS reverse proxy thực. Giữ MySQL/Redis/FPM khỏi Internet. Kiểm nginx-t, health, cookie/CSRF, login/role, catalog/cart/checkout, ảnh, worker và scheduler trên HTTPS; pin image digest đã nghiệm thu trước release.
 
-Trước khi mở staging ra Internet: gắn domain/HTTPS qua reverse proxy, đặt APP_URL/FRONTEND_URL, SESSION_SECURE_COOKIE=true và cấu hình trusted proxy đúng hạ tầng; thử cookie/CSRF, upload, callback thực tế. PAY callback dùng `/api/v1/payments/vnpay/ipn` và `/return`; QR tại quầy cần hợp đồng/adapter merchant riêng. Không đưa khóa/DB ra public.
+VNPAY dùng merchant Sandbox riêng. RETURN_URL trỏ frontend/payment/vnpay-return; IPN HTTPS trỏ backend/api/v1/payments/vnpay/ipn. Server xác minh tiền, không có fake-paid/manual-paid. Production và QR merchant cần nghiệm thu riêng. Email recovery cần SMTP/worker thật và FRONTEND_URL đúng.
 
-Data nằm trong volumes `mysql-data` và `backend-storage`, gồm ảnh và evidence private. Giữ volumes khi cập nhật, không dùng `down -v`. Xác minh quy trình backup/restore trên staging trước release. Theo dõi `queue:failed`, log và case đối soát, đặc biệt khi provider không trả trạng thái chắc chắn.
+## Bảo mật và quan sát
 
-Production cần BACKEND_VERIFIED, frontend theo Figma, Sandbox thật, chính sách được duyệt, hosting/domain, test restore và yêu cầu triển khai riêng theo [OPERATIONS](../docs/OPERATIONS.md). Pin image digest của bản đã kiểm trên máy triển khai trước release.
+Web root Laravel chỉ backend/public; không expose env, repo root, vendor hoặc private evidence. Cookie HttpOnly/Secure/SameSite, CSRF cho session mutation, proxy/CORS allowlist và chữ ký callback phải được kiểm. Admin middleware/policy và resource whitelist bảo vệ dữ liệu. Không cache chung private/cart/checkout/order/admin/CSRF hoặc Set-Cookie.
 
-Nguồn cấu hình: [PHP official image](https://hub.docker.com/_/php), [Compose startup order](https://docs.docker.com/compose/how-tos/startup-order/).
+Theo dõi health, queue:failed, worker/scheduler, case đối soát, latency, CPU/RAM, DB slow query/deadlock/connection, Redis memory và FPM queue. Log request_id/correlation, che secret/PII/reset link và đặt retention. Khi provider không xác định được kết quả, giữ nguyên quy tắc đối soát/tồn; không mark paid/unpaid hàng loạt hoặc giải phóng tồn tùy tiện.
 
+## Backup và cập nhật
 
-## D45 — cấu hình scale tham chiếu
+Volumes mysql-data/backend-storage giữ database/ảnh/evidence; không dùng down-v khi cập nhật. Backup DB, uploads và private evidence; giữ APP_KEY/env private, kiểm restore trên staging với thời gian/hash/log đã che bí mật. Có lệnh backup chưa chứng minh đã restore thành công.
 
-Đọc [PERFORMANCE.md](../docs/PERFORMANCE.md) trước khi dùng overlay compose.scale.yml. Có frontendstandalone,edgecache,Redis,FPM/OPcache vàtrustedproxy,nhưng máy hiện tại chưaDockerbuild/nginx-t/k6production. EntryPointcacheconfig/routestrongtừngcontainer; khôngautomigrate/seed. CầnHTTPS/secrets/domain/sharedstorage/backuprestore vàloadtesthạ tầng trướcnghiệmthu10k. KhôngcopydemoDB/env. Publicsnapshotmớiđượcedgecache,privateAPIsvàHTML/RSCkhôngcachechung.
+Quy trình: build/test → backup → deploy code/assets → migration đã review → config/route cache → restart worker → smoke. Rollback code/image phải tương thích schema; không rollback dữ liệu tiền khi chưa xem tác động. Nhiều host cần shared storage/object store đã kiểm; Docker local volume chỉ chung một host.
+
+## Cache và nghiệm thu tải
+
+Public /api/v1/storefront không khởi tạo session; cache20giây/lock/revision đổi sau commit. API riêng no-store. Query gợi ý được giới hạn và eager-load; quote/order luôn kiểm lại giá/tồn trong transaction. Redis/CDN/FPM/OPcache không thay row lock hoặc idempotency.
+
+Phép đo local D45:20 đồng thời/200request, p95 khoảng601ms,0lỗi; không gồm toàn bộ ảnh/provider và không chứng minh10k. Kết quả gốc nằm trong archive cleanup24/10.10k người mở web khác10kRPS/checkout; cần đo mixed workload, DB/cache/worker và cạnh tranh SKU cuối riêng.
+
+Profile `scripts/load/public-storefront.k6.js` mặc định20VU. Chỉ chạy trên staging được phép; profile10k cần BASE_URL, PROFILE=10k, ALLOW_HIGH_LOAD=1 và load generator đủ tài nguyên. Ngưỡng dự kiến:error<1%, checks>99%, p95<1s, p99<2s, chưa được chứng minh ở10k. Bắt đầu nhỏ, theo dõi tài nguyên và dừng khi vượt ngưỡng; không gửi thanh toán thật ở tải lớn.
+
+[Chạy local](../docs/CHAY-WEB-VA-LARAVEL.md) · [Nghiệp vụ](../docs/DOMAIN-RULES.md) · [OpenAPI](../docs/openapi.json). `php scripts/validate-deploy.php` chỉ parse YAML, không thay Docker build/nginx runtime/production acceptance.
