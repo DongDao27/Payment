@@ -4,13 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import brands from "@/lib/brands.json";
 import { NewsletterForm } from "./newsletter-form";
-import { usePathname, useRouter } from "next/navigation";
-import { useState, type FormEvent, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import { type ReactNode } from "react";
 import { useStore } from "./store-provider";
 import { Icon } from "./ui";
 import { errorMessage } from "@/lib/format";
 import { storeInfo } from "@/lib/store-info";
-import { CampaignBanner } from "./campaign-banner";
+import { ProductSearch } from "./product-search";
 import { ScrollToTop } from "./scroll-to-top";
 
 export function Brand({ light = false }: { light?: boolean }) {
@@ -34,12 +34,6 @@ export function StoreShell({ children }: { children: ReactNode }) {
   const { user, cart, requireLogin, logout, notify } = useStore();
   const path = usePathname();
   const adminArea = path.startsWith("/admin");
-  const router = useRouter();
-  const [search, setSearch] = useState("");
-  function submit(event: FormEvent) {
-    event.preventDefault();
-    router.push(`/products?${new URLSearchParams({ q: search.trim() })}`);
-  }
   const count = cart?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
   return (
     <>
@@ -51,11 +45,7 @@ export function StoreShell({ children }: { children: ReactNode }) {
       <a href="#main" className="skip-link">
         Đến nội dung chính
       </a>
-      {adminArea ? (
-        <div className="announcement">Chào mừng đến với nhà sách Thu Thanh</div>
-      ) : (
-        <CampaignBanner id="header" />
-      )}
+      <div className="announcement">Chào mừng đến với nhà sách Thu Thanh</div>
       <header className={`site-header${adminArea ? " admin-site-header" : ""}`}>
         <div className="header-inner">
           {!adminArea && (
@@ -64,23 +54,7 @@ export function StoreShell({ children }: { children: ReactNode }) {
             </div>
           )}
           <Brand light />
-          {!adminArea && (
-            <form role="search" className="header-search" onSubmit={submit}>
-              <label className="sr-only" htmlFor="site-search">
-                Tìm sản phẩm
-              </label>
-              <input
-                id="site-search"
-                placeholder="Tìm sách, đồ dùng học tập…"
-                value={search}
-                maxLength={100}
-                onChange={(event) => setSearch(event.target.value)}
-              />
-              <button type="submit" aria-label="Tìm kiếm">
-                <Icon name="search" size={20} />
-              </button>
-            </form>
-          )}
+          {!adminArea && <ProductSearch />}
           <div className="header-actions">
             {user ? (
               <details className="account-menu">
@@ -217,9 +191,7 @@ export function StoreShell({ children }: { children: ReactNode }) {
             </div>
             <NewsletterForm />
           </div>
-          <div className="container copyright">
-            © 2026 Nhà sách Thu Thanh
-          </div>
+          <div className="container copyright">© 2026 Nhà sách Thu Thanh</div>
           <ScrollToTop />
         </footer>
       )}

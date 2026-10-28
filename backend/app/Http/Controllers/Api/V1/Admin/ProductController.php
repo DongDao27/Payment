@@ -25,6 +25,11 @@ class ProductController extends Controller
         return ApiResponse::data(new ProductResource($catalog->save($request->validated(), $request->user()->id)), 201);
     }
 
+    public function show(Product $product): JsonResponse
+    {
+        return ApiResponse::data(new ProductResource($product->load(['category', 'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id')])));
+    }
+
     public function destroy(ArchiveProductRequest $request, Product $product, CatalogService $catalog): Response
     {
         $catalog->archive($product, $request->integer('version'));

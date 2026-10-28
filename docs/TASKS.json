@@ -1281,5 +1281,52 @@
     },
     "limitations": "Figma shows docked footer scroll-to-top; web has visibility threshold/floating behavior. Native font/wrapping/hotspots still need owner Present review. No new cloud file/resource created.",
     "source_commit": "a6f4282ff686c69fd968615ee6f4aab458b8c935"
+  },
+  "search_product_editor_fix": {
+    "decision": "D60",
+    "status": "done",
+    "verified_at": "2026-10-29T00:38:36+07:00",
+    "source_commit": null,
+    "scope": "Web search suggestions and product create/image fixes; no payment/schema/business-policy changes",
+    "changes": [
+      "250ms debounced API suggestions with cancellation, keyboard/Escape/quick view and loading/empty/retry states",
+      "Search result heading and Vietnamese unaccented matching with literal wildcard escaping",
+      "No manual slug; server unique bounded slug, stable on rename",
+      "Choose/preview image during create; preserve created product on image failure, retry image without duplicate POST",
+      "Admin GET product detail for reliable current images/catalog_version reload",
+      "Proportional admin/cart image containers; remove header advertising, keep welcome/body campaigns",
+      "Project-only PHP upload ini and local launcher; Docker and demo aligned with 5MiB contract"
+    ],
+    "verification": {
+      "backend": {
+        "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
+        "tests": 129,
+        "assertions": 1812,
+        "result": "passed",
+        "database": "MySQL8.4.13 thu_thanh_test Windows127.0.0.1:3307"
+      },
+      "pint": "passed --test --dirty",
+      "frontend": "7 API-client tests; production build21routes; TypeScript passed in isolated copy",
+      "source_parity_files": 65,
+      "browser": "Search type/click/keyboard/Escape/Enter, empty/retry/slow stale response, accented/unaccented; widths375/768/1024/1440 no overflow/header ad. Create+image+15percent discount+stock/edit after upload, duplicate SKU error, one POST on image failure/retry. Admin and cart image warning absent after fix; 0 pageerrors in completed flows.",
+      "injected_failures": "One upload503 and one search503 response fixture used for retry UX only; routes removed. Earlier SKU422 intentional. Not production/provider calls.",
+      "large_upload": {
+        "valid_png_bytes": 3147861,
+        "http_status": 201,
+        "child_server_launcher": "scripts/start-backend.ps1 -Port18082 -Environment testing --no-reload",
+        "ini": "5M upload/8M post; original ini unchanged, pdo_mysql enabled"
+      },
+      "real_database": "read-only:136products/6categories/1admin,136source prices and136stocks matched,136unique paginated products",
+      "pack": "passed20required/27tasks/45paths/28local links",
+      "diff": "passed",
+      "Docker": "not_run; no Docker runtime; configuration source only",
+      "merchant_SMTP_staging": "not_run; unchanged external gates"
+    },
+    "preserved": [
+      "main/demo data, private env, APP_KEY, existing uploads/workbook",
+      "owner next-env.d.ts excluded from commit",
+      "Figma V25 unchanged; D60 web differences require a later plugin sync"
+    ],
+    "runtime": "Owned browser and3100/18082 QA servers stopped; MySQL retained; isolated fixtures in thu_thanh_test only"
   }
 }

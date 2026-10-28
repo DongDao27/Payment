@@ -1366,7 +1366,7 @@ tr:last-child td {
     gap: 14px;
     flex-wrap: wrap;
   }
-  .cart-item > img {
+  .cart-product-image {
     width: 70px;
     height: 96px;
   }
@@ -1731,7 +1731,7 @@ tr:last-child td {
   .order-summary {
     position: static;
   }
-  .cart-item > img {
+  .cart-product-image {
     width: 70px;
     height: 95px;
   }

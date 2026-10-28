@@ -30,7 +30,7 @@ Mật khẩu12–128ký tự, không trim/log; email/phone normalize server, pho
 | Method | Endpoint | Quyền và dữ liệu |
 |---|---|---|
 | GET | /categories | Public, danh mục active |
-| GET | /products, /products/{product} | Public; lọc/tìm/sort/page, dữ liệu xem nhanh |
+| GET | /products, /products/{product} | Public; lọc/tìm/sort/page, dữ liệu xem nhanh; q tìm tên có/không dấu, `%`, `_`, `!` được hiểu là ký tự thật. Gợi ý dùng per_page=6 cùng endpoint |
 | GET | /storefront | Snapshot công khai, không session/Set-Cookie, cache20giây |
 | GET | /home | Feed có thể cá nhân hóa; không cache chung |
 | GET | /cart | Customer, giỏ của mình |
@@ -65,7 +65,7 @@ Mọi endpoint /admin yêu cầu auth + role admin; khách/guest không đọc �
 | Method | Endpoint | Dữ liệu |
 |---|---|---|
 | GET/POST/PATCH | /admin/categories, /admin/categories/{category} | Danh mục |
-| GET/POST/PATCH/DELETE | /admin/products, /admin/products/{product} | Sản phẩm; DELETE archive, PATCH restore, giữ snapshot cũ |
+| GET/POST/PATCH/DELETE | /admin/products, /admin/products/{product} | GET list/detail (kể cả sản phẩm ẩn); DELETE archive, PATCH restore, giữ snapshot cũ. POST không bắt buộc slug, server tự sinh; PATCH bỏ qua slug sẽ giữ nguyên |
 | POST/DELETE | /admin/products/{product}/images, /admin/products/{product}/images/{image} | Ảnh đúng product, validate upload |
 | GET | /admin/inventory | Lọc category/q/page; giá bìa/giá bán, tồn vật lý/giữ/có thể bán |
 | POST | /admin/inventory/{product}/adjustments | delta,reason,request_key; ledger/idempotency |

@@ -3502,7 +3502,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Slug có thể bỏ qua, Laravel tự sinh duy nhất từ tên; khi PATCH không gửi slug, giữ slug hiện tại. Ảnh tải qua endpoint images sau khi tạo thành công; tải ảnh lỗi không tạo lại sản phẩm."
       }
     },
     "/admin/products/{product}": {
@@ -3767,6 +3768,104 @@
                   }
                 },
                 "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Đọc sản phẩm quản trị theo ID, kể cả sản phẩm ẩn và ảnh hiện tại",
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "get_admin_products_product",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID resource"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Product"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "meta"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found or private resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Config/provider unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
@@ -6905,7 +7004,6 @@
         "required": [
           "category_id",
           "sku",
-          "slug",
           "name",
           "list_price",
           "opening_stock"

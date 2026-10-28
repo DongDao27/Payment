@@ -9,6 +9,7 @@ RUN apt-get update \
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 WORKDIR /var/www/html
 COPY . .
+COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/zz-uploads.ini
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader \
     && mkdir -p storage/app/private/evidence storage/app/public storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache

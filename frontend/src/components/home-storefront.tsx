@@ -79,6 +79,7 @@ export default function HomeStorefront() {
         >
           <Image
             src="/banners/phuongnam-sach-moi.png"
+            loading="eager"
             alt="Sách mới tháng này"
             width={900}
             height={506}
@@ -92,6 +93,7 @@ export default function HomeStorefront() {
         >
           <Image
             src="/banners/phuongnam-new-books.png"
+            loading="eager"
             alt="Bộ sưu tập sách mới"
             width={900}
             height={506}

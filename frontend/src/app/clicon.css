@@ -570,7 +570,7 @@ input[type="checkbox"] {
   flex-shrink: 0;
   object-fit: contain;
 }
-.cart-item > img {
+.cart-product-image {
   width: 100px;
   height: 130px;
   object-fit: contain;
@@ -764,7 +764,7 @@ input[type="checkbox"] {
   }
 }
 @media (max-width: 760px) {
-  .cart-item > img {
+  .cart-product-image {
     width: 70px;
     height: 95px;
   }

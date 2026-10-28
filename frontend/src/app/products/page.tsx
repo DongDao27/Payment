@@ -69,12 +69,20 @@ function Catalog() {
       <div className="breadcrumb">
         <Link href="/">Trang chủ</Link>
         <span>/</span>
-        <span>{category?.name ?? "Tất cả sản phẩm"}</span>
+        <span>
+          {params.get("q")
+            ? "Kết quả tìm kiếm"
+            : (category?.name ?? "Tất cả sản phẩm")}
+        </span>
       </div>
       <div className="page-heading">
         <div>
           <span className="eyebrow muted">KHÁM PHÁ THU THANH</span>
-          <h1>{category?.name ?? "Tất cả sản phẩm"}</h1>
+          <h1>
+            {params.get("q")
+              ? "Kết quả tìm kiếm"
+              : (category?.name ?? "Tất cả sản phẩm")}
+          </h1>
           <p className="muted">
             {params.get("q")
               ? `Kết quả cho “${params.get("q")}”`

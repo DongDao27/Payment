@@ -1,13 +1,13 @@
 # Nhà sách Thu Thanh
 
-Website bán sách và quản lý cửa hàng, cập nhật **28/10/2026**. Frontend dùng **Next.js 16, React 19, TypeScript, Tailwind 4**; backend dùng **Laravel 12, PHP 8.4, MySQL 8.4**. Laravel quyết định quyền, giá, tồn kho và trạng thái đơn; trình duyệt dùng session cookie và CSRF.
+Website bán sách và quản lý cửa hàng, cập nhật **29/10/2026**. Frontend dùng **Next.js 16, React 19, TypeScript, Tailwind 4**; backend dùng **Laravel 12, PHP 8.4, MySQL 8.4**. Laravel quyết định quyền, giá, tồn kho và trạng thái đơn; trình duyệt dùng session cookie và CSRF.
 
 ## Chức năng hiện có
 
-- Trang chủ gồm Bán chạy nhất, Sản phẩm mới, Gợi ý cho bạn; có tìm kiếm, lọc, sắp xếp, phân trang và xem nhanh. Bán chạy xếp theo lượng bán trong đơn paid/accepted, sản phẩm mới xếp theo ngày tạo.
+- Trang chủ gồm Bán chạy nhất, Sản phẩm mới, Gợi ý cho bạn; tìm kiếm gợi ý khi gõ, chọn để xem nhanh hoặc Enter mở kết quả; có lọc, sắp xếp và phân trang. Bán chạy xếp theo lượng bán trong đơn paid/accepted, sản phẩm mới xếp theo ngày tạo.
 - Tài khoản khách, khôi phục mật khẩu email, giỏ nhiều món, báo giá, đặt hàng, VNPAY Sandbox cho hai cách nhận hàng, theo dõi/hủy/đặt lại đơn.
-- Admin quản lý sản phẩm, ảnh, giảm giá, archive/restore, danh mục; giá và lịch sử tồn kho; đơn và lịch sử thanh toán/receipt/trạng thái; đối soát, biểu đồ doanh thu, bộ lọc và CSV.
-- Footer gọn với bản đồ nhỏ dưới logo, bản tin, nhãn hàng và một khối liên hệ: **295 Tôn Đức Thắng, Hòa Khánh, Đà Nẵng**, **0915466951**, **07:30–21:30 hằng ngày**. Có nút lên đầu trang, banner chủ đề ở header và giữa ba feed; nguồn ảnh trong ASSET-SOURCES.
+- Admin quản lý sản phẩm, chọn ảnh ngay khi tạo, giảm giá, archive/restore, danh mục; slug tự sinh; giá và lịch sử tồn kho; đơn và lịch sử thanh toán/receipt/trạng thái; đối soát, biểu đồ doanh thu, bộ lọc và CSV.
+- Footer gọn với bản đồ nhỏ dưới logo, bản tin, nhãn hàng và một khối liên hệ: **295 Tôn Đức Thắng, Hòa Khánh, Đà Nẵng**, **0915466951**, **07:30–21:30 hằng ngày**. Có nút lên đầu trang, banner chủ đề giữa ba feed; header chỉ giữ dòng chào mừng, không quảng cáo. Nguồn ảnh trong ASSET-SOURCES.
 
 Giao hàng **25.000đ/đơn**, nhận tại cửa hàng **0đ**; phí chỉ hiện ở checkout/đơn. Không đổi trả/hoàn tiền. Doanh thu là tiền hàng sau giảm giá, phí giao thống kê riêng. Tạo đơn giữ hàng 5 phút khi giao, 24 giờ khi nhận cửa hàng; thanh toán lại không gia hạn.
 
@@ -18,8 +18,7 @@ Terminal 1:
 ```powershell
 cd D:\ThuThanh-WebDesign
 powershell -ExecutionPolicy Bypass -File scripts/mysql-local.ps1 -Action start
-cd backend
-php artisan serve --host=localhost --port=8000
+powershell -ExecutionPolicy Bypass -File scripts/start-backend.ps1
 ```
 
 Terminal 2:

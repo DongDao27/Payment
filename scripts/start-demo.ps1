@@ -3,7 +3,7 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 if (-not (Test-Path -LiteralPath (Join-Path $projectRoot 'backend/.env.demo'))) { throw 'Run php scripts/prepare-demo.php first.' }
 if ($Component -eq 'backend') {
     Push-Location (Join-Path $projectRoot 'backend/public')
-    $opcacheArgs = @('-d','opcache.enable_cli=1','-d','opcache.validate_timestamps=1')
+    $opcacheArgs = @('-d','opcache.enable_cli=1','-d','opcache.validate_timestamps=1','-d','upload_max_filesize=5M','-d','post_max_size=8M')
     if ((php -r "echo extension_loaded('Zend OPcache') ? '1' : '0';") -ne '1') { $opcacheArgs += @('-d','zend_extension=opcache') }
     try { php @opcacheArgs -S localhost:18081 (Join-Path $projectRoot 'scripts/demo-router.php') } finally { Pop-Location }
 } else {

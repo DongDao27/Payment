@@ -54,11 +54,84 @@ input::placeholder, textarea::placeholder {
   outline: 3px solid #c7dcff;
   outline-offset: 4px;
 }
-.header-search button {
+.header-search .search-submit {
   min-width: 48px;
   min-height: 48px;
   color: var(--brand);
 }
+.search-dropdown {
+  position: absolute;
+  inset: calc(100% + 10px) 0 auto;
+  z-index: 50;
+  max-height: min(560px, 65dvh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  box-shadow: 0 12px 36px #102b5d30;
+}
+.search-feedback {
+  margin: 0;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.header-search .search-option,
+.header-search .search-more {
+  position: static;
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  text-align: left;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--ink);
+}
+.search-option:hover, .search-option[aria-selected="true"],
+.search-option:focus-visible, .search-more:hover {
+  background: #edf3ff;
+  outline: 2px solid var(--action);
+  outline-offset: -2px;
+}
+.search-thumbnail {
+  position: relative;
+  display: block;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 64px;
+}
+.search-product-info {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.search-product-info strong { font-weight: 650; }
+.search-product-info small { color: var(--muted); }
+.search-product-info b { color: var(--action); }
+.header-search .search-more { color: var(--action); font-weight: 700; }
+.product-image-picker { display: grid; gap: 12px; }
+.image-selection { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.image-selection img { width: 96px; height: 128px; object-fit: contain; }
+.image-selection span { overflow-wrap: anywhere; min-width: 0; }
+.admin-product-thumbnail {
+  position: relative;
+  display: block;
+  width: 60px;
+  height: 80px;
+  flex-shrink: 0;
+}
+.cart-product-image { position: relative; align-self: start; }
 .header-actions a:hover, .header-actions button:hover {
   color: white;
 }

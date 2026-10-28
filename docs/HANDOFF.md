@@ -1,3 +1,17 @@
+# D60 — sửa web đã kiểm tra local (2026-10-29T00:38:36+07:00)
+
+Task D60 done trong phạm vi web; source commit chưa có tại checkpoint này. Thay đổi: search component/shell/listing, editor ảnh+slug tự sinh, ảnh admin/cart, CatalogService/ProductRequest/admin detail API, upload ini/launcher/Docker/demo và hướng dẫn. Không đổi schema hoặc nghiệp vụ tiền/tồn/quyền.
+
+Kiểm thực tế:129tests/1812assertions/Pint;7client/build21route/typecheck; 65frontend source file khớp preview, docs/diff đạt. Browserdesktop/mobile có/không dấu, stale/retry, keyboard/quickview, tạo sản phẩm cùng ảnh/giảm15%/tồn20, sửa sau upload, SKUtrùng, ảnh lỗi retry chỉ1create, ảnh3.147.861byte upload201; admin/cart không warning sau sửa.503mock/422cố ý không tính là lỗi bất ngờ. MainDB136giá/tồn khớp read-only.
+
+Lệnh chạy hiện hành: từ gốc `powershell -ExecutionPolicy Bypass -File scripts/mysql-local.ps1 -Action start`, rồi `powershell -ExecutionPolicy Bypass -File scripts/start-backend.ps1`; terminal frontend `npm run dev`. Restart/Ctrl+F5 sau cập nhật. `/admin/products` chọn ảnh ngay khi tạo, không nhập slug; nếu ảnh lỗi kiểm ảnh và Tải ảnh lên, không tạo lại. Script dùng project ini5M và --no-reload, đổi env cần restart. Không sửa php.ini toàn máy.
+
+Giữ next-env.d.ts của owner, không stage; main/demoDB/env/APP_KEY/workbook/uploads giữ. QA3100/18082/browser đã dừng, MySQL giữ. Fixture chỉ ở thu_thanh_test, không dùng làm số liệu thật. MerchantVNPAY/SMTP/staging10k/Docker thật pending; backend gate externally_blocked/release chưa đạt. Plugin FigmaV25 vẫn theo D58, chưa đồng bộ header/search/editor mới D60; không claim canvas đã sửa. B07/provider acceptance là bước kế tiếp khi có điều kiện.
+
+# D60 — đang kiểm tra cuối
+
+Đang sửa tìm kiếm/tạo sản phẩm/ảnh theo D60, đã kiểm API và browser testDB; còn kiểm cuối/build/checkpoint. Giữ dữ liệu thực/env/next-env.d.ts. Figma V25 chưa đổi trong task sửa web này.
+
 # D59 — Figma V25 đã đồng bộ và đóng gói (2026-10-28T21:48:31+07:00)
 
 Source đã kiểm tra: `a6f4282ff686c69fd968615ee6f4aab458b8c935`; receipt chỉ cập nhật checkpoint.

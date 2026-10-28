@@ -71,6 +71,7 @@ Route::prefix('v1')->middleware(['web', AuthenticateSession::class])->group(func
             Route::patch('categories/{category}', [Admin\CategoryController::class, 'update']);
             Route::get('products', [Admin\ProductController::class, 'index']);
             Route::post('products', [Admin\ProductController::class, 'store']);
+            Route::get('products/{product}', [Admin\ProductController::class, 'show']);
             Route::patch('products/{product}', [Admin\ProductController::class, 'update']);
             Route::delete('products/{product}', [Admin\ProductController::class, 'destroy']);
             Route::post('products/{product}/images', [Admin\ProductImageController::class, 'store']);

@@ -269,3 +269,15 @@ Chủ dự án yêu cầu kiểm tra bản web D58 rồi đồng bộ Figma. Dù
 Acceptance trước sửa: web client tests/build/typecheck/assets đạt; Figma có nguồn banner/map PNG offline đúng hash; footer 1 địa chỉ/phone/giờ, map300×164 dưới logo, admin không footer mua sắm; SCROLL_TO đúng màn, logo/Trang chủ về landing, không chồng layer/flow, kiểm đủ payment quantity và rollback. Gói V25/source/SVG preview/ZIP CRC khớp; không claim canvas thật hoặc provider thật đã nghiệm thu. Giữ next-env.d.ts có từ trước, DB/env và source web.
 
 D59 local acceptance đạt: web recheck, mock126frame/2518reaction và native geometry/flow/rollback, asset pixel parity, package CRC. V25 giữ số page/frame, bổ sung Scroll to trong cùng màn và mapURL; sourceUI vẫn là layer editable. Dock-state trong Figma được mô tả rõ; native canvas cần owner Present, không claim live acceptance.
+
+## D60 — Gợi ý tìm kiếm và form tạo sản phẩm (2026-10-28)
+
+Chủ dự án yêu cầu gợi ý khi nhập, sửa thêm sản phẩm/ảnh, bỏ nhập slug và bỏ banner trên header. Yêu cầu mới thay phần header quảng cáo của D58; giữ banner trong nội dung trang chủ. Slug vẫn là khóa nội bộ, server tự tạo khi POST không gửi slug; giữ URL cũ khi đổi tên. Không đổi tiền/tồn/quyền hoặc schema.
+
+Tiêu chí trước sửa: gợi ý debounce từ API thật, hủy phản hồi cũ, chọn bằng bàn phím/chuột mở xem nhanh, Enter mở kết quả có tiêu đề tìm kiếm; có loading/empty/error. Admin tạo được sản phẩm không nhập slug, chọn ảnh ngay khi tạo; nếu ảnh lỗi giữ sản phẩm đã tạo và cho tải lại, không POST tạo trùng. Lỗi validation hiển thị cụ thể; ảnh giữ tỉ lệ, không cảnh báo Next/Image khi kiểm trình duyệt. Không có header quảng cáo; giữ dữ liệu/env/next-env.d.ts có từ trước. Kiểm API trên MySQL test riêng trước UI, build/typecheck, browser desktop/mobile và dữ liệu thực chỉ đọc. Provider thật/canvas/staging vẫn chưa nghiệm thu.
+
+Kiểm browser phát hiện LOCATE không khớp `sach` với `Sách` dù collation Unicode CI. Sửa bộ lọc tên dùng LIKE với escape literal `%`, `_`, `!` và binding, không đổi schema/sort/quyền; bổ sung kiểm tìm có/không dấu và ký tự wildcard trước nghiệm thu.
+
+Kiểm PHP thực tế có upload_max_filesize=2M, không khớp hợp đồng ảnh 5MiB. Bổ sung cấu hình upload riêng của dự án, script chạy local truyền ini-scan cho tiến trình con và Docker COPY cùng file; không sửa php.ini toàn máy. Demo server trực tiếp dùng -d tương ứng. Kiểm tiến trình HTTP con nhận ảnh thật lớn hơn2MiB, giữ pdo_mysql/ini gốc; không suy ra Docker đã build hoặc deploy.
+
+D60 local acceptance đạt (2026-10-29T00:38:36+07:00):129test/1812assertion, Pint,7client/build/typecheck, browsersearch/editor/recovery/cart và PNG3.147.861byte upload201. Cấu hìnhPHP riêng không đổi ini máy. DBthực136giá/tồn khớp. FigmaV25/Docker/provider thật không nghiệm thu trong task này.

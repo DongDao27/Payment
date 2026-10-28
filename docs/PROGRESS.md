@@ -389,3 +389,13 @@ Mock đạt126frame/2518reaction; layer bounds/flow không chồng, footer/banne
 Gói output/figma/thuthanh-figma-clicon-v25-2026-10-28.zip:6file,14837477byte,SHA256 08fbf133dd1c1b9c0e25830c6aaed16349e7b9ae946d92d43b1b426377ba5aa5;CRC/source byte match/manifest duy nhất đạt.60SVG xem trước không bỏ vào ZIP. Scriptpackage dùng ngày hiện tại UTC+7 thay ngày cũ hardcode. Guide/UI/manifest/flow manifest và tài liệu hiện hành đồng bộV25. QA browser/server18091 do phiên mở đã đóng; dữ liệu136SKU/env/upload/workbook và next-env có từ trước giữ. Owner cần chạy lạiplugin rồi Present để duyệt font/wrapping/hotspot; không cócloudfileKey nên không chỉnh fileCommunity hoặc tạocanvasmới.
 
 D59 source đã commit: a6f4282ff686c69fd968615ee6f4aab458b8c935.20file đã quét secrets/runtime/env/size; receipt không sửa bundle/package đã kiểm. Giữ next-env.d.ts của phiên dev trước.
+
+D60 in_progress: acceptance ghi trước sửa tại DECISIONS. API/browser tạo cùng ảnh, retry ảnh không tạo sản phẩm trùng, tìm kiếm/bàn phím/mobile và thumbnail đã kiểm; đang chạy kiểm cuối và cập nhật hướng dẫn.
+
+D60 local_verified — 2026-10-29T00:38:36+07:00
+
+Tìm kiếm gợi ý từ API thật (250ms/6 kết quả), hủy phản hồi cũ, bàn phím/Escape/xem nhanh, heading kết quả. LIKE có binding/escape hỗ trợ có/không dấu và literal %_!; không schema mutation. Bỏ banner header, giữ welcome/body banners. Form tạo không slug; server tự sinh unique có giới hạn255, giữ khi rename. Chọn/preview ảnh lúc tạo; ảnh lỗi giữ product và retry không tạo trùng; GET admin detail nạp version/ảnh mới. Thông báo SKU/lớp/giá rõ hơn; admin/cart dùng khung ảnh fill+contain, hết cảnh báo một chiều.
+
+129 backend tests/1812 assertions và Pint đạt;7client/build21route/typecheck đạt; 65 frontend source file khớp copy QA và next-env có từ trước giữ nguyên. Browser375/768/1024/1440 đạt tìm kiếm/empty/retry/stale/keyboard; tạo ảnh+giảm15%+tồn20/sửa lại, duplicateSKU và upload503 retry chỉ1createPOST; cart100×130 desktop/70×95mobile không overflow hoặc image warning.0pageerror trong flow hoàn tất; console422/503 cố ý khi kiểm lỗi. Đã phát hiện/sửa cả tìm không dấu và thumbnail warning trong lúc QA, không gọi lần chạy lỗi trước sửa là passed.
+
+PHP máy thật mặc định2M; thêm ini riêng uploads5M/post8M, scripts/start-backend.ps1 truyền scan-dir với --no-reload, Docker COPY và demo -d tương ứng. Browser PNG thật3.147.861byte upload201 qua tiến trình con; pdo_mysql/ini gốc giữ. Docker build/deploy chưa chạy. Dữ liệu chính chỉ đọc:136SKU/giá/tồn khớp, không sửa env/APP_KEY/workbook hoặc provider. QA session đã đóng/MySQL giữ; Figma V25 chưa cập nhật D60. Hướng dẫn/README/API/OpenAPI đồng bộ.

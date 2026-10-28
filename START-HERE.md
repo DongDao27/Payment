@@ -1,6 +1,6 @@
 # Bắt đầu và tiếp tục dự án
 
-Hiện hành28/10/2026: Next.js16 + Laravel12 + MySQL8.4; thiết kế pluginV25 đồng bộ footer/banner web D58. README là trang giới thiệu/cách chạy mới nhất; [hướng dẫn web/admin](docs/CHAY-WEB-VA-LARAVEL.md).
+Hiện hành29/10/2026: Next.js16 + Laravel12 + MySQL8.4; web D60 sửa gợi ý tìm kiếm, tạo sản phẩm/ảnh và bỏ banner header. PluginV25 đã đồng bộ đến web D58, chưa cập nhật thay đổi D60. README là trang giới thiệu/cách chạy mới nhất; [hướng dẫn web/admin](docs/CHAY-WEB-VA-LARAVEL.md).
 
 ## Đọc đầu phiên
 

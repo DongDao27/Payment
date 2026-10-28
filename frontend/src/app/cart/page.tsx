@@ -65,14 +65,17 @@ function CartContent() {
             {cart.items.map((item) => (
               <article className="cart-item" key={item.id}>
                 {item.product.images[0] && (
-                  <Image
-                    src={imageSrc(item.product.images[0].url)}
-                    width={100}
-                    height={130}
-                    sizes="100px"
-                    alt={item.product.name}
-                    style={{ objectFit: "contain" }}
-                  />
+                  <div className="cart-product-image">
+                    <Image
+                      src={imageSrc(item.product.images[0].url)}
+                      fill
+                      sizes="(max-width: 760px) 70px, 100px"
+                      alt={item.product.name}
+                      style={{
+                        objectFit: "contain",
+                      }}
+                    />
+                  </div>
                 )}
                 <div className="cart-item-info">
                   <small className="muted">{item.product.category.name}</small>

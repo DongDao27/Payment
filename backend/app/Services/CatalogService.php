@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class CatalogService
@@ -24,8 +25,9 @@ class CatalogService
             $query->where('is_active', $filters['is_active']);
         }
         if (filled($filters['q'] ?? null)) {
-            // Literal substring, not a user-controlled SQL wildcard expression.
-            $query->whereRaw('LOCATE(?, products.name) > 0', [$filters['q']]);
+            // Honor the catalog's accent-insensitive collation, treating wildcards literally.
+            $term = str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $filters['q']);
+            $query->whereRaw("products.name LIKE ? ESCAPE '!'", ['%'.$term.'%']);
         }
         foreach (['category_id', 'grade'] as $field) {
             if (isset($filters[$field])) {
@@ -123,13 +125,17 @@ class CatalogService
                     $data['sale_price'] = ProductPricing::salePrice($listPrice, (int) $data['discount_percent']);
                 }
                 unset($data['opening_stock'], $data['version'], $data['discount_percent']);
+                if (! $existing && ! array_key_exists('slug', $data)) {
+                    $prefix = Str::limit(Str::slug($data['name']), 200, '') ?: 'san-pham';
+                    $data['slug'] = $prefix.'-'.Str::lower((string) Str::ulid());
+                }
                 $product->fill($data);
                 $category = Category::findOrFail($product->category_id);
                 if ($product->grade !== null && $category->slug !== 'sach-giao-khoa') {
-                    throw ValidationException::withMessages(['grade' => 'Grade is only valid for textbooks.']);
+                    throw ValidationException::withMessages(['grade' => 'Chỉ nhập lớp cho sản phẩm thuộc danh mục Sách giáo khoa.']);
                 }
                 if ($product->sale_price !== null && $product->sale_price > $product->list_price) {
-                    throw ValidationException::withMessages(['sale_price' => 'Sale price must not exceed list price.']);
+                    throw ValidationException::withMessages(['sale_price' => 'Giá bán không được cao hơn giá niêm yết.']);
                 }
                 $product->catalog_version = $existing ? $product->catalog_version + 1 : 1;
                 if (! $existing) {

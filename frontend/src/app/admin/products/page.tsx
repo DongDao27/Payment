@@ -7,7 +7,7 @@ import {
   type FormEvent,
 } from "react";
 import Image from "next/image";
-import { api } from "@/lib/api-client";
+import { api, ApiError } from "@/lib/api-client";
 import type { Category, Pagination, Product } from "@/lib/types";
 import { errorMessage, money } from "@/lib/format";
 import { Empty, Loading, Modal, Notice } from "@/components/ui";
@@ -237,6 +237,82 @@ function ProductEditor({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const lock = useRef(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
+  const [fields, setFields] = useState<Record<string, string[]>>({});
+  useEffect(() => {
+    if (!file) {
+      setPreview("");
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    setPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file]);
+  function fieldError(name: string) {
+    return (
+      fields[name] && (
+        <small id={`product-error-${name}`} className="error-text">
+          {fields[name].join(" ")}
+        </small>
+      )
+    );
+  }
+  function selectImage(event: React.ChangeEvent<HTMLInputElement>) {
+    const next = event.target.files?.[0];
+    if (!next) {
+      setFile(null);
+      return;
+    }
+    if (
+      !["image/jpeg", "image/png", "image/webp"].includes(next.type) ||
+      next.size > 5 * 1024 * 1024
+    ) {
+      setError("Chọn ảnh JPEG, PNG hoặc WebP không quá 5 MiB.");
+      event.target.value = "";
+      setFile(null);
+      return;
+    }
+    setFile(next);
+    setError("");
+    setFields({});
+  }
+  function imagePicker() {
+    return (
+      <div className="product-image-picker">
+        <label>
+          Ảnh sản phẩm (JPEG, PNG, WebP; tối đa 5 MiB)
+          <input
+            name="image"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={selectImage}
+          />
+        </label>
+        {preview && (
+          <div className="image-selection">
+            {/* Local file previews cannot use the server image optimizer. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={preview}
+              alt="Ảnh sản phẩm đã chọn"
+              width={96}
+              height={128}
+            />
+            <span>{file?.name}</span>
+            <button
+              className="text-button"
+              type="button"
+              onClick={() => setFile(null)}
+            >
+              Bỏ ảnh đã chọn
+            </button>
+          </div>
+        )}
+        {fieldError("image")}
+      </div>
+    );
+  }
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (lock.current) return;
@@ -244,11 +320,11 @@ function ProductEditor({
     setBusy(true);
     setError("");
     setSuccess("");
+    setFields({});
     const form = new FormData(event.currentTarget);
     const body = {
       name: form.get("name"),
       sku: form.get("sku"),
-      slug: form.get("slug"),
       category_id: Number(form.get("category_id")),
       list_price: Number(form.get("list_price")),
       ...(form.get("pricing_mode") === "percent"
@@ -267,15 +343,34 @@ function ProductEditor({
         ? { version: initial.catalog_version }
         : { opening_stock: Number(form.get("opening_stock")) }),
     };
+    let created = false;
     try {
       const result = await api<Product>(
         initial ? `/admin/products/${initial.id}` : "/admin/products",
         { method: initial ? "PATCH" : "POST", body },
       );
+      created = !initial;
       await onSaved(result.data);
+      if (created && file) {
+        const upload = new FormData();
+        upload.set("image", file);
+        upload.set("alt_text", result.data.name);
+        await api(`/admin/products/${result.data.id}/images`, {
+          method: "POST",
+          body: upload,
+        });
+        setFile(null);
+        const fresh = await api<Product>(`/admin/products/${result.data.id}`);
+        await onSaved(fresh.data);
+      }
       setSuccess("Đã lưu sản phẩm.");
     } catch (error) {
-      setError(errorMessage(error));
+      if (error instanceof ApiError) setFields(error.fields);
+      setError(
+        (created
+          ? "Sản phẩm đã được tạo. Kiểm tra ảnh bên dưới và tải lại ảnh nếu cần. "
+          : "") + errorMessage(error),
+      );
     } finally {
       setBusy(false);
       lock.current = false;
@@ -283,12 +378,8 @@ function ProductEditor({
   }
   async function reloadProduct() {
     if (!initial) throw new Error("No product selected.");
-    const result = await api<Product[]>(
-      `/admin/products?q=${encodeURIComponent(initial.name.slice(0, 100))}&per_page=100`,
-    );
-    const fresh = result.data.find((product) => product.id === initial.id);
-    if (!fresh) throw new Error("Reload the product list before continuing.");
-    await onSaved(fresh);
+    const result = await api<Product>(`/admin/products/${initial.id}`);
+    await onSaved(result.data);
   }
   async function upload(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -297,16 +388,25 @@ function ProductEditor({
     setBusy(true);
     setError("");
     setSuccess("");
+    setFields({});
     const form = event.currentTarget;
     try {
+      if (!file) {
+        setError("Vui lòng chọn ảnh trước khi tải lên.");
+        return;
+      }
+      const body = new FormData(form);
+      body.set("image", file);
       await api(`/admin/products/${initial.id}/images`, {
         method: "POST",
-        body: new FormData(form),
+        body,
       });
+      setFile(null);
       await reloadProduct();
       form.reset();
       setSuccess("Đã thêm ảnh.");
     } catch (error) {
+      if (error instanceof ApiError) setFields(error.fields);
       setError(errorMessage(error));
     } finally {
       setBusy(false);
@@ -343,6 +443,28 @@ function ProductEditor({
       }}
     >
       {error && <Notice error>{error}</Notice>}
+      {Object.keys(fields).length > 0 && (
+        <div className="error-text" role="alert">
+          {Object.entries(fields).map(([name, messages]) => (
+            <p key={name}>
+              {(
+                {
+                  name: "Tên sản phẩm",
+                  sku: "Mã SKU",
+                  grade: "Lớp",
+                  list_price: "Giá niêm yết",
+                  sale_price: "Giá bán",
+                  discount_percent: "Giảm giá",
+                  image: "Ảnh",
+                  category_id: "Danh mục",
+                  opening_stock: "Tồn ban đầu",
+                } as Record<string, string>
+              )[name] ?? name}
+              : {messages.join(" ")}
+            </p>
+          ))}
+        </div>
+      )}
       {success && <Notice>{success}</Notice>}
       <form className="form-stack" key={initial?.id ?? "new"} onSubmit={save}>
         <fieldset disabled={busy}>
@@ -353,7 +475,10 @@ function ProductEditor({
               required
               maxLength={255}
               defaultValue={initial?.name}
+              aria-invalid={!!fields.name}
+              aria-describedby={fields.name ? "product-error-name" : undefined}
             />
+            {fieldError("name")}
           </label>
           <div className="form-grid">
             <label>
@@ -363,17 +488,10 @@ function ProductEditor({
                 required
                 maxLength={100}
                 defaultValue={initial?.sku}
+                aria-invalid={!!fields.sku}
+                aria-describedby={fields.sku ? "product-error-sku" : undefined}
               />
-            </label>
-            <label>
-              Slug
-              <input
-                name="slug"
-                required
-                maxLength={255}
-                pattern="[a-z0-9]+(-[a-z0-9]+)*"
-                defaultValue={initial?.slug}
-              />
+              {fieldError("sku")}
             </label>
           </div>
           <label>
@@ -400,7 +518,12 @@ function ProductEditor({
               min={1}
               max={12}
               defaultValue={initial?.grade ?? ""}
+              aria-invalid={!!fields.grade}
+              aria-describedby={
+                fields.grade ? "product-error-grade" : undefined
+              }
             />
+            {fieldError("grade")}
           </label>
           {!initial && (
             <label>
@@ -444,6 +567,7 @@ function ProductEditor({
               Sách đang hot (cửa hàng chọn)
             </span>
           </label>
+          {!initial && imagePicker()}
           <button className="button primary full" disabled={busy}>
             {busy ? "Đang lưu…" : "Lưu sản phẩm"}
           </button>
@@ -454,12 +578,15 @@ function ProductEditor({
           <h3>Ảnh sản phẩm</h3>
           {initial.images.map((image) => (
             <div key={image.id} className="summary-row">
-              <Image
-                src={imageSrc(image.url)}
-                alt={image.alt_text ?? initial.name}
-                width={60}
-                height={80}
-              />
+              <span className="admin-product-thumbnail">
+                <Image
+                  src={imageSrc(image.url)}
+                  alt={image.alt_text ?? initial.name}
+                  fill
+                  sizes="60px"
+                  style={{ objectFit: "contain" }}
+                />
+              </span>
               <button
                 className="text-button"
                 disabled={busy}
@@ -470,26 +597,20 @@ function ProductEditor({
             </div>
           ))}
           <form className="form-stack" onSubmit={upload}>
-            <label>
-              Thêm ảnh (JPEG, PNG, WebP; tối đa 5 MiB)
-              <input
-                name="image"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                required
-              />
-            </label>
-            <label>
-              Mô tả ảnh
-              <input
-                name="alt_text"
-                maxLength={255}
-                defaultValue={initial.name}
-              />
-            </label>
-            <button className="button" disabled={busy}>
-              Tải ảnh lên
-            </button>
+            <fieldset disabled={busy}>
+              {imagePicker()}
+              <label>
+                Mô tả ảnh
+                <input
+                  name="alt_text"
+                  maxLength={255}
+                  defaultValue={initial.name}
+                />
+              </label>
+              <button className="button" disabled={busy}>
+                Tải ảnh lên
+              </button>
+            </fieldset>
           </form>
         </section>
       )}

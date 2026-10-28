@@ -1,4 +1,4 @@
-# Chạy web, admin và VNPAY — 28/10/2026
+# Chạy web, admin và VNPAY — 29/10/2026
 
 ## Máy Windows hiện tại
 
@@ -9,8 +9,7 @@ Terminal 1:
 ```powershell
 cd D:\ThuThanh-WebDesign
 powershell -ExecutionPolicy Bypass -File scripts/mysql-local.ps1 -Action start
-cd backend
-php artisan serve --host=localhost --port=8000
+powershell -ExecutionPolicy Bypass -File scripts/start-backend.ps1
 ```
 
 Terminal 2:
@@ -21,6 +20,8 @@ npm run dev
 ```
 
 Mở http://localhost:3000. Dùng localhost nhất quán cho cookie/CSRF. Sau cập nhật source, restart server rồi Ctrl+F5. Dừng server bằng Ctrl+C; tắt MySQL an toàn bằng `scripts/mysql-local.ps1 -Action stop`, không xóa mysql-data.
+
+Script backend nạp cấu hình upload 5 MiB của dự án, giữ nguyên php.ini/extension hệ thống và khôi phục biến môi trường khi dừng. Đổi `.env` thì dừng/chạy lại script; `--no-reload` giữ cấu hình ini cho tiến trình HTTP con. Nếu chạy `php artisan serve` trực tiếp, PHP mặc định trên máy có thể chỉ nhận ảnh 2 MiB. Docker backend cũng nạp cùng file `backend/docker/php/uploads.ini`; chưa nghiệm thu deploy thực tế.
 
 ## Vào admin
 
@@ -37,6 +38,10 @@ Mở http://localhost:3000/admin. Trong backend: `php artisan admin:account` xem
 | /admin/reconciliation | Khoản tiền chưa rõ, trùng, sai hoặc muộn cần đối soát |
 
 35.000đ giảm 5% thành 33.250đ; Laravel tính số nguyên VND. Sửa giá sản phẩm không làm đổi snapshot đơn cũ. Không hoàn tất đơn chưa được xác minh thanh toán.
+
+**Thêm sản phẩm:** `/admin/products` → **+ Thêm sản phẩm** → nhập tên, SKU riêng, danh mục, giá/giảm giá, tồn ban đầu; chỉ nhập lớp cho Sách giáo khoa. Chọn ảnh JPEG/PNG/WebP tối đa 5 MiB, xem trước rồi **Lưu sản phẩm**. Slug là mã đường dẫn nội bộ, hệ thống tự tạo; không cần nhập. Nếu ảnh tải lỗi, sản phẩm đã tạo vẫn được giữ: kiểm tra khối **Ảnh sản phẩm**, chọn ảnh và **Tải ảnh lên**; không tạo lại sản phẩm. SKU trùng sẽ có thông báo ngay ở trường SKU.
+
+**Tìm kiếm:** gõ trên header để xem tối đa 6 gợi ý từ catalog; nhấn sản phẩm để xem nhanh. Phím mũi tên/Enter chọn gợi ý, Escape đóng; Enter khi chưa chọn gợi ý hoặc **Xem tất cả kết quả** mở trang **Kết quả tìm kiếm**. Header không còn banner quảng cáo; banner trong trang chủ vẫn giữ.
 
 ## Máy mới
 

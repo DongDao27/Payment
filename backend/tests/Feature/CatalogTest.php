@@ -38,6 +38,20 @@ class CatalogTest extends TestCase
         $this->getJson('/api/v1/products?q=%25')->assertOk()->assertJsonCount(0, 'data');
     }
 
+    public function test_search_supports_vietnamese_without_accents_and_escapes_literal_wildcards(): void
+    {
+        $book = Product::factory()->create(['name' => 'Sách tiếng Việt']);
+        $literal = Product::factory()->create(['name' => 'Bộ %_! đặc biệt']);
+        foreach (['sach', 'SÁCH', 'tieng viet'] as $term) {
+            $this->getJson('/api/v1/products?'.http_build_query(['q' => $term, 'per_page' => 6]))
+                ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $book->id);
+        }
+        foreach (['%', '_', '!', '%_!'] as $term) {
+            $this->getJson('/api/v1/products?'.http_build_query(['q' => $term]))
+                ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $literal->id);
+        }
+    }
+
     public function test_admin_creates_product_and_opening_ledger_then_updates_with_version(): void
     {
         $this->actingAs(User::factory()->create(['role' => 'admin']));
@@ -83,6 +97,31 @@ class CatalogTest extends TestCase
     private function input(): array
     {
         return ['category_id' => Category::factory()->create()->id, 'sku' => 'TEST-BOOK', 'slug' => 'test-book', 'name' => 'Test Book', 'list_price' => 35000, 'opening_stock' => 7];
+    }
+
+    public function test_admin_can_create_without_slug_and_rename_keeps_generated_slug(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => 'admin']));
+        $input = $this->input();
+        unset($input['slug']);
+        $input['name'] = 'Sách tiếng Việt mới';
+        $input['discount_percent'] = 15;
+        $first = $this->postJson('/api/v1/admin/products', $input)->assertCreated()
+            ->assertJsonPath('data.unit_price', 29750)->json('data');
+        $this->assertMatchesRegularExpression('/^sach-tieng-viet-moi-[a-z0-9]+$/', $first['slug']);
+        $second = $this->postJson('/api/v1/admin/products', [...$input, 'sku' => 'TEST-BOOK-2'])->assertCreated()->json('data');
+        $this->assertNotSame($first['slug'], $second['slug']);
+        $this->patchJson('/api/v1/admin/products/'.$first['id'], ['name' => 'Tên mới', 'version' => 1])
+            ->assertOk()->assertJsonPath('data.slug', $first['slug']);
+        $this->assertDatabaseHas('inventory_movements', ['product_id' => $first['id'], 'kind' => 'opening', 'delta_on_hand' => 7]);
+        $this->postJson('/api/v1/admin/products', $input)->assertUnprocessable()->assertJsonPath('error.fields.sku.0', 'Mã SKU này đã được sử dụng. Vui lòng nhập mã khác.');
+        $this->assertDatabaseCount('products', 2);
+        $long = $this->postJson('/api/v1/admin/products', [...$input, 'sku' => 'TEST-LONG', 'name' => str_repeat('a', 255)])->assertCreated()->json('data');
+        $this->assertLessThanOrEqual(255, strlen($long['slug']));
+        $this->patchJson('/api/v1/admin/products/'.$first['id'], ['version' => 2, 'is_active' => false])->assertOk();
+        $this->getJson('/api/v1/admin/products/'.$first['id'])->assertOk()->assertJsonPath('data.is_active', false);
+        $this->actingAs(User::factory()->create());
+        $this->getJson('/api/v1/admin/products/'.$first['id'])->assertForbidden();
     }
 
     public function test_hiding_or_repricing_product_preserves_existing_order_snapshots(): void

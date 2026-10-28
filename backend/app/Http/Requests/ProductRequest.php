@@ -18,7 +18,7 @@ class ProductRequest extends StrictFormRequest
         $rules = [
             'category_id' => [$presence, 'integer', 'exists:categories,id'],
             'sku' => [$presence, 'string', 'max:100', Rule::unique('products')->ignore($id)],
-            'slug' => [$presence, 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/D', Rule::unique('products')->ignore($id)],
+            'slug' => ['sometimes', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/D', Rule::unique('products')->ignore($id)],
             'name' => [$presence, 'string', 'max:255'],
             'description' => ['sometimes', 'nullable', 'string', 'max:20000'],
             'grade' => ['sometimes', 'nullable', 'integer', 'between:1,12'],
@@ -36,5 +36,13 @@ class ProductRequest extends StrictFormRequest
         }
 
         return $rules;
+    }
+
+    public function messages(): array
+    {
+        return [
+            'sku.unique' => 'Mã SKU này đã được sử dụng. Vui lòng nhập mã khác.',
+            'category_id.exists' => 'Danh mục không còn tồn tại. Vui lòng tải lại trang.',
+        ];
     }
 }
