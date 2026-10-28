@@ -1177,5 +1177,47 @@
     "figma_canvas_changed": false,
     "deployment": "not_run",
     "source_commit": "cc216f49d542e8c157b5fe60a5d519451e58ffaf"
+  },
+  "storefront_refresh": {
+    "decision": "D58",
+    "status": "done",
+    "verified_at": "2026-10-28T20:19:54+07:00",
+    "scope": "Storefront footer, advertising banners and scroll-to-top; local verification, owner visual review pending",
+    "implementation": {
+      "footer": "One contact block, 300x164 map directly below logo; unique policy destinations; newsletter and 8 brands retained",
+      "banners": "Header literature strip, manga between bestseller/new, kids between new/recommended; 4 original Fahasa asset variants self-hosted; 3 Phuong Nam assets preserved",
+      "scroll_to_top": "48x48; 0.7 opacity and full focus/hover; passive scroll/rAF; reduced motion respected; docks in copyright row while footer visible to avoid newsletter overlap",
+      "css": "39 conflicting legacy footer selectors removed from globals/clicon/bookstore; footer styles consolidated in storefront.css",
+      "business": "No PHP/API/schema/price/stock/payment changes; no Figma canvas changes"
+    },
+    "skill": "UI/UX Pro Max: reduced motion and Next.js image guidance matched; no exact footer-grouping match after retry, so general UX hierarchy and owner layout used",
+    "checks": {
+      "frontend_client_tests": 7,
+      "frontend_build": "passed, 21 routes",
+      "frontend_typecheck": "passed",
+      "environment": "Isolated .runtime/d58-preview production build; PHP localhost18082, Next localhost3100; 64 source files byte-matched",
+      "responsive": [
+        375,
+        768,
+        1024,
+        1440
+      ],
+      "footer": "No page overflow; exactly one address/map/phone/hours/newsletter; map 300x164 below logo; four distinct policy URLs",
+      "banners": "Correct feed/banner order; internal category links 2/5/1; header and manga click navigation verified; kids mobile339x339 and desktop1320x413 use correct source variants",
+      "scroll": "Hidden at top; fixed on product content; docked at footer, no newsletter control overlap; normal Enter and reduced-motion click return scrollY0 and focus main",
+      "quick_view": "375px dialog343px with no overflow; Escape returns focus; landscape812px no page overflow",
+      "newsletter": "Native invalid email sends no request; browser-only 422/success fixtures verify feedback/reset; two intercepted POSTs, no newsletter write to Laravel; mocks and cookies cleared",
+      "admin": "Guest admin header welcome retained; no storefront banner/footer/scroll control",
+      "browser_page_errors": 0,
+      "browser_expected_console": "One deliberate mocked HTTP422; source Fahasa direct browser blocked403, cached web/CDN used instead",
+      "assets": "136 originals, 24 Figma PNGs, 3 original banners, 4 new campaign variants, 2 logos, 8 brands passed hash/dimension checks; no Fahasa logo by visual inspection",
+      "real_catalog": "Read-only:136 products,6 categories,1 admin; all136 source prices/stocks match",
+      "backend_tests": "Not rerun: no backend changes; D56 127/1773 remains historical evidence",
+      "pack": "20 required files /27 tasks /45 API paths /28 local links passed",
+      "diff": "passed"
+    },
+    "preserved_user_work": "frontend/next-env.d.ts had .next/dev imports before work; bytes preserved and excluded from this task commit; original 3000/8000 processes never stopped by agent",
+    "local_services": "Owned 3100/18082 and browsers stopped; final observed only MySQL3307; owner processes exited independently during work",
+    "source_commit": null
   }
 }

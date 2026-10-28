@@ -5,15 +5,15 @@
   "phase": "FRONTEND",
   "current_task_id": "F03",
   "next_task_id": "B07",
-  "implementation_state": "D57_Nextjs_UI_locally_verified_external_acceptance_pending",
+  "implementation_state": "D58_storefront_footer_campaigns_scroll_locally_verified_external_acceptance_pending",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "cc216f49d542e8c157b5fe60a5d519451e58ffaf",
+  "last_verified_commit": null,
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-28T15:54:38+07:00",
+  "last_checkpoint_at": "2026-10-28T20:19:54+07:00",
   "last_test_run": {
     "at": "2026-10-28T15:17:52+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
@@ -91,10 +91,10 @@
     "vnpay_real_sandbox": "not_run",
     "figma_plugin_js_syntax": "passed_V24_live_canvas_not_run",
     "frontend_api_tests": 7,
-    "frontend_build": "passed_D57",
-    "frontend_typecheck": "passed_D57",
+    "frontend_build": "passed_D58_isolated_source_copy",
+    "frontend_typecheck": "passed_D58_isolated_source_copy",
     "frontend_npm_audit": "no_vulnerabilities_reported",
-    "browser_qa": "D57_home_dashboard37576810241440_admin3751440_quickview_forms_keyboard_retry_passed",
+    "browser_qa": "D58_footer_banners_scroll37576810241440_keyboard_forms_quickview_passed",
     "frontend_workflow_remote": "not_run",
     "figma_canvas_pixel_diff": "not_run",
     "figma_plugin_mock_screens": 126,
@@ -177,9 +177,9 @@
   },
   "local_services": {
     "mysql": "running_existing_local3307",
-    "backend_http": "stopped_owned_D57_QA",
-    "frontend_http": "stopped_owned_D57_QA",
-    "qa_http": "D57_owned_browsers_and_HTTP_stopped",
+    "backend_http": "owner8000_not_stopped_by_agent_final_not_listening",
+    "frontend_http": "owner3000_not_stopped_by_agent_final_not_listening",
+    "qa_http": "D58_owned3100_18082_browsers_stopped",
     "figma_preview_http": "not_running"
   },
   "backend_full_suite_previous": {
@@ -231,7 +231,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "D57 receipt written after tested source commit; use git status after receipt commit/push for final clean state.",
+  "git_dirty_note": "D58 before source commit; pre-existing generated frontend/next-env.d.ts preserved and excluded from task commit.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -419,5 +419,47 @@
     "figma_canvas_changed": false,
     "deployment": "not_run",
     "source_commit": "cc216f49d542e8c157b5fe60a5d519451e58ffaf"
+  },
+  "storefront_refresh": {
+    "decision": "D58",
+    "status": "done",
+    "verified_at": "2026-10-28T20:19:54+07:00",
+    "scope": "Storefront footer, advertising banners and scroll-to-top; local verification, owner visual review pending",
+    "implementation": {
+      "footer": "One contact block, 300x164 map directly below logo; unique policy destinations; newsletter and 8 brands retained",
+      "banners": "Header literature strip, manga between bestseller/new, kids between new/recommended; 4 original Fahasa asset variants self-hosted; 3 Phuong Nam assets preserved",
+      "scroll_to_top": "48x48; 0.7 opacity and full focus/hover; passive scroll/rAF; reduced motion respected; docks in copyright row while footer visible to avoid newsletter overlap",
+      "css": "39 conflicting legacy footer selectors removed from globals/clicon/bookstore; footer styles consolidated in storefront.css",
+      "business": "No PHP/API/schema/price/stock/payment changes; no Figma canvas changes"
+    },
+    "skill": "UI/UX Pro Max: reduced motion and Next.js image guidance matched; no exact footer-grouping match after retry, so general UX hierarchy and owner layout used",
+    "checks": {
+      "frontend_client_tests": 7,
+      "frontend_build": "passed, 21 routes",
+      "frontend_typecheck": "passed",
+      "environment": "Isolated .runtime/d58-preview production build; PHP localhost18082, Next localhost3100; 64 source files byte-matched",
+      "responsive": [
+        375,
+        768,
+        1024,
+        1440
+      ],
+      "footer": "No page overflow; exactly one address/map/phone/hours/newsletter; map 300x164 below logo; four distinct policy URLs",
+      "banners": "Correct feed/banner order; internal category links 2/5/1; header and manga click navigation verified; kids mobile339x339 and desktop1320x413 use correct source variants",
+      "scroll": "Hidden at top; fixed on product content; docked at footer, no newsletter control overlap; normal Enter and reduced-motion click return scrollY0 and focus main",
+      "quick_view": "375px dialog343px with no overflow; Escape returns focus; landscape812px no page overflow",
+      "newsletter": "Native invalid email sends no request; browser-only 422/success fixtures verify feedback/reset; two intercepted POSTs, no newsletter write to Laravel; mocks and cookies cleared",
+      "admin": "Guest admin header welcome retained; no storefront banner/footer/scroll control",
+      "browser_page_errors": 0,
+      "browser_expected_console": "One deliberate mocked HTTP422; source Fahasa direct browser blocked403, cached web/CDN used instead",
+      "assets": "136 originals, 24 Figma PNGs, 3 original banners, 4 new campaign variants, 2 logos, 8 brands passed hash/dimension checks; no Fahasa logo by visual inspection",
+      "real_catalog": "Read-only:136 products,6 categories,1 admin; all136 source prices/stocks match",
+      "backend_tests": "Not rerun: no backend changes; D56 127/1773 remains historical evidence",
+      "pack": "20 required files /27 tasks /45 API paths /28 local links passed",
+      "diff": "passed"
+    },
+    "preserved_user_work": "frontend/next-env.d.ts had .next/dev imports before work; bytes preserved and excluded from this task commit; original 3000/8000 processes never stopped by agent",
+    "local_services": "Owned 3100/18082 and browsers stopped; final observed only MySQL3307; owner processes exited independently during work",
+    "source_commit": null
   }
 }

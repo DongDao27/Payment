@@ -47,4 +47,15 @@ for asset in metadata.get('additional_banners', []):
     assert hashlib.sha256((ROOT / asset['local_path']).read_bytes()).hexdigest() == asset['sha256']
 for banner in data.get('additionalBanners', []):
     assert hashlib.sha256(base64.b64decode(banner['image'])).hexdigest() == banner['sha256']
-print(json.dumps({'result': 'passed', 'originals': 136, 'figma_lossless_png': 24, 'banners': 1 + len(metadata.get('additional_banners', [])), 'brand_variants': 2, 'manufacturers': len(metadata.get('manufacturers', []))}))
+campaigns = metadata.get('storefront_campaigns_D58', [])
+for asset in campaigns:
+    content = (ROOT / asset['local_path']).read_bytes()
+    assert hashlib.sha256(content).hexdigest() == asset['sha256']
+    with Image.open(io.BytesIO(content)) as image:
+        assert image.size == (asset['width'], asset['height'])
+config = json.loads((ROOT / 'frontend/src/lib/store-banners.json').read_text(encoding='utf-8'))
+for banner in config.values():
+    for variant in [banner, *([banner['mobile']] if banner.get('mobile') else [])]:
+        asset = next(a for a in campaigns if a['local_path'] == 'frontend/public' + variant['src'])
+        assert (asset['width'], asset['height']) == (variant['width'], variant['height'])
+print(json.dumps({'result': 'passed', 'originals': 136, 'figma_lossless_png': 24, 'banners': 1 + len(metadata.get('additional_banners', [])), 'campaign_variants': len(campaigns), 'brand_variants': 2, 'manufacturers': len(metadata.get('manufacturers', []))}))

@@ -18,9 +18,6 @@
   width: 100%;
   height: auto;
 }
-.site-footer .brand {
-  width: min(330px, 100%);
-}
 .reference-hero {
   margin-top: 28px;
   overflow: hidden;

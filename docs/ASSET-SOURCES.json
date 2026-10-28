@@ -110,5 +110,47 @@
       "local_path": "frontend/public/banners/phuongnam-new-books.png"
     }
   ],
-  "additional_banner_decision": "Owner explicitly chose original Phuong Nam images; unchanged bytes/text/source brand."
+  "additional_banner_decision": "Owner explicitly chose original Phuong Nam images; unchanged bytes/text/source brand.",
+  "storefront_campaigns_D58": [
+    {
+      "name": "header",
+      "source_page": "https://www.fahasa.com/tu-sach-van-hoc",
+      "source_url": "https://cdn1.fahasa.com/media/wysiwyg/Thang-03-2023/VanHocT323_LDP_Tagname4.jpg",
+      "local_path": "frontend/public/banners/fahasa-literature.jpg",
+      "width": 1201,
+      "height": 201,
+      "sha256": "d7fc08014d0d994ebbd44de07946f6f15dcc150d822dc75dff8cb96c6b4ebd3b",
+      "review": "Visually inspected: no Fahasa logo; original pixels preserved; no numerical discount/voucher/shipping offer; internal category navigation only"
+    },
+    {
+      "name": "manga",
+      "source_page": "https://www.fahasa.com/nhap-hoi-manga-comic",
+      "source_url": "https://cdn1.fahasa.com/media/wysiwyg/Thang-10-2023/Manga_LDP_Mainbanner_web_1920x700.jpg",
+      "local_path": "frontend/public/banners/fahasa-manga.webp",
+      "width": 1920,
+      "height": 700,
+      "sha256": "9c9f05d9c9977219e6873fdf691a14ee78ab473b5bfb520304178b2dde74e863",
+      "review": "Visually inspected: no Fahasa logo; original pixels preserved; no numerical discount/voucher/shipping offer; internal category navigation only"
+    },
+    {
+      "name": "kids",
+      "source_page": "https://www.fahasa.com/trang-thieu-nhi",
+      "source_url": "https://cdn1.fahasa.com/media/wysiwyg/Duy-VHDT/2024-06_Thieu-nhi/Trangthieunhi_0624__LDPweb_1920x600.jpg",
+      "local_path": "frontend/public/banners/fahasa-kids.jpg",
+      "width": 1921,
+      "height": 601,
+      "sha256": "f4315a176376ae70d766694a7d074cb30fc364c986499f1a3342c71b828f286f",
+      "review": "Visually inspected: no Fahasa logo; original pixels preserved; no numerical discount/voucher/shipping offer; internal category navigation only"
+    },
+    {
+      "name": "kids-mobile",
+      "source_page": "https://www.fahasa.com/trang-thieu-nhi",
+      "source_url": "https://cdn1.fahasa.com/media/wysiwyg/Duy-VHDT/2024-06_Thieu-nhi/Trangthieunhi_0624__LDPapp_1080x1080.jpg",
+      "local_path": "frontend/public/banners/fahasa-kids-mobile.jpg",
+      "width": 1081,
+      "height": 1081,
+      "sha256": "d29a51e2d5d2ec1a5270190d28032f16f8d46a87dfc6e2b7c5bd6b43e6f0bfff",
+      "review": "Visually inspected: no Fahasa logo; original pixels preserved; no numerical discount/voucher/shipping offer"
+    }
+  ]
 }

@@ -10,6 +10,8 @@ import { useStore } from "./store-provider";
 import { Icon } from "./ui";
 import { errorMessage } from "@/lib/format";
 import { storeInfo } from "@/lib/store-info";
+import { CampaignBanner } from "./campaign-banner";
+import { ScrollToTop } from "./scroll-to-top";
 
 export function Brand({ light = false }: { light?: boolean }) {
   return (
@@ -49,7 +51,11 @@ export function StoreShell({ children }: { children: ReactNode }) {
       <a href="#main" className="skip-link">
         Đến nội dung chính
       </a>
-      <div className="announcement">Chào mừng đến với nhà sách Thu Thanh</div>
+      {adminArea ? (
+        <div className="announcement">Chào mừng đến với nhà sách Thu Thanh</div>
+      ) : (
+        <CampaignBanner id="header" />
+      )}
       <header className={`site-header${adminArea ? " admin-site-header" : ""}`}>
         <div className="header-inner">
           {!adminArea && (
@@ -168,10 +174,19 @@ export function StoreShell({ children }: { children: ReactNode }) {
               ))}
             </div>
           </section>
-          <div className="container footer-newsletter">
-            <NewsletterForm />
-            <div className="footer-visit">
-              <h2>Ghé nhà sách Thu Thanh</h2>
+          <div className="container footer-grid">
+            <div className="footer-brand">
+              <Brand />
+              <iframe
+                className="footer-map"
+                title="Bản đồ Nhà sách Thu Thanh tại 295 Tôn Đức Thắng, Đà Nẵng"
+                src={storeInfo.mapEmbed}
+                width={300}
+                height={164}
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                allowFullScreen
+              />
               <address>
                 <a
                   href={storeInfo.mapUrl}
@@ -181,85 +196,31 @@ export function StoreShell({ children }: { children: ReactNode }) {
                   {storeInfo.address} ↗
                 </a>
               </address>
-              <p className="store-contact">
-                <a href={storeInfo.phoneHref}>{storeInfo.phone}</a>
-                <span>{storeInfo.hours}</span>
-              </p>
-              <p>Chọn sách trực tuyến hoặc đặt trước để nhận tại cửa hàng.</p>
-              <Link href="/policies#shipping">
-                Hướng dẫn mua hàng và nhận sách →
-              </Link>
-            </div>
-          </div>
-          <section
-            className="container footer-location"
-            aria-labelledby="store-map-heading"
-          >
-            <div className="footer-map-heading">
-              <div>
-                <h2 id="store-map-heading">Tìm đường đến nhà sách</h2>
-                <p>{storeInfo.address}</p>
-              </div>
-              <a
-                className="button"
-                href={storeInfo.mapUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Mở Google Maps ↗
+              <a className="footer-phone" href={storeInfo.phoneHref}>
+                {storeInfo.phone}
               </a>
+              <p className="footer-hours">{storeInfo.hours}</p>
             </div>
-            <iframe
-              title="Bản đồ Nhà sách Thu Thanh tại 295 Tôn Đức Thắng, Đà Nẵng"
-              src={storeInfo.mapEmbed}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-              allowFullScreen
-            />
-          </section>
-          <div className="container footer-grid">
-            <div className="footer-brand">
-              <Brand />
-              <address>
-                <a
-                  href={storeInfo.mapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {storeInfo.address}
-                </a>
-              </address>
-              <p>
-                Sách và đồ dùng học tập cho mỗi ngày.
-                <br />
-                Đặt trực tuyến, giao tận nhà hoặc nhận tại cửa hàng.
-              </p>
-            </div>
-            <div>
-              <h3>DỊCH VỤ</h3>
+            <div className="footer-links">
+              <h2>Dịch vụ &amp; hỗ trợ</h2>
               <Link href="/policies#terms">Điều khoản sử dụng</Link>
               <Link href="/policies#privacy">Bảo mật thông tin cá nhân</Link>
-              <Link href="/policies#terms">Thông tin thanh toán</Link>
-              <Link href="/products">Danh mục sản phẩm</Link>
-            </div>
-            <div>
-              <h3>HỖ TRỢ</h3>
-              <Link href="/policies">Chính sách mua hàng</Link>
-              <Link href="/policies#returns">Không đổi trả, hoàn tiền</Link>
               <Link href="/policies#shipping">Chính sách vận chuyển</Link>
-              <Link href="/policies#shipping">Hướng dẫn nhận tại cửa hàng</Link>
+              <Link href="/policies#returns">Không đổi trả, hoàn tiền</Link>
             </div>
-            <div>
-              <h3>TÀI KHOẢN CỦA TÔI</h3>
+            <div className="footer-links">
+              <h2>Tài khoản</h2>
               <Link href="/login">Đăng nhập</Link>
               <Link href="/register">Tạo tài khoản</Link>
               <Link href="/orders">Lịch sử mua hàng</Link>
               <Link href="/cart">Giỏ hàng của tôi</Link>
             </div>
+            <NewsletterForm />
           </div>
           <div className="container copyright">
-            © 2026 Thu Thanh <span>Nhà sách &amp; văn phòng phẩm</span>
+            © 2026 Nhà sách Thu Thanh
           </div>
+          <ScrollToTop />
         </footer>
       )}
       {!adminArea && (

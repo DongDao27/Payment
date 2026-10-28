@@ -1,3 +1,13 @@
+# D58 — Footer, banner và lên đầu trang đã kiểm tra local (2026-10-28T20:19:54+07:00)
+
+Phần việc D58 hoàn tất trong phạm vi storefront. Source đổi: store-shell/home-storefront; component campaign-banner/scroll-to-top; cấu hình store-banners; 4 ảnh campaign; CSS footer được gom về storefront và bỏ39 selector cũ; verifier/asset sources/README/AGENTS/checkpoint đồng bộ. Không đổi backend, schema, nghiệp vụ hoặc canvas Figma.
+
+Kết quả:7 client tests/build21route/typecheck đạt trong copy preview riêng,64source file khớp. Browser375/768/1024/1440 không overflow; footer chỉ1 liên hệ/map/bản tin, map300×164 ngay dưới logo; banner giữa3feed, nguồn mobile/desktop đúng, link category thật; nút48px bình thường/reduced motion/keyboard trả y0 và focus main, dock ở footer để không đè form; xem nhanh/Escape/landscape và admin header đạt. Newsletter chỉ kiểm UI bằng2 mocked response, không gửi đăng ký xuống DB; mock đã gỡ.0 pageerror,1console422 có chủ ý. Asset hashes và readonly136giá/tồn khớp; không chạy lại backend suite (D56:127/1773).
+
+Giữ dữ liệu136SKU/DB/env/APP_KEY/upload/workbook và3banner Phương Nam/Figma. Có thay đổi next-env.d.ts từ trước, nội dung .next/dev được giữ nguyên và không commit chung. Owner server3000/8000 không bị AI dừng; cuối phiên đã tự kết thúc. QA3100/18082/browser do phiên mở đã đóng, MySQL3307 giữ. Source QA và ảnh chụp nằm ở .runtime/output bịignore.
+
+Tiếp theo: chạy backend/frontend theo CHAY-WEB-VA-LARAVEL và Ctrl+F5 để duyệt footer/banner mới. Nếu cần đổi campaign, sửa store-banners.json và nguồn/hash trong ASSET-SOURCES, giữ banner không logo, không tự nhận ưu đãi từ website nguồn. F03/B07–B10 và canvas/merchant/SMTP/staging10k vẫn giữ trạng thái chờ đã ghi; không xem việc polish UI là nghiệm thu triển khai.
+
 # D57 — UI/UX Pro Max đã áp dụng và kiểm tra local (2026-10-28T15:54:38+07:00)
 
 Source đã kiểm tra được lưu tại commit `cc216f49d542e8c157b5fe60a5d519451e58ffaf`; receipt hiện tại chỉ cập nhật tài liệu.

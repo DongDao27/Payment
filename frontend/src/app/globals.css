@@ -670,44 +670,6 @@ del {
   font-size: 13px;
   font-weight: 400;
 }
-.site-footer {
-  background: #f3f2f7;
-  padding: 54px 0 0;
-}
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr 1.1fr;
-  gap: 40px;
-  padding-bottom: 44px;
-}
-.footer-grid p {
-  font-size: 13px;
-  line-height: 1.9;
-  margin-top: 18px;
-}
-.footer-grid h3 {
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-.footer-grid > div > a:not(.brand) {
-  display: block;
-  color: var(--muted);
-  margin-top: 12px;
-  font-size: 13px;
-}
-.footer-grid > div > .muted {
-  display: block;
-  font-size: 12px;
-  margin-top: 18px;
-}
-.copyright {
-  border-top: 1px solid var(--line);
-  padding-block: 22px;
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
-  color: var(--muted);
-}
 .page-section {
   padding-block: 30px 70px;
 }
@@ -1367,10 +1329,6 @@ tr:last-child td {
     width: 38px;
     height: 38px;
   }
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 36px;
-  }
   .catalog-layout {
     grid-template-columns: 1fr;
   }
@@ -1685,34 +1643,6 @@ tr:last-child td {
     width: 100%;
     font-size: 12px;
   }
-  .site-footer {
-    padding-top: 36px;
-  }
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 28px 16px;
-    padding-bottom: 30px;
-  }
-  .footer-grid > div:first-child {
-    grid-column: 1 / -1;
-  }
-  .footer-grid h3 {
-    font-size: 12px;
-    margin-bottom: 14px;
-  }
-  .footer-grid p,
-  .footer-grid > div > a:not(.brand) {
-    font-size: 11px;
-    margin-top: 12px;
-  }
-  .footer-grid > div:last-child {
-    grid-column: 1 / -1;
-  }
-  .copyright {
-    font-size: 10px;
-    gap: 16px;
-    padding-block: 18px;
-  }
   .page-section {
     padding-block: 24px 40px;
   }
@@ -1888,13 +1818,6 @@ tr:last-child td {
 }
 
 /* D39: footer trắng, cột thông tin luôn hiển thị trên cả điện thoại. */
-.site-footer { background: #fff; border-top: 1px solid var(--line); }
-.footer-grid { grid-template-columns: minmax(230px, 1.25fr) repeat(3, minmax(0, 1fr)); gap: 32px; }
-.footer-grid .footer-brand { border-right: 1px solid var(--line); padding-right: 28px; }
-.footer-grid h3 { font-size: 16px; line-height: 1.5; }
-.footer-grid > div > a:not(.brand) { color: var(--ink); line-height: 1.6; margin-top: 18px; overflow-wrap: anywhere; }
-@media (max-width: 1000px) { .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .footer-grid .footer-brand { grid-column: 1 / -1; border: 0; padding-right: 0; } }
-@media (max-width: 600px) { .footer-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; } .footer-grid > div:last-child { display: block; } .footer-grid > div:first-child { grid-column: auto; } }
 
 /* D40: wordmark serif, giữ body sans-serif dễ đọc. */
 .brand > span { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 700; letter-spacing: .035em; font-size: 30px; line-height: 1.25; }

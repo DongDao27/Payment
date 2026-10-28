@@ -106,6 +106,67 @@ input::placeholder, textarea::placeholder {
   min-width: 44px;
   min-height: 44px;
 }
+.campaign-banner {
+  display: block;
+  background: var(--campaign-background, var(--canvas));
+  overflow: hidden;
+}
+.campaign-banner picture,
+.campaign-banner img {
+  display: block;
+  width: 100%;
+}
+.campaign-banner img {
+  height: auto;
+}
+.header-campaign {
+  display: flex;
+  justify-content: center;
+  min-height: 60px;
+}
+.header-campaign picture {
+  width: min(460px, calc(100% - 24px));
+  align-self: center;
+}
+.collection-campaign {
+  margin-top: 28px;
+  border-radius: var(--radius-panel);
+  transition: box-shadow var(--motion-feedback);
+}
+.collection-campaign:hover,
+.collection-campaign:focus-visible {
+  box-shadow: 0 8px 28px #18335918;
+}
+.scroll-to-top {
+  position: fixed;
+  z-index: 40;
+  right: 24px;
+  bottom: 24px;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #ffffff80;
+  border-radius: 14px;
+  background: var(--brand);
+  color: white;
+  box-shadow: 0 6px 20px #18335926;
+  opacity: 0.7;
+  transition: opacity var(--motion-feedback), box-shadow var(--motion-feedback);
+}
+.scroll-to-top svg {
+  transform: rotate(-90deg);
+}
+.scroll-to-top:hover,
+.scroll-to-top:focus-visible {
+  opacity: 1;
+  box-shadow: 0 8px 24px #18335940;
+}
+.scroll-to-top.is-docked {
+  position: absolute;
+  bottom: 10px;
+  right: max(18px, calc((100% - 1320px) / 2));
+}
 .clicon-home {
   padding-top: 24px;
   padding-bottom: 40px;
@@ -224,18 +285,20 @@ input::placeholder, textarea::placeholder {
   height: auto;
 }
 .site-footer {
+  position: relative;
   margin-top: 20px;
   padding-top: 0;
   border-top: 0;
+  background: var(--surface);
 }
 .footer-brands {
   padding-block: 28px;
   border-bottom: 1px solid #e4e7ed;
 }
-.footer-brands h2,
-.footer-newsletter h2 {
+.footer-grid h2 {
   font-size: 18px;
-  margin: 0 0 20px;
+  line-height: 1.5;
+  margin: 0 0 16px;
 }
 .brand-grid {
   display: grid;
@@ -255,18 +318,11 @@ input::placeholder, textarea::placeholder {
   height: 70px;
   object-fit: contain;
 }
-.footer-newsletter {
-  padding-block: 32px;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 64px;
-  border-bottom: 1px solid #e4e7ed;
-}
-.footer-newsletter p {
-  color: #5f6c72;
+.footer-grid .newsletter > p {
+  color: var(--muted);
   font-size: 14px;
-  line-height: 1.7;
-  margin: 0 0 18px;
+  line-height: 1.6;
+  margin: 0 0 16px;
 }
 .newsletter-input {
   display: flex;
@@ -313,7 +369,6 @@ input::placeholder, textarea::placeholder {
 .newsletter-feedback .error-text {
   color: #a02626;
 }
-.footer-visit address,
 .footer-brand address {
   font-style: normal;
   font-size: 14px;
@@ -321,12 +376,55 @@ input::placeholder, textarea::placeholder {
   margin-block: 12px;
   overflow-wrap: anywhere;
 }
-.footer-visit a {
-  font-size: 14px;
-  color: #214c7a;
-}
 .footer-grid {
-  padding-block: 36px;
+  display: grid;
+  grid-template-columns: minmax(240px, 1.2fr) minmax(150px, 0.85fr) minmax(150px, 0.75fr) minmax(260px, 1.2fr);
+  gap: 32px;
+  padding-block: 32px;
+}
+.footer-grid > * {
+  min-width: 0;
+}
+.footer-links h2 {
+  min-height: 48px;
+}
+.site-footer .footer-links a {
+  margin: 0 0 4px;
+  padding-block: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.footer-map {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: 164px;
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--canvas);
+}
+.site-footer .footer-brand .footer-phone {
+  margin: 0;
+  padding: 0;
+  color: var(--brand);
+  font-size: 16px;
+  font-weight: 750;
+}
+.footer-brand .footer-hours {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.footer-grid .newsletter-consent {
+  font-size: 13px;
+}
+.copyright {
+  border-top: 1px solid var(--line);
+  padding-block: 20px;
+  padding-right: 72px;
+  color: var(--muted);
+  font-size: 12px;
 }
 .footer-brand .brand {
   width: 260px;
@@ -339,6 +437,9 @@ input::placeholder, textarea::placeholder {
   grid-template-columns: 280px minmax(200px, 1fr) auto;
 }
 @media (max-width: 1100px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .brand {
     width: 230px;
   }
@@ -381,11 +482,6 @@ input::placeholder, textarea::placeholder {
   .clicon-home > .home-promo-pair {
     margin-top: 16px;
     gap: 16px;
-  }
-  .footer-newsletter {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    padding-block: 28px;
   }
   .brand-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -568,6 +664,39 @@ input::placeholder, textarea::placeholder {
   }
 }
 @media (max-width: 700px) {
+  .scroll-to-top {
+    right: 16px;
+    bottom: calc(92px + env(safe-area-inset-bottom));
+  }
+  .collection-campaign {
+    margin-top: 20px;
+    border-radius: 12px;
+  }
+  .footer-grid {
+    gap: 28px 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .footer-brand,
+  .footer-grid .newsletter {
+    grid-column: 1 / -1;
+  }
+  .footer-grid h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .footer-brands {
+    padding-block: 20px;
+  }
+  .brand-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .brand-tile {
+    height: 52px;
+  }
+  .brand-tile img {
+    height: 44px;
+  }
   .home-collection .section-heading {
     flex-wrap: wrap;
     align-items: start;

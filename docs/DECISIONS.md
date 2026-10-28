@@ -249,3 +249,14 @@ Chủ dự án yêu cầu dùng skill nextlevelbuilder/ui-ux-pro-max-skill để
 Phạm vi được phép: tinh chỉnh Next.js typography tiếng Việt, token màu/khoảng cách, card/nút xem nhanh, điều hướng, biểu mẫu và bố cục admin trên API hiện có. Không sửa Figma canvas hoặc triển khai production trong task này. Tiêu chí đạt trước thay đổi: font self-host có tiếng Việt; card và CTA thẳng hàng; focus/hover/reduced-motion; không tràn trang ở 375/768/1024/1440; xem nhanh/đăng nhập/admin và lỗi tải hoạt động; client tests/build/typecheck và check_pack đạt. Không gọi cải thiện hình thức là nghiệm thu WCAG, merchant payment hay tải 10k.
 
 D57 đã kiểm tra local theo phạm vi trên: 7 client tests/build/typecheck; responsive/keyboard/quickview/admin/form/error-retry đạt. Không có mẫu bookstore tự động khớp hoàn toàn sau retry, chỉ dùng UX chung/Next.js guidance phù hợp. Asset/catalog bảo toàn; không thay backend/DB/env hoặc canvas, không nghiệm thu merchant/staging/fullWCAG. Chi tiết kết quả trong TASKS/PROGRESS/STATUS.
+
+
+## D58 — Footer gọn, bản đồ nhỏ, lên đầu trang và banner Fahasa (2026-10-28T19:52:06+07:00)
+
+Chủ dự án yêu cầu dùng UI/UX Pro Max: bỏ nội dung footer trùng; đưa bản đồ thành ô nhỏ dưới logo; thêm nút lên đầu trang bán trong suốt khi cuộn; chọn banner từ Fahasa không có logo Fahasa cho header và giữa các mục landing. Yêu cầu này thay giới hạn D57 về banner mới: giữ ba ảnh Phương Nam đã duyệt, bổ sung banner chủ đề Fahasa và thay dòng announcement của khu mua sắm bằng banner hẹp. Admin giữ header hiện có. Không đổi danh mục/feed, giá/giảm giá, ship, thanh toán hoặc API.
+
+Tiêu chí trước sửa: footer chỉ một địa chỉ/điện thoại/giờ mở cửa, một map nhỏ ngay dưới logo, không lặp link chính sách cùng đích; newsletter vẫn có label/consent/feedback. Banner không có logo Fahasa, không đưa voucher/freeship/mức giảm cụ thể của bên khác vào giá Thu Thanh; link vào danh sách nội bộ phù hợp. Giữa Bán chạy/Sản phẩm mới/Gợi ý có banner; ảnh tự host có nguồn/hash/dimensions, responsive/lazy, không auto-rotate. Nút lên đầu chỉ xuất hiện khi cuộn, 48px, có nhãn/focus, tránh bottomnav và tôn trọng reduced motion. Kiểm tra 375/768/1024/1440, xem nhanh, liên kết banner, form/footer, nút cuộn, build/typecheck/client tests, assets/check_pack/diff.
+
+Đầu phiên có thay đổi next-env.d.ts do dev (trỏ .next/dev), server của chủ dự án đang chạy 3000/8000. Giữ nguyên file/process đó; build/QA trong bản copy riêng dưới .runtime và port3100. Không reset dữ liệu/env hoặc sửa Figma canvas.
+
+D58 đã kiểm tra local theo tiêu chí trên. Nút được dock vào hàng bản quyền khi footer xuất hiện để không che form. Đã bỏ39 selector footer cũ thay vì thêm lớp override. Skill không có match footer trực tiếp sau retry, dùng UX chung/Next.js guidance phù hợp. Newsletter response fixtures chỉ để kiểm UI, không ghi email thật. Giữ next-env.d.ts từ trước, không stage chung; chi tiết kết quả ở TASKS/PROGRESS/STATUS.

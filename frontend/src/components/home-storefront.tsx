@@ -10,6 +10,7 @@ import { ProductCard } from "./product-card";
 import { FlameIcon } from "./flame-icon";
 import { useStore } from "./store-provider";
 import { publicStorefront } from "@/lib/public-storefront";
+import { CampaignBanner } from "./campaign-banner";
 import { Empty, Icon, Loading, Notice } from "./ui";
 
 type Home = {
@@ -104,11 +105,13 @@ export default function HomeStorefront() {
         href="/products?section=bestseller"
         emptyTitle="Chưa có sản phẩm phát sinh doanh số"
       />
+      <CampaignBanner id="manga" />
       <Collection
         title="Sản phẩm mới"
         products={home.new}
         href="/products?sort=newest"
       />
+      <CampaignBanner id="kids" />
       <Collection
         title="Gợi ý cho bạn"
         products={home.recommended}
