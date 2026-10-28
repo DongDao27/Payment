@@ -80,3 +80,5 @@ Mọi endpoint /admin yêu cầu auth + role admin; khách/guest không đọc �
 | POST | /admin/orders/{order}/refund-records | Cấm ghi mới theo chính sách không hoàn tiền, trả403 |
 
 History chỉ trả trường whitelist: hoạt động/trạng thái,số tiền,mốc giờ,mã giao dịch hoặc transition. Không trả payload/chữ ký/payment URL/provider_reference/session/business_key. Mỗi truy vấn giới hạn số bản ghi và sắp created_at/iddesc; API lịch sử không thay schema hoặc ghi dữ liệu.
+
+D62: admin create/PATCH is_bestseller để trưng bày; section=bestseller gồm sản phẩm có cờ hoặc paid/accepted, xếp sold_count thực giảm dần, cờ admin rồi ID. Landing tối đa7. Cờ không đổi doanh thu/sold_count; bỏ tick không xóa doanh số thực.

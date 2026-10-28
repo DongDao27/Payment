@@ -105,7 +105,7 @@ export default function HomeStorefront() {
         title="Bán chạy nhất"
         products={home.bestseller}
         href="/products?section=bestseller"
-        emptyTitle="Chưa có sản phẩm phát sinh doanh số"
+        emptyTitle="Chưa có sản phẩm trong mục Bán chạy nhất"
       />
       <CampaignBanner id="manga" />
       <Collection
@@ -125,7 +125,7 @@ export default function HomeStorefront() {
 }
 function SectionHeading({ title, href }: { title: string; href: string }) {
   const description = {
-    "Bán chạy nhất": "Những sản phẩm được bạn đọc lựa chọn nhiều nhất.",
+    "Bán chạy nhất": "Những cuốn sách và sản phẩm nổi bật tại Thu Thanh.",
     "Sản phẩm mới": "Vừa có mặt trên kệ sách Thu Thanh.",
     "Gợi ý cho bạn": "Thêm một lựa chọn cho lần đọc tiếp theo.",
   }[title];

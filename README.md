@@ -4,9 +4,9 @@ Website bán sách và quản lý cửa hàng, cập nhật **29/10/2026**. Fron
 
 ## Chức năng hiện có
 
-- Trang chủ gồm Bán chạy nhất, Sản phẩm mới, Gợi ý cho bạn; tìm kiếm gợi ý khi gõ, chọn để xem nhanh hoặc Enter mở kết quả; có lọc, sắp xếp và phân trang. Bán chạy xếp theo lượng bán trong đơn paid/accepted, sản phẩm mới xếp theo ngày tạo.
+- Trang chủ gồm Bán chạy nhất, Sản phẩm mới, Gợi ý cho bạn; tìm kiếm gợi ý khi gõ, chọn để xem nhanh hoặc Enter mở kết quả; có lọc, sắp xếp và phân trang. Bán chạy gồm lựa chọn admin và sản phẩm đã có lượng bán paid/accepted; số bán thật vẫn xếp trước, sản phẩm mới xếp theo ngày tạo.
 - Tài khoản khách, chỉnh sửa hồ sơ lưu MySQL, khôi phục mật khẩu email, giỏ nhiều món, báo giá, đặt hàng, VNPAY Sandbox cho hai cách nhận hàng, theo dõi/hủy/đặt lại đơn.
-- Admin quản lý sản phẩm, chọn ảnh ngay khi tạo, giảm giá, archive/restore, danh mục; slug tự sinh; giá và lịch sử tồn kho; đơn và lịch sử thanh toán/receipt/trạng thái; đối soát, biểu đồ doanh thu, bộ lọc và CSV.
+- Admin quản lý sản phẩm, chọn ảnh và tick Bán chạy ngay khi tạo/sửa, giảm giá, archive/restore, danh mục; slug tự sinh; giá và lịch sử tồn kho; đơn và lịch sử thanh toán/receipt/trạng thái; đối soát, biểu đồ doanh thu, bộ lọc và CSV.
 - Footer gọn với bản đồ nhỏ dưới logo, bản tin, nhãn hàng và một khối liên hệ: **295 Tôn Đức Thắng, Hòa Khánh, Đà Nẵng**, **0915466951**, **07:30–21:30 hằng ngày**. Có nút lên đầu trang, banner chủ đề giữa ba feed; header không còn dòng chào mừng hoặc quảng cáo. Nguồn ảnh trong ASSET-SOURCES.
 
 Giao hàng **25.000đ/đơn**, nhận tại cửa hàng **0đ**; phí chỉ hiện ở checkout/đơn. Không đổi trả/hoàn tiền. Doanh thu là tiền hàng sau giảm giá, phí giao thống kê riêng. Tạo đơn giữ hàng 5 phút khi giao, 24 giờ khi nhận cửa hàng; thanh toán lại không gia hạn.
@@ -45,7 +45,7 @@ Trình duyệt → Next.js/proxy → Laravel API → MySQL. Eloquent/migration q
 
 Clone source không tự sao chép database. Cập nhật sản phẩm qua admin; giữ env, APP_KEY, database, workbook và uploads khi chuyển máy. Không import lại hoặc chạy `migrate:fresh` để sửa UI. Laravel dùng FormRequest/Policy/Service, transaction, row lock và idempotency để bảo vệ tiền/tồn.
 
-D61 đã giảm 11–17% cho 7 sản phẩm tại database chính theo yêu cầu. Bán chạy lấy tối đa7 sản phẩm theo lượng bán paid/accepted; không gán doanh số giả. Đã gỡ seeder/lệnh chạy demo và xóa1.000đơn giả trong database riêng sau backup, giữ một đơn ngoài tập giả lập.
+D61 đã giảm 11–17% cho 7 sản phẩm tại database chính theo yêu cầu. Bán chạy lấy tối đa7 sản phẩm từ cờ trưng bày admin hoặc lượng bán paid/accepted; không gán doanh số giả. Đã gỡ seeder/lệnh chạy demo và xóa1.000đơn giả trong database riêng sau backup, giữ một đơn ngoài tập giả lập.
 
 ## Kiểm tra
 

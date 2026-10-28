@@ -5,21 +5,21 @@
   "phase": "FRONTEND",
   "current_task_id": "F03",
   "next_task_id": "B07",
-  "implementation_state": "D61_web_and_FigmaV26_locally_verified_external_acceptance_pending",
+  "implementation_state": "D62_curated_bestseller_and_sandbox_setup_locally_verified",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "7ebce1fb1ec1e4167659dd33f63eed45f32a0cc4",
+  "last_verified_commit": null,
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-29T02:55:41+07:00",
+  "last_checkpoint_at": "2026-10-29T03:47:15+07:00",
   "last_test_run": {
-    "at": "2026-10-29T02:51:26+07:00",
+    "at": "2026-10-29T03:47:15+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
     "result": "passed",
-    "tests": 130,
-    "assertions": 1777,
+    "tests": 134,
+    "assertions": 1878,
     "database": "MySQL8.4.13 thu_thanh_test Windows127.0.0.1:3307",
     "evidence": "backend/storage/logs/phpunit.xml"
   },
@@ -53,7 +53,7 @@
       300,
       164
     ],
-    "web_sync_pending": null
+    "web_sync_pending": "D62 curated bestseller selector/home; V26 unchanged"
   },
   "blockers": [
     "VNPAY Sandbox code ready (D55) but real Sandbox transaction not_run: merchant TMN code/hash secret pending; Production deferred; strict backend gate not passed.",
@@ -654,5 +654,55 @@
     },
     "external": "Merchant VNPAY, SMTP, Docker deploy and staging10k not_run; release gate unchanged",
     "runtime": "QA browsers/3100/18082/18091 stopped; MySQL retained; main private env/key/uploads/workbook and manual product137 preserved"
+  },
+  "curated_bestseller_sandbox": {
+    "decision": "D62",
+    "status": "local_verified_external_payment_pending",
+    "verified_at": "2026-10-29T03:47:15+07:00",
+    "source_commit": null,
+    "evidence": "D62: admin create/edit is_bestseller checkbox persists; curated OR genuine accepted-paid quantity, real quantity first/max7/no fake sold badge. Main137products/3orders/0receipts unchanged; selected7 existing products, stock/prices preserved. Backend134tests/1878assertions/Pint/auth-cookie11/ops passed; frontend7client/build22routes/typecheck passed. Browser create/reload/unselect, mobile375 label44px/no overflow,0pageerrors/0warnings passed. symfony/mime7.4.22 only compatible lock patch; Composer validate/platform/audit passed. Isolated Sandbox137products/0orders/0receipts/admin1 prepared, no customer history copied; merchant credentials/deferred activation pending, real payment not_run.",
+    "skus": [
+      "TT-VH-001",
+      "TT-VPP-001",
+      "TT-DC-001",
+      "TT-TT-001",
+      "TT-QLN-001",
+      "TT-VH-002",
+      "TT-VPP-002"
+    ],
+    "main": {
+      "products": 137,
+      "orders": 3,
+      "receipts": 0,
+      "curated": 7,
+      "synthetic_sales_created": 0
+    },
+    "sandbox": {
+      "workspace": ".runtime/sandbox-backend",
+      "database": "thu_thanh_sandbox",
+      "products": 137,
+      "orders": 0,
+      "receipts": 0,
+      "admin": 1,
+      "customer_history_copied": false,
+      "configuration_check": "6passed/3missing expectedexit1",
+      "actual_transaction": "not_run; merchant registration pending",
+      "private_assets": "own key/cookie/storage/uploads; shared vendor"
+    },
+    "ci": {
+      "previous_failure": "https://github.com/DongDao27/Payment/actions/runs/40758701593",
+      "approved_patch": "symfony/mime7.4.19→7.4.22",
+      "composer_audit": "passed,0advisories",
+      "remote": "pending_push"
+    },
+    "browser": {
+      "create_reload_unselect": "passed",
+      "mobile_width": 375,
+      "label_height": 44,
+      "pageerrors": 0,
+      "warnings": 0
+    },
+    "runtime": "QA3100/18082/18083/browser stopped; MySQL retained",
+    "owner_next_env": "preserved/excluded"
   }
 }

@@ -142,6 +142,7 @@ input::placeholder, textarea::placeholder {
 .brand-arrow:disabled { opacity: .35; cursor: default; }
 .profile-form { max-width: 680px; margin-top: 24px; }
 .profile-form fieldset { display: grid; gap: 20px; }
+.product-checkbox { display: flex; align-items: center; min-height: 44px; }
 @media (max-width: 760px) {
   .brand-carousel { gap: 4px; }
   .brand-track { gap: 12px; }

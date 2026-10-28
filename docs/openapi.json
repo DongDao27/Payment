@@ -7086,12 +7086,13 @@
             "type": "boolean"
           },
           "is_bestseller": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Admin-curated display flag; includes the product in bestseller collection without fabricating sales or revenue."
           },
           "sold_count": {
             "type": "integer",
-            "minimum": 1,
-            "description": "Verified accepted paid order item quantities; present on bestseller queries only."
+            "minimum": 0,
+            "description": "Real paid/accepted quantity; zero for curated products without accepted sales."
           },
           "discount_percent": {
             "type": "integer",
@@ -7161,7 +7162,8 @@
             "type": "boolean"
           },
           "is_bestseller": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Admin-curated display flag; includes the product in bestseller collection without fabricating sales or revenue."
           },
           "discount_percent": {
             "type": "integer",
@@ -7225,7 +7227,8 @@
             "type": "boolean"
           },
           "is_bestseller": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Admin-curated display flag; includes the product in bestseller collection without fabricating sales or revenue."
           },
           "version": {
             "type": "integer",

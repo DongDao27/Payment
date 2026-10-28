@@ -339,6 +339,7 @@ function ProductEditor({
       description: form.get("description"),
       is_active: form.get("is_active") === "on",
       is_hot: form.get("is_hot") === "on",
+      is_bestseller: form.get("is_bestseller") === "on",
       ...(initial
         ? { version: initial.catalog_version }
         : { opening_stock: Number(form.get("opening_stock")) }),
@@ -568,6 +569,16 @@ function ProductEditor({
             </span>
           </label>
           {!initial && imagePicker()}
+          <label className="product-checkbox">
+            <span>
+              <input
+                name="is_bestseller"
+                type="checkbox"
+                defaultChecked={initial?.is_bestseller ?? false}
+              />{" "}
+              Hiển thị trong Bán chạy nhất
+            </span>
+          </label>
           <button className="button primary full" disabled={busy}>
             {busy ? "Đang lưu…" : "Lưu sản phẩm"}
           </button>

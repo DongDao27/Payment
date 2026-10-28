@@ -261,7 +261,8 @@
       ],
       "evidence": [
         "PaymentTest9 tests56 assertions passed; VnpaySignatureTest2 tests6 assertions passed including independent Python HMAC fixture and signed query response; return never allocates, mismatch/duplicate/late and unknown time tested; real merchant Sandbox not_run.",
-        "D55 2026-10-27T18:35:15+07:00: customer attempts for delivery+pickup; signed return triggers querydr outside DB locks, never paid by itself; signed failure frees retry; uncertain return query stays pending without case. PaymentTest 14 tests passed; full backend 123 tests/1719 assertions passed on MySQL 9.6.0 thu_thanh_test (macOS); Pint passed. Real merchant Sandbox transaction not_run: TMN code/hash secret not yet provided."
+        "D55 2026-10-27T18:35:15+07:00: customer attempts for delivery+pickup; signed return triggers querydr outside DB locks, never paid by itself; signed failure frees retry; uncertain return query stays pending without case. PaymentTest 14 tests passed; full backend 123 tests/1719 assertions passed on MySQL 9.6.0 thu_thanh_test (macOS); Pint passed. Real merchant Sandbox transaction not_run: TMN code/hash secret not yet provided.",
+        "D62: admin create/edit is_bestseller checkbox persists; curated OR genuine accepted-paid quantity, real quantity first/max7/no fake sold badge. Main137products/3orders/0receipts unchanged; selected7 existing products, stock/prices preserved. Backend134tests/1878assertions/Pint/auth-cookie11/ops passed; frontend7client/build22routes/typecheck passed. Browser create/reload/unselect, mobile375 label44px/no overflow,0pageerrors/0warnings passed. symfony/mime7.4.22 only compatible lock patch; Composer validate/platform/audit passed. Isolated Sandbox137products/0orders/0receipts/admin1 prepared, no customer history copied; merchant credentials/deferred activation pending, real payment not_run."
       ],
       "actual_commit": null,
       "notes": "D55 supersedes D31 deferral for local Sandbox: code/template default VNPAY_DEFERRED=true stays fail-safe; private env enables Sandbox with the merchant's own credentials. Status stays externally_blocked until a real Sandbox success/fail/query run is recorded. Production and admin in-store QR remain closed."
@@ -503,7 +504,8 @@
         "accessibility-smoke"
       ],
       "evidence": [
-        "Admin shared login/redirect, real MySQL catalog update/create/hide/upload/version refresh, stock doubleclick adjusts once, order detail and no manual-paid control verified. Role gates backend403 and UI denied for customer."
+        "Admin shared login/redirect, real MySQL catalog update/create/hide/upload/version refresh, stock doubleclick adjusts once, order detail and no manual-paid control verified. Role gates backend403 and UI denied for customer.",
+        "D62: admin create/edit is_bestseller checkbox persists; curated OR genuine accepted-paid quantity, real quantity first/max7/no fake sold badge. Main137products/3orders/0receipts unchanged; selected7 existing products, stock/prices preserved. Backend134tests/1878assertions/Pint/auth-cookie11/ops passed; frontend7client/build22routes/typecheck passed. Browser create/reload/unselect, mobile375 label44px/no overflow,0pageerrors/0warnings passed. symfony/mime7.4.22 only compatible lock patch; Composer validate/platform/audit passed. Isolated Sandbox137products/0orders/0receipts/admin1 prepared, no customer history copied; merchant credentials/deferred activation pending, real payment not_run."
       ],
       "actual_commit": null,
       "notes": "Catalog/categories/orders/revenue/reconciliation UI implemented; D56 adds server prices, inventory ledger and admin payment/status history with role/pagination/privacy tests and scoped browser checks. Merchant QR and full canvas/accessibility acceptance remain pending."

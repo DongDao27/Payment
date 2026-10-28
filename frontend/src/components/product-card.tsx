@@ -40,7 +40,7 @@ export function ProductCard({
       <div className="product-bottom">
         <ProductPrice product={product} />
       </div>
-      {product.sold_count !== undefined && (
+      {product.sold_count !== undefined && product.sold_count > 0 && (
         <small className="sold-count">
           Đã bán {product.sold_count.toLocaleString("vi-VN")}
         </small>

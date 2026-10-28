@@ -49,8 +49,10 @@ class CatalogService
                 ->groupBy('sold_items.product_id')
                 ->selectRaw('sold_items.product_id, SUM(sold_items.quantity) AS sold_count');
 
-            return $query->joinSub($sales, 'sales', fn ($join) => $join->on('products.id', '=', 'sales.product_id'))
-                ->select('products.*', 'sales.sold_count')->orderByDesc('sales.sold_count')->orderBy('products.id');
+            return $query->leftJoinSub($sales, 'sales', fn ($join) => $join->on('products.id', '=', 'sales.product_id'))
+                ->where(fn ($visible) => $visible->where('products.is_bestseller', true)->orWhereNotNull('sales.product_id'))
+                ->select('products.*')->selectRaw('COALESCE(sales.sold_count, 0) AS sold_count')
+                ->orderByDesc('sold_count')->orderByDesc('products.is_bestseller')->orderBy('products.id');
         }
         $sort = $filters['sort'] ?? 'newest';
         if (in_array($sort, ['price_asc', 'price_desc'], true)) {

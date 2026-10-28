@@ -16,7 +16,7 @@ class SalesHomeArchiveTest extends TestCase
 {
     use OrderFixture, RefreshDatabase;
 
-    public function test_bestsellers_count_verified_paid_quantities_and_ignore_flags_unpaid_and_extra_receipts(): void
+    public function test_bestsellers_rank_real_paid_quantities_before_curated_products_without_counting_unpaid_or_duplicate_receipts(): void
     {
         $flagged = Product::factory()->create(['is_bestseller' => true]);
         $winner = Product::factory()->create(['is_bestseller' => false]);
@@ -31,10 +31,10 @@ class SalesHomeArchiveTest extends TestCase
                 PaymentReceipt::create(['provider' => 'fixture', 'provider_transaction_id' => $allocation.$order->id, 'order_id' => $order->id, 'attempt_id' => $attempt->id, 'received_amount' => $order->payable_total, 'provider_paid_at' => now(), 'verified_at' => now(), 'allocation' => $allocation]);
             }
         }
-        $this->getJson('/api/v1/home')->assertOk()->assertJsonCount(2, 'data.bestseller')->assertJsonPath('data.bestseller.0.id', $winner->id)->assertJsonPath('data.bestseller.0.sold_count', 4)->assertJsonPath('data.bestseller.1.sold_count', 2);
+        $this->getJson('/api/v1/home')->assertOk()->assertJsonCount(3, 'data.bestseller')->assertJsonPath('data.bestseller.0.id', $winner->id)->assertJsonPath('data.bestseller.0.sold_count', 4)->assertJsonPath('data.bestseller.1.sold_count', 2)->assertJsonPath('data.bestseller.2.id', $flagged->id)->assertJsonPath('data.bestseller.2.sold_count', 0);
         $this->getJson('/api/v1/products?section=bestseller&category_id='.$winner->category_id)->assertOk()->assertJsonPath('data.0.id', $winner->id);
         $winner->update(['is_active' => false]);
-        $this->getJson('/api/v1/home')->assertJsonCount(1, 'data.bestseller');
+        $this->getJson('/api/v1/home')->assertJsonCount(2, 'data.bestseller');
     }
 
     public function test_new_and_recommended_are_available_diverse_and_sales_empty_without_paid_orders(): void

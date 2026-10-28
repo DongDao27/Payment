@@ -39,7 +39,7 @@ Mở http://localhost:3000/admin. Trong backend: `php artisan admin:account` xem
 
 35.000đ giảm 5% thành 33.250đ; Laravel tính số nguyên VND. Sửa giá sản phẩm không làm đổi snapshot đơn cũ. Không hoàn tất đơn chưa được xác minh thanh toán.
 
-**Thêm sản phẩm:** `/admin/products` → **+ Thêm sản phẩm** → nhập tên, SKU riêng, danh mục, giá/giảm giá, tồn ban đầu; chỉ nhập lớp cho Sách giáo khoa. Chọn ảnh JPEG/PNG/WebP tối đa 5 MiB, xem trước rồi **Lưu sản phẩm**. Slug là mã đường dẫn nội bộ, hệ thống tự tạo; không cần nhập. Nếu ảnh tải lỗi, sản phẩm đã tạo vẫn được giữ: kiểm tra khối **Ảnh sản phẩm**, chọn ảnh và **Tải ảnh lên**; không tạo lại sản phẩm. SKU trùng sẽ có thông báo ngay ở trường SKU.
+**Thêm sản phẩm:** `/admin/products` → **+ Thêm sản phẩm** → nhập tên, SKU riêng, danh mục, giá/giảm giá, tồn ban đầu; chỉ nhập lớp cho Sách giáo khoa. Chọn ảnh JPEG/PNG/WebP tối đa 5 MiB, xem trước rồi **Lưu sản phẩm**. Slug là mã đường dẫn nội bộ, hệ thống tự tạo; không cần nhập. Nếu ảnh tải lỗi, sản phẩm đã tạo vẫn được giữ: kiểm tra khối **Ảnh sản phẩm**, chọn ảnh và **Tải ảnh lên**; không tạo lại sản phẩm. SKU trùng sẽ có thông báo ngay ở trường SKU. Tick **Hiển thị trong Bán chạy nhất** để trưng bày; khi sửa có thể bỏ tick. Doanh số thật vẫn xếp trước sản phẩm chưa có doanh số, cờ không tạo đơn hoặc doanh thu.
 
 **Tìm kiếm:** gõ trên header để xem tối đa 6 gợi ý từ catalog; nhấn sản phẩm để xem nhanh. Phím mũi tên/Enter chọn gợi ý, Escape đóng; Enter khi chưa chọn gợi ý hoặc **Xem tất cả kết quả** mở trang **Kết quả tìm kiếm**. Header không còn banner quảng cáo; banner trong trang chủ vẫn giữ.
 
@@ -71,17 +71,74 @@ php artisan schedule:work
 
 Worker xử lý email/xóa ảnh; scheduler xử lý hết hạn, đối soát và dọn token. Đóng trình duyệt không làm mất dữ liệu MySQL. Chỉ mở web server chưa có nghĩa là công việc nền đã chạy.
 
-## Thanh toán VNPAY Sandbox
+## Thanh toán VNPAY Sandbox — máy hiện tại
 
-Chủ dự án mới hoàn tất code/cấu hình, chưa giao dịch merchant thực tế. Máy Windows này chưa có TMN/hash secret và vẫn deferred.
+Chưa có merchant nên chưa chạy giao dịch VNPAY thực tế. Đã chuẩn bị **`.runtime/sandbox-backend`**, database **thu_thanh_sandbox**, key/cookie/storage riêng,137sản phẩm và admin; **0 đơn, 0 receipt**, không sao chép khách hoặc lịch sử bán hàng. Database cửa hàng **thu_thanh** không đổi khi thử Sandbox. Workspace và env private không đi theo Git; máy mới dùng phần Máy mới với database thử riêng, không trỏ vào DB cửa hàng.
 
-1. Đăng ký merchant Sandbox tại https://sandbox.vnpayment.vn/devreg/.
-2. Điền **VNPAY_TMN_CODE** và **VNPAY_HASH_SECRET** vào backend/.env private. Giữ VNPAY_ENV=sandbox; đặt VNPAY_DEFERRED=false khi cấu hình đầy đủ. Không gửi secret qua chat hoặc commit Git.
-3. Giữ URL Sandbox theo env mẫu; local VNPAY_RETURN_URL=http://localhost:3000/payment/vnpay-return. Chạy `php artisan config:clear` sau đổi env.
-4. Đăng nhập khách, tạo đơn giao/nhận tại cửa hàng, nhấn **Thanh toán qua VNPAY**, dùng thẻ test do VNPAY cấp. Kiểm success, hủy, retry, query, chậm/lặp/muộn bằng dữ liệu Sandbox riêng.
-5. IPN cần endpoint HTTPS public khi có staging/tunnel được cấp. Khi khách quay về, Laravel kiểm chữ ký rồi query trực tiếp VNPAY; chỉ kết quả đã xác minh mới ghi paid. Frontend không tự xác nhận tiền.
+### 1. Đăng ký merchant
 
-Đơn giao giữ 300 giây, nhận tại cửa hàng giữ 86.400 giây; retry không gia hạn. Nếu khách đóng tab, scheduler query khi hết hạn; kết quả chưa rõ giữ tồn và chờ đối soát. QR thật tại quầy cần adapter merchant riêng; QR mẫu Figma không thay giao dịch thật. Không có thao tác manual-paid. Production cần phạm vi/cấu hình/nghiệm thu riêng.
+Mở [đăng ký Sandbox của VNPAY](https://sandbox.vnpayment.vn/devreg/). Điền tên website, URL website chạy thử và email bạn truy cập được; hoàn tất form/captcha. Nếu portal yêu cầu URL public, dùng địa chỉ HTTPS bạn quản lý. Kiểm tra hộp thư và spam để nhận thông tin kết nối. Giữ TMN code và hash secret ở file private, không gửi chat hoặc commit. [Tài liệu kết nối chính thức](https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html) mô tả URL và thông tin merchant.
+
+### 2. Điền đúng env của Sandbox
+
+Mở **D:\ThuThanh-WebDesign\.runtime\sandbox-backend\.env**, không sửa env của backend chính. Chỉ thay hai giá trị được cấp và mở deferred:
+
+```dotenv
+VNPAY_ENV=sandbox
+VNPAY_TMN_CODE=MA_MERCHANT_DUOC_CAP
+VNPAY_HASH_SECRET=KHOA_BI_MAT_DUOC_CAP
+VNPAY_DEFERRED=false
+VNPAY_PAYMENT_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+VNPAY_QUERY_URL=https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+VNPAY_RETURN_URL=http://localhost:3000/payment/vnpay-return
+FRONTEND_URL=http://localhost:3000
+```
+
+Các chữ MA_MERCHANT_DUOC_CAP/KHOA_BI_MAT_DUOC_CAP là chỗ cần thay, không phải credentials dùng được. URL đã chuẩn bị sẵn theo [VNPAY PAY2.1.0](https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html). Giữ DB_DATABASE=thu_thanh_sandbox, SESSION_COOKIE=thu_thanh_sandbox và APP_KEY đã tạo. Không key:generate lại; không chép đơn/receipt từ Sandbox sang database thật.
+
+### 3. Kiểm cấu hình và chạy
+
+```powershell
+cd D:\ThuThanh-WebDesign\.runtime\sandbox-backend
+php artisan config:clear
+php artisan app:environment-check
+php artisan payments:check-sandbox
+```
+
+Environment-check phải báo database **thu_thanh_sandbox**. Check-sandbox không in secret, không gọi provider: cần toàn bộ dòng [OK] trước khi test. Khi chưa điền merchant sẽ có [THIẾU/SAI] và exit1, đây là trạng thái chưa cấu hình. Kết quả [OK] chỉ xác nhận cấu hình, không khẳng định VNPAY đã chấp nhận merchant.
+
+Tắt backend chính nếu đang giữ port8000 (Ctrl+C), rồi chạy **từ thư mục Sandbox**:
+
+```powershell
+$env:PHP_INI_SCAN_DIR=';D:\ThuThanh-WebDesign\.runtime\sandbox-backend\docker\php'
+php artisan serve --host=localhost --port=8000 --no-reload
+```
+
+Hai terminal khác trong cùng thư mục Sandbox:
+
+```powershell
+php artisan queue:work database --tries=5 --timeout=60
+```
+
+```powershell
+php artisan schedule:work
+```
+
+Frontend giữ cách chạy cũ (`cd D:\ThuThanh-WebDesign\frontend`, `npm run dev`), proxy mặc định tới localhost8000. Mở localhost3000 và Ctrl+F5 sau khi đổi backend. Không chạy đồng thời hai Next từ cùng thư mục. Không cần extension hoặc XAMPP. Mail Sandbox dùng array, không gửi email thật.
+
+### 4. Thử thành công và hủy
+
+1. Đăng ký một tài khoản **khách** trong Sandbox; admin không dùng giỏ mua hàng. Admin Sandbox dùng thông tin đăng nhập admin đã có của cửa hàng, không có mật khẩu mặc định mới.
+2. Chọn một sản phẩm còn tồn, ví dụ Bữa Tối; thêm1món → checkout giao hàng → nhập thông tin → tạo đơn. Phí giao25.000đ; đơn giao giữ5phút, nên chuẩn bị sẵn thẻ test trước khi đặt.
+3. Trong đơn nhấn **Thanh toán qua VNPAY**, nhập **thẻ thử nghiệm** từ [danh sách test chính thức](https://sandbox.vnpayment.vn/apis/vnpay-demo/) hoặc tài liệu VNPAY cấp. Không dùng thẻ thật. Hoàn tất rồi quay lại website.
+4. Chỉ khi Laravel kiểm chữ ký và query trực tiếp VNPAY xác nhận đúng giao dịch mới hiện **Đã thanh toán**. Kiểm đơn và báo cáo trong database Sandbox; tải lại trang không được thu/ghi doanh thu lần hai.
+5. Tạo một đơn Sandbox khác, sang VNPAY rồi chọn hủy: phải trở về **Chưa thanh toán/không thành công**, không tăng doanh thu; có thể thử lại khi còn hạn. Retry không gia hạn5phút. Scheduler xử lý hết hạn; kết quả chưa rõ giữ tồn và chờ đối soát.
+
+IPN là thông báo server-to-server: localhost không nhận được từ VNPAY. Lần thử local dùng browser Return URL và server query. Để nghiệm thu IPN, cần HTTPS public và đăng ký URL **/api/v1/payments/vnpay/ipn** ở phía merchant; chỉ điền VNPAY_IPN_URL trong env không tự đăng ký endpoint với VNPAY. Xem [hướng dẫn IPN/Return](https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html). Chưa cấu hình tunnel hoặc deploy trong bước này.
+
+Luồng này thử VNPAY online; QR thu tại quầy cần adapter merchant riêng. Không có nút manual-paid. Nếu thấy lỗi chữ ký, kiểm lại đúng TMN/secret/URL, config:clear và restart; không tắt kiểm chữ ký/TLS hoặc sửa DB thành paid. Sandbox không phải doanh thu tiền thật.
+
+Kết thúc test: dừng server/worker/scheduler Sandbox, chạy lại scripts/start-backend.ps1 từ repo gốc để trở về DB cửa hàng. Không chép env/key/database Sandbox đè lên backend chính.
 
 ## Email recovery
 
