@@ -385,7 +385,8 @@
         "figma-source-check"
       ],
       "evidence": [
-        "D34/D35 confirm Next.js/Laravel and authorize scoped frontend on verified B00-B06; local V15.1 source mapping/header/footer/editorial and136-product workbook audit complete. Canvas pixel-match not_run, explicitly outside source-only acceptance."
+        "D34/D35 confirm Next.js/Laravel and authorize scoped frontend on verified B00-B06; local V15.1 source mapping/header/footer/editorial and136-product workbook audit complete. Canvas pixel-match not_run, explicitly outside source-only acceptance.",
+        "D59: offline V25 synchronized with verified web D57-D58; 126 frames, 2518 prototype reactions; geometry/assets/rollback and package CRC passed; owner live canvas still pending."
       ],
       "actual_commit": null,
       "notes": "D34 explicitly replaces B10 frontend dependency for scoped local development; strict backend/release gates remain unpassed. Plugin is owner-selected design source; no cloud link requested again."
@@ -1219,5 +1220,66 @@
     "preserved_user_work": "frontend/next-env.d.ts had .next/dev imports before work; bytes preserved and excluded from this task commit; original 3000/8000 processes never stopped by agent",
     "local_services": "Owned 3100/18082 and browsers stopped; final observed only MySQL3307; owner processes exited independently during work",
     "source_commit": "4a9b5242ffd147272575d8a8e9d9d0e40aa0c457"
+  },
+  "figma_web_sync": {
+    "decision": "D59",
+    "status": "done",
+    "verified_at": "2026-10-28T21:48:31+07:00",
+    "scope": "Existing local Figma plugin V25 synchronized with D57-D58 web; live owner canvas pending",
+    "web_recheck": {
+      "client_tests": 7,
+      "build": "passed21routes_in_isolated_copy",
+      "typecheck": "passed",
+      "assets": "passed",
+      "source_parity": "all frontend/src unchanged against verified copy",
+      "user_next_env": "preserved"
+    },
+    "plugin": {
+      "version": "V25",
+      "manifest_id": "thu-thanh-clicon-v16",
+      "pages": 3,
+      "frames": 126,
+      "prototype_frames": 124,
+      "review_frames": 2,
+      "flows_per_platform": 7,
+      "routes": 2518,
+      "products": 24,
+      "per_category": 4,
+      "purchase_sku": "TT-SGK-002",
+      "native_layers": true,
+      "network": "none"
+    },
+    "changes": [
+      "Nunito Sans priority and web color/spacing/card typography",
+      "public banner header; admin header without shopping footer",
+      "manga/kids banners between feeds; correct mobile asset",
+      "one footer contact block and 300x164 Google map below logo",
+      "48px translucent footer button with native same-screen SCROLL_TO",
+      "Google Maps URL actions; PNG conversion for WEBP; offline original JPEG assets",
+      "V24 ownership migration; preserve custom product images and external artwork"
+    ],
+    "verification": {
+      "plugin_mock": "passed126frames/2518reactions; geometry/containment/no flow overlap; header/footer/campaign/scroll/URLs; quantity/money5outcomes3channels; V24 upgrade/manual preservation/rollback/cancel",
+      "visual_preview": "desktop1920/mobile390 SVG browser inspection; header/footer readable, Nunito embedded; static previews only",
+      "preview_console": "only favicon404 from temporary HTTP server; initial large SVG load timeout resolved with DOM-content-loaded/font-ready navigation",
+      "assets": "136 originals/24product PNGs/3original banners/4campaign variants/2logos/8brands passed; embedded Figma campaign RGBA pixels match web; map hash/300x164/nonblank passed",
+      "package": {
+        "artifact": "output/figma/thuthanh-figma-clicon-v25-2026-10-28.zip",
+        "sha256": "08fbf133dd1c1b9c0e25830c6aaed16349e7b9ae946d92d43b1b426377ba5aa5",
+        "files": 6,
+        "svg_previews": 60,
+        "svg_previews_packaged": 0,
+        "bytes": 14837477,
+        "crc": "passed",
+        "source_byte_match": "passed",
+        "manifest_count": 1
+      },
+      "pack": "20required/27tasks/45API/28links passed",
+      "diff": "passed",
+      "live_figma_canvas": "not_run; user selected local plugin workflow, no owner fileKey supplied",
+      "merchant_SMTP_deploy": "not_run; unchanged external gates"
+    },
+    "limitations": "Figma shows docked footer scroll-to-top; web has visibility threshold/floating behavior. Native font/wrapping/hotspots still need owner Present review. No new cloud file/resource created.",
+    "source_commit": null
   }
 }

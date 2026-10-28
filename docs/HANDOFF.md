@@ -1,3 +1,13 @@
+# D59 — Figma V25 đã đồng bộ và đóng gói (2026-10-28T21:48:31+07:00)
+
+Task D59 local hoàn tất: source/bundle/plugin UI/manifest V25, data nhúng campaign/map, mock+asset verifier, package script/guide/flow manifest đồng bộ web D57–D58. Giữ3page/126frame/7flow mỗi nền tảng/24SKU/first-SKU purchase; không đổi nghiệp vụ web. Fonte Nunito ưu tiên/fallback có hướng dẫn; footer một liên hệ, map300×164 dưới logo, banner đúng vị trí, nút48px SCROLL_TO same screen, admin không footer mua sắm. Không tạo cloud file; canvas chủ dự án chưa được thao tác.
+
+Web recheck7client/build21routes/typecheck/assets/check_pack đạt; plugin mock126frame2518reaction, bounds/nonoverlap/quantity/money5outcomes3channels/V24 upgrade/manual image/rollback/cancel đạt. SVG browser1920/390 header/footer đã xem; chỉ favicon404 của previewserver. Pixel/hash campaign và map PNG kiểm đạt. Package6file CRC/source byte match SHA08fbf133dd1c1b9c0e25830c6aaed16349e7b9ae946d92d43b1b426377ba5aa5; output tại `output/figma/thuthanh-figma-clicon-v25-2026-10-28.zip`.60SVG ở xem-truoc do test tạo, không nằm trong ZIP. Không coi SVG/mock là pixel-match canvas thật.
+
+Tiếp theo: Figma Desktop → Plugins → Development → Import plugin from manifest, chọn manifest gốc trong ZIP V25 hoặc repo; đóng V24, chạy V25 và Tạo bản demo gọn. Canvas cũ chỉ đổi khi chạy builder; node ngoài plugin/ảnh sản phẩm sửa tay giữ, chữ/layout trong vùng plugin dựng lại như guide. Present để duyệt font, wrapping/hotspot. Figma minh họa trạng thái dock của nút cuộn; web tự hiện/ẩn/floating. VNPAY Sandbox thật/SMTP/staging10k và owner canvas vẫn pending.
+
+Giữ frontend/next-env.d.ts từ trước, không commit chung; web frontend/src/DB/env/APP_KEY/uploads/workbook không đổi. QA browser/server18091 đã dừng; MySQL giữ. Native plugin offline không cần token/network/extension, người dùng không cần build source để import.
+
 # D58 — Footer, banner và lên đầu trang đã kiểm tra local (2026-10-28T20:19:54+07:00)
 
 Source đã kiểm tra: `4a9b5242ffd147272575d8a8e9d9d0e40aa0c457`. Receipt hiện tại chỉ cập nhật tài liệu; giữ thay đổi next-env.d.ts có từ trước.

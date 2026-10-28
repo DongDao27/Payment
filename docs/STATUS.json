@@ -5,15 +5,15 @@
   "phase": "FRONTEND",
   "current_task_id": "F03",
   "next_task_id": "B07",
-  "implementation_state": "D58_storefront_footer_campaigns_scroll_locally_verified_external_acceptance_pending",
+  "implementation_state": "D59_FigmaV25_locally_verified_owner_canvas_and_external_acceptance_pending",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "4a9b5242ffd147272575d8a8e9d9d0e40aa0c457",
+  "last_verified_commit": null,
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-28T20:19:54+07:00",
+  "last_checkpoint_at": "2026-10-28T21:48:31+07:00",
   "last_test_run": {
     "at": "2026-10-28T15:17:52+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
@@ -27,28 +27,35 @@
     "at_note": "D56 actual run; timestamp captured at checkpoint after completion."
   },
   "figma": {
-    "status": "V24_local_verified_owner_canvas_pending",
+    "status": "V25_local_verified_owner_canvas_pending",
     "url": null,
     "node_ids": [],
     "source": "thu-thanh-figma-clicon",
-    "manifest_version": "V24",
-    "authorization_decision": "D45",
+    "manifest_version": "V25",
+    "authorization_decision": "D59",
     "reference_url": "https://nhasachphuongnam.com/",
     "reference_nodes": [],
     "flow_count_per_platform": 7,
     "screen_count": 126,
-    "prototype_link_count": 2804,
+    "prototype_link_count": 2518,
     "products": 24,
-    "artifact": "output/figma/thuthanh-figma-clicon-v24-2026-10-23.zip",
+    "artifact": "output/figma/thuthanh-figma-clicon-v25-2026-10-28.zip",
     "products_per_category": 4,
     "purchase_demo_sku": "TT-SGK-002",
-    "artifact_sha256": "720136ceb08ae738b8111419b25a23014599159397b072efc91d608b435511d0",
+    "artifact_sha256": "08fbf133dd1c1b9c0e25830c6aaed16349e7b9ae946d92d43b1b426377ba5aa5",
     "sample_qr_count": 3,
     "prototype_screen_count": 124,
     "review_frame_count": 2,
     "page_count": 3,
     "layout": "flat_horizontal_rows_outside_sections",
-    "landing_page": "Landing page"
+    "landing_page": "Landing page",
+    "web_sync": "D57_D58",
+    "campaign_variants": 4,
+    "font": "Nunito Sans preferred; fallback Inter/Roboto/Noto Sans/Arial",
+    "map_size": [
+      300,
+      164
+    ]
   },
   "blockers": [
     "VNPAY Sandbox code ready (D55) but real Sandbox transaction not_run: merchant TMN code/hash secret pending; Production deferred; strict backend gate not passed.",
@@ -56,7 +63,7 @@
     "Owner canvas and course/deployment acceptance pending."
   ],
   "external_inputs_pending": [
-    "Owner imports V24 plugin and reviews canvas",
+    "Owner imports V25 plugin and reviews canvas",
     "VNPAY Sandbox merchant TMN code/hash secret in private backend/.env (D55); public IPN URL when hosting/tunnel exists",
     "Owner has no hosting yet; production capacity acceptance waits for future staging infrastructure",
     "SMTP/from-address/HTTPS frontend origin and actual recovery email delivery acceptance"
@@ -89,16 +96,16 @@
     "github_remote_ci": "passed_Backend_and_Frontend_503ca3d_verified_D49",
     "docker_build_deploy": "not_run",
     "vnpay_real_sandbox": "not_run",
-    "figma_plugin_js_syntax": "passed_V24_live_canvas_not_run",
+    "figma_plugin_js_syntax": "passed_V25_live_canvas_not_run",
     "frontend_api_tests": 7,
-    "frontend_build": "passed_D58_isolated_source_copy",
-    "frontend_typecheck": "passed_D58_isolated_source_copy",
+    "frontend_build": "passed_D59_recheck_isolated_copy",
+    "frontend_typecheck": "passed_D59_recheck_isolated_copy",
     "frontend_npm_audit": "no_vulnerabilities_reported",
     "browser_qa": "D58_footer_banners_scroll37576810241440_keyboard_forms_quickview_passed",
     "frontend_workflow_remote": "not_run",
     "figma_canvas_pixel_diff": "not_run",
     "figma_plugin_mock_screens": 126,
-    "figma_plugin_mock_links": 2804,
+    "figma_plugin_mock_links": 2518,
     "figma_plugin_workbook_samples": 24,
     "figma_owner_canvas_review": "pending",
     "figma_plugin_catalog_unique_skus": 24,
@@ -117,7 +124,7 @@
     "web_hd_original_images": 136,
     "asset_hash_dimension_verification": "passed_136originals_24PNG_3banners_8brands_2logo",
     "figma_repeated_manual_photo_preservation": "passed",
-    "figma_plugin_package_crc_source_match": "passed_6files_1manifest_offline",
+    "figma_plugin_package_crc_source_match": "passed_V25_6files_1manifest_offline",
     "figma_plugin_flow_labels": 14,
     "newsletter_feature_tests": "5_passed_plus2APIcontract_37assertions_targeted",
     "newsletter_database_migration": "applied_new_table_only_dev_preserved",
@@ -180,7 +187,7 @@
     "backend_http": "owner8000_not_stopped_by_agent_final_not_listening",
     "frontend_http": "owner3000_not_stopped_by_agent_final_not_listening",
     "qa_http": "D58_owned3100_18082_browsers_stopped",
-    "figma_preview_http": "not_running"
+    "figma_preview_http": "D59_owned18091_stopped"
   },
   "backend_full_suite_previous": {
     "at": "2026-10-27T18:35:15+07:00",
@@ -231,7 +238,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "D58 source committed; receipt currently being written. Pre-existing generated frontend/next-env.d.ts remains dirty and excluded intentionally.",
+  "git_dirty_note": "D59 source not yet committed; pre-existing frontend/next-env.d.ts preserved and excluded.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -461,5 +468,66 @@
     "preserved_user_work": "frontend/next-env.d.ts had .next/dev imports before work; bytes preserved and excluded from this task commit; original 3000/8000 processes never stopped by agent",
     "local_services": "Owned 3100/18082 and browsers stopped; final observed only MySQL3307; owner processes exited independently during work",
     "source_commit": "4a9b5242ffd147272575d8a8e9d9d0e40aa0c457"
+  },
+  "figma_web_sync": {
+    "decision": "D59",
+    "status": "done",
+    "verified_at": "2026-10-28T21:48:31+07:00",
+    "scope": "Existing local Figma plugin V25 synchronized with D57-D58 web; live owner canvas pending",
+    "web_recheck": {
+      "client_tests": 7,
+      "build": "passed21routes_in_isolated_copy",
+      "typecheck": "passed",
+      "assets": "passed",
+      "source_parity": "all frontend/src unchanged against verified copy",
+      "user_next_env": "preserved"
+    },
+    "plugin": {
+      "version": "V25",
+      "manifest_id": "thu-thanh-clicon-v16",
+      "pages": 3,
+      "frames": 126,
+      "prototype_frames": 124,
+      "review_frames": 2,
+      "flows_per_platform": 7,
+      "routes": 2518,
+      "products": 24,
+      "per_category": 4,
+      "purchase_sku": "TT-SGK-002",
+      "native_layers": true,
+      "network": "none"
+    },
+    "changes": [
+      "Nunito Sans priority and web color/spacing/card typography",
+      "public banner header; admin header without shopping footer",
+      "manga/kids banners between feeds; correct mobile asset",
+      "one footer contact block and 300x164 Google map below logo",
+      "48px translucent footer button with native same-screen SCROLL_TO",
+      "Google Maps URL actions; PNG conversion for WEBP; offline original JPEG assets",
+      "V24 ownership migration; preserve custom product images and external artwork"
+    ],
+    "verification": {
+      "plugin_mock": "passed126frames/2518reactions; geometry/containment/no flow overlap; header/footer/campaign/scroll/URLs; quantity/money5outcomes3channels; V24 upgrade/manual preservation/rollback/cancel",
+      "visual_preview": "desktop1920/mobile390 SVG browser inspection; header/footer readable, Nunito embedded; static previews only",
+      "preview_console": "only favicon404 from temporary HTTP server; initial large SVG load timeout resolved with DOM-content-loaded/font-ready navigation",
+      "assets": "136 originals/24product PNGs/3original banners/4campaign variants/2logos/8brands passed; embedded Figma campaign RGBA pixels match web; map hash/300x164/nonblank passed",
+      "package": {
+        "artifact": "output/figma/thuthanh-figma-clicon-v25-2026-10-28.zip",
+        "sha256": "08fbf133dd1c1b9c0e25830c6aaed16349e7b9ae946d92d43b1b426377ba5aa5",
+        "files": 6,
+        "svg_previews": 60,
+        "svg_previews_packaged": 0,
+        "bytes": 14837477,
+        "crc": "passed",
+        "source_byte_match": "passed",
+        "manifest_count": 1
+      },
+      "pack": "20required/27tasks/45API/28links passed",
+      "diff": "passed",
+      "live_figma_canvas": "not_run; user selected local plugin workflow, no owner fileKey supplied",
+      "merchant_SMTP_deploy": "not_run; unchanged external gates"
+    },
+    "limitations": "Figma shows docked footer scroll-to-top; web has visibility threshold/floating behavior. Native font/wrapping/hotspots still need owner Present review. No new cloud file/resource created.",
+    "source_commit": null
   }
 }

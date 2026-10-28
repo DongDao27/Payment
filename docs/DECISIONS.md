@@ -260,3 +260,12 @@ Tiêu chí trước sửa: footer chỉ một địa chỉ/điện thoại/giờ
 Đầu phiên có thay đổi next-env.d.ts do dev (trỏ .next/dev), server của chủ dự án đang chạy 3000/8000. Giữ nguyên file/process đó; build/QA trong bản copy riêng dưới .runtime và port3100. Không reset dữ liệu/env hoặc sửa Figma canvas.
 
 D58 đã kiểm tra local theo tiêu chí trên. Nút được dock vào hàng bản quyền khi footer xuất hiện để không che form. Đã bỏ39 selector footer cũ thay vì thêm lớp override. Skill không có match footer trực tiếp sau retry, dùng UX chung/Next.js guidance phù hợp. Newsletter response fixtures chỉ để kiểm UI, không ghi email thật. Giữ next-env.d.ts từ trước, không stage chung; chi tiết kết quả ở TASKS/PROGRESS/STATUS.
+
+
+## D59 — Kiểm tra web và đồng bộ plugin Figma V25 (2026-10-28T21:20:19+07:00)
+
+Chủ dự án yêu cầu kiểm tra bản web D58 rồi đồng bộ Figma. Dùng bộ plugin local đã chọn, giữ manifest ID, 3 page/7 flow mỗi nền tảng, 24 SKU/4 mỗi danh mục và chỉ SKU đầu mua demo. Đồng bộ font/tokens/header, banner Fahasa giữa feed, footer liên hệ/map nhỏ và nút lên đầu. Không tạo cloud file mới, không chỉnh template Community của người khác. Layer UI phải chỉnh sửa được; chỉ nội dung ảnh/banner/map là raster. Giữ ảnh chỉnh tay/node ngoài plugin, rebuild atomic/rollback, không tăng trang lặp.
+
+Acceptance trước sửa: web client tests/build/typecheck/assets đạt; Figma có nguồn banner/map PNG offline đúng hash; footer 1 địa chỉ/phone/giờ, map300×164 dưới logo, admin không footer mua sắm; SCROLL_TO đúng màn, logo/Trang chủ về landing, không chồng layer/flow, kiểm đủ payment quantity và rollback. Gói V25/source/SVG preview/ZIP CRC khớp; không claim canvas thật hoặc provider thật đã nghiệm thu. Giữ next-env.d.ts có từ trước, DB/env và source web.
+
+D59 local acceptance đạt: web recheck, mock126frame/2518reaction và native geometry/flow/rollback, asset pixel parity, package CRC. V25 giữ số page/frame, bổ sung Scroll to trong cùng màn và mapURL; sourceUI vẫn là layer editable. Dock-state trong Figma được mô tả rõ; native canvas cần owner Present, không claim live acceptance.

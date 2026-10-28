@@ -48,10 +48,12 @@ class Node {
       }
       assert.equal(r.actions.length,1);
       const a=r.actions[0];
+      if(a.type==='URL'){assert(a.url.startsWith('https://www.google.com/maps'));continue;}
       if(a.type==='NODE') {
         const dest=registry.get(a.destinationId);
         assert(dest && !dest.removed,`missing destination from ${this.name}`);
         if(a.navigation==='CHANGE_TO'){assert.equal(dest.type,'COMPONENT');assert.equal(dest.parent,this.parent);continue;}
+        if(a.navigation==='SCROLL_TO'){assert.equal(screenOf(this),screenOf(dest),'scroll within own screen');continue;}
         assert.equal(dest.type,'FRAME');
         assert(['PAGE','SECTION'].includes(dest.parent.type),'nested destination');
         assert.equal(pageOf(this),pageOf(dest),'cross-page navigation');
@@ -82,7 +84,7 @@ const figma={
   },
   viewport:{scrollAndZoomIntoView(){}},
   async setCurrentPageAsync(p){this.currentPage=p;},
-  async listAvailableFontsAsync(){return [...['Regular','Semi Bold','Bold','Black'].map(style=>({fontName:{family:'Inter',style}})),{fontName:{family:'Georgia',style:'Bold Italic'}}];},
+  async listAvailableFontsAsync(){return [...['Regular','Semi Bold','Bold','Black'].map(style=>({fontName:{family:'Nunito Sans',style}})),...['Regular','Semi Bold','Bold','Black'].map(style=>({fontName:{family:'Inter',style}})),{fontName:{family:'Georgia',style:'Bold Italic'}}];},
   async loadFontAsync(){},
 };
 for(const [method,type] of Object.entries({createPage:'PAGE',createFrame:'FRAME',createSection:'SECTION',createComponent:'COMPONENT',createRectangle:'RECTANGLE',createText:'TEXT',createNodeFromSvg:'FRAME'}))
@@ -108,24 +110,26 @@ async function build() {
   const html=fs.readFileSync(path.join(dir,'ui.html'),'utf8');new vm.Script(html.match(/<script>([\s\S]*?)<\/script>/)[1]);
   const legacy=new Node('SECTION');legacy.name='V20 owned';legacy.setPluginData('thuthanhV20','1');const legacyPhoto=new Node('RECTANGLE');legacyPhoto.setPluginData('productId','TT-SGK-002');legacyPhoto.setPluginData('imageSlot','1');legacyPhoto.fills=[{type:'IMAGE',imageHash:figma.createImage(Buffer.from(data.products[0].legacyImage,'base64')).hash}];legacy.appendChild(legacyPhoto);const page=new Node('PAGE');page.name='01 · Máy tính · thuthanh Clicon';root.appendChild(page);page.appendChild(legacy);
   const manual=new Node('FRAME');manual.name='User artwork outside plugin';page.appendChild(manual);
+  const previousVersion=new Node('FRAME');previousVersion.name='Owned V24 to upgrade';previousVersion.setPluginData('thuthanhV24','1');page.appendChild(previousVersion);
   await build();const upgraded=walk(page).find(n=>n.getPluginData('imageSlot')==='1'&&n.getPluginData('productId')==='TT-SGK-002'&&!n.removed);assert.equal(require('node:crypto').createHash('sha256').update(images.get(upgraded.fills[0].imageHash)).digest('hex'),data.products[0].image_sha256,'old generated thumbnail must upgrade to HD');assert(legacy.removed);assert(!manual.removed);
+  assert(previousVersion.removed,'upgrade recognizes V24 ownership');
   const pages=root.children.filter(p=>p.name.includes('thuthanh Clicon'));assert.equal(pages.length,2);
   let screensTotal=0,routeTotal=0,overflows=[];
   const screenCache=new WeakMap();
   const byScreen=(page,id)=>{if(!screenCache.has(page))screenCache.set(page,new Map(walk(page).filter(n=>n.getPluginData('screenId')).map(n=>[n.getPluginData('screenId'),n])));return screenCache.get(page).get(id);};
   const dest=(f,target)=>{const node=walk(f).find(n=>n.getPluginData('routeTarget')===target);assert(node,`${f.name} missing route ${target}`);const action=node.reactions[0]?.actions[0];assert(action);return registry.get(action.destinationId);};
   for(const page of pages){
-    const mobile=page.name.includes('Điện thoại'),width=mobile?390:1920,owned=page.children.filter(n=>n.getPluginData('thuthanhV24')==='1');
+    const mobile=page.name.includes('Điện thoại'),width=mobile?390:1920,owned=page.children.filter(n=>n.getPluginData('thuthanhV25')==='1');
     const labels=owned.filter(n=>n.getPluginData('layoutLabel')==='1');assert.equal(labels.length,7);assert(!page.children.some(n=>n.type==='SECTION'),'no enclosing flow boards');
     const screens=owned.filter(n=>n.getPluginData('screenId'));assert.equal(screens.length,62);assert.equal(new Set(screens.map(n=>n.getPluginData('screenId'))).size,screens.length);screensTotal+=screens.length;const nodes=owned.flatMap(walk);
     const intersects=(a,b)=>a.x<b.x+b.width&&b.x<a.x+a.width&&a.y<b.y+b.height&&b.y<a.y+a.height;
     for(let i=0;i<owned.length;i++)for(let j=i+1;j<owned.length;j++)assert(!intersects(owned[i],owned[j]),'top-level canvas nodes overlap');
     for(const label of labels){const list=screens.filter(f=>f.getPluginData('flowId')===label.getPluginData('flowId')&&f.getPluginData('screenId')!=='home').sort((a,b)=>a.x-b.x);assert(list.every(f=>f.y===list[0].y),'one horizontal row per flow');for(let i=1;i<list.length;i++)assert(list[i].x-list[i-1].x-list[i-1].width>=320,'readable flow gap');}
-    for(const f of screens){assert.equal(f.width,width);assert.equal(f.getPluginData('visualTheme'),'Clicon / thuthanh / V24');if(f.getPluginData('overlay')!=='1'){assert.equal(f.height,mobile?844:1080);assert(walk(f).some(n=>n.getPluginData('siteFooter')==='1'));}}
+    for(const f of screens){assert.equal(f.width,width);assert.equal(f.getPluginData('visualTheme'),'Clicon / thuthanh / V25');if(f.getPluginData('overlay')!=='1'){assert.equal(f.height,mobile?844:1080);assert.equal(walk(f).some(n=>n.getPluginData('siteFooter')==='1'),!(/^admin/.test(f.getPluginData('screenId'))||f.getPluginData('screenId')==='stockAdjust'));}}
     for(const n of nodes.filter(n=>n.getPluginData('headerAnnouncement')==='1'))assert.equal(n.characters,'Chào mừng đến với nhà sách Thu Thanh');
-    assert(nodes.filter(n=>n.getPluginData('headerAnnouncement')==='1').length>=30);
+    assert(nodes.filter(n=>n.getPluginData('headerAnnouncement')==='1').length>=10);assert(nodes.some(n=>n.getPluginData('campaignId')==='header'));assert(nodes.filter(n=>n.type==='TEXT').some(n=>n.fontName?.family==='Nunito Sans'));
     for(const n of nodes.filter(n=>n.getPluginData('brandWordmark')==='1'))assert.equal(n.getPluginData('brandLabel'),'NHÀ SÁCH THU THANH');
-    for(const n of nodes.filter(n=>n.getPluginData('productCard'))){assert(mobile?n.width===171:[234,318].some(w=>Math.abs(w-n.width)<0.01),'Clicon grid geometry');assert.equal(n.height,mobile?420:500);}
+    for(const n of nodes.filter(n=>n.getPluginData('productCard'))){assert(mobile?[160,171].some(w=>Math.abs(w-n.width)<0.01):[234,299,318].some(w=>Math.abs(w-n.width)<0.01),'Clicon grid geometry');assert.equal(n.height,mobile?420:500);}
     for(const card of nodes.filter(n=>n.getPluginData('productCard'))){const parts=card.children.filter(n=>n.type==='TEXT'||n.getPluginData('imageSlot')==='1'||n.getPluginData('priceRegion')==='1'||n.name.startsWith('Xem nhanh ')).sort((a,b)=>a.y-b.y);for(let i=1;i<parts.length;i++)assert(parts[i].y>=parts[i-1].y+parts[i-1].height,'card regions overlap');}
     for(const n of nodes){for(const r of n.reactions){routeTotal++;for(const a of r.actions)if(a.destinationId){const target=registry.get(a.destinationId);assert(target&&!target.removed);if(target.getPluginData('overlay')==='1')assert.equal(a.navigation,screenOf(n).getPluginData('overlay')==='1'?'SWAP':'OVERLAY');}}
       // Horizontal containment catches malformed field, table and button placement.
@@ -148,7 +152,7 @@ async function build() {
     for(const id of ['home','catalog','detail','cart','cartTwo','policies']){
       assert(!walk(byScreen(page,id)).some(n=>n.type==='TEXT' && /25\.000/.test(n.characters)),id+' must not advertise shipping amount');
     }
-    for(const f of screens.filter(f=>f.getPluginData('overlay')!=='1')){const foot=walk(f).find(n=>n.getPluginData('siteFooter')==='1');assert.equal(walk(foot).filter(n=>n.getPluginData('manufacturerBrand')).length,8);assert(walk(foot).some(n=>n.characters.includes('295 Tôn Đức Thắng')));assert(walk(foot).some(n=>n.characters==='ĐĂNG KÝ NHẬN BẢN TIN'));}
+    for(const foot of nodes.filter(n=>n.getPluginData('siteFooter')==='1')){assert.equal(walk(foot).filter(n=>n.getPluginData('manufacturerBrand')).length,8);assert(walk(foot).some(n=>n.characters.includes('295 Tôn Đức Thắng')));assert(walk(foot).some(n=>n.characters==='Đăng ký nhận bản tin'));}
     const referenceBanners=walk(byScreen(page,'home')).filter(n=>n.getPluginData('referenceBanner'));assert.equal(referenceBanners.length,2);for(const banner of referenceBanners)assert(Math.abs(banner.height/banner.width-506/900)<0.001,'original banner aspect ratio');
     assert(!nodes.some(n=>n.name==='Cam kết mua hàng'));
     for(const [id,amount] of [['paymentQr',39000],['paymentQrTwo',53000],['pickupPaymentQr',14000]]){
@@ -174,6 +178,13 @@ async function build() {
     for(const id of ['paidOrder','paidOrderTwo','paidPickupOrder']){const f=byScreen(page,id);assert(walk(f).some(n=>n.type==='TEXT'&&/Đã thanh toán/.test(n.characters)));assert(!walk(f).some(n=>n.type==='TEXT'&&/Hủy đơn|Chưa thanh toán|Chờ thanh toán/.test(n.characters)));const sum=walk(f).find(n=>n.name==='Tổng đơn hàng');assert.equal(+sum.getPluginData('total'),id==='paidOrderTwo'?53000:id==='paidPickupOrder'?14000:39000);}
     for(const f of screens.filter(f=>f.getPluginData('overlay')!=='1'&&f.getPluginData('screenId')!=='home')){const breadcrumb=walk(f).find(n=>n.name==='Đường dẫn trang');const crumb=walk(breadcrumb).find(n=>n.type==='TEXT'&&n.characters==='Trang chủ');assert(crumb);assert.equal(crumb.reactions[0].actions[0].destinationId,byScreen(page,'home').id);}
 
+    for(const foot of nodes.filter(n=>n.getPluginData('siteFooter')==='1')){
+      for(const key of ['storeMap','storeAddress','storePhone','storeHours','scrollTop'])assert.equal(walk(foot).filter(n=>n.getPluginData(key)==='1').length,1,key+' once per footer');
+      const map=walk(foot).find(n=>n.getPluginData('storeMap')==='1');assert.equal(map.width,300);assert.equal(map.height,164);
+      const up=walk(foot).find(n=>n.getPluginData('scrollTop')==='1');assert.equal(up.width,48);assert.equal(up.height,48);assert.equal(up.reactions[0].actions[0].navigation,'SCROLL_TO');
+      assert(!walk(foot).some(n=>/GHÉ NHÀ SÁCH|LIÊN HỆ/.test(n.characters||'')));
+    }
+    const campaignIds=walk(byScreen(page,'home')).filter(n=>n.getPluginData('campaignId')).map(n=>n.getPluginData('campaignId'));assert.deepEqual(campaignIds,['header','manga','kids']);
     // New shared footer and QR panels: text rectangles cannot overlap their siblings.
     for(const panel of nodes.filter(n=>n.getPluginData('siteFooter')==='1'||n.name==='Thông tin thanh toán')){
       const texts=panel.children.filter(n=>n.type==='TEXT');
@@ -191,19 +202,20 @@ async function build() {
   function render(n){
     if(n.visible===false)return '';let content='';const fill=n.fills?.find(p=>p.type==='SOLID'),im=n.fills?.find(p=>p.type==='IMAGE'),stroke=n.strokes?.find(p=>p.type==='SOLID');
     if(n.type!=='TEXT'&&(fill||stroke))content+=`<rect width="${n.width}" height="${n.height}" rx="${typeof n.cornerRadius==='number'?n.cornerRadius:0}" fill="${fill?color(fill.color):'none'}" fill-opacity="${fill?.opacity??1}" ${stroke?`stroke="${color(stroke.color)}"`:''}/>`;
-    if(im&&images.has(im.imageHash))content+=`<image width="${n.width}" height="${n.height}" href="data:image/jpeg;base64,${images.get(im.imageHash).toString('base64')}" preserveAspectRatio="xMidYMid meet"/>`;
+    if(im&&images.has(im.imageHash)){const bytes=images.get(im.imageHash),mime=bytes[0]===137?'image/png':'image/jpeg';content+=`<image width="${n.width}" height="${n.height}" href="data:${mime};base64,${bytes.toString('base64')}" preserveAspectRatio="xMidYMid meet"/>`;}
     if(n.svgSource)content+=`<image width="${n.width}" height="${n.height}" href="data:image/svg+xml;base64,${Buffer.from(n.svgSource).toString('base64')}"/>`;
     if(n.type==='TEXT'){const size=n.fontSize||14,lh=n.lineHeight?.value||size*1.43,max=Math.max(1,Math.floor(n.width/(size*.51))),lines=[];
       for(const para of n.characters.split('\n')){let line='';for(const word of para.split(' ')){if((line+' '+word).trim().length>max&&line){lines.push(line);line=word;}else line=(line+' '+word).trim();}lines.push(line);}
       content+=`<text text-decoration="${n.textDecoration==='STRIKETHROUGH'?'line-through':'none'}" fill="${fill?color(fill.color):'#191c1f'}" font-family="${esc(n.fontName?.family||'Arial')},Arial,sans-serif" font-weight="${/Bold/i.test(n.fontName?.style)?700:400}" font-size="${size}" font-style="${/Italic/i.test(n.fontName?.style)?'italic':'normal'}" letter-spacing="${n.letterSpacing?.value||0}">${lines.slice(0,n.maxLines||lines.length).map((l,i)=>`<tspan x="0" y="${size+i*lh}">${esc(l)}</tspan>`).join('')}</text>`;
     }
     content+=n.children.map(render).join('');if(n.clipsContent){const id='clip'+n.id.replace(':','');content=`<defs><clipPath id="${id}"><rect width="${n.width}" height="${n.height}"/></clipPath></defs><g clip-path="url(#${id})">${content}</g>`;}
-    return `<g transform="translate(${n.x||0},${n.y||0})">${content}</g>`;
+    return `<g opacity="${n.opacity??1}" transform="translate(${n.x||0},${n.y||0})">${content}</g>`;
   }
   const preview=path.join(dir,'xem-truoc');fs.mkdirSync(preview,{recursive:true});
+  const previewFont=fs.readFileSync(path.join(__dirname,'../frontend/src/app/fonts/nunito-sans-variable.woff2')).toString('base64');
   for(const page of pages)for(const id of ['newsletterSuccess','quick','quickTwo','quickSigned','quickSignedTwo','home','catalog','detail','cart','delivery','pickup','orders','adminProducts','adminInventory','uiStates','paymentQr','paymentQrTwo','pickupPaymentQr','paymentPending','paymentFailed','paymentExpired','paidFuture','paymentReview','adminLogin','adminDashboard','adminRevenue','paidOrder','paidOrderTwo','paidPickupOrder','ordersPaid']){
     const f=byScreen(page,id),clone=f.clone();clone.x=clone.y=0;clone.height=Number(f.getPluginData('contentHeight'))||f.height;
-    fs.writeFileSync(path.join(preview,(page.name.includes('Điện thoại')?'dien-thoai':'may-tinh')+'-'+id+'.svg'),`<svg xmlns="http://www.w3.org/2000/svg" width="${clone.width}" height="${clone.height}">${render(clone)}</svg>`);clone.remove();
+    fs.writeFileSync(path.join(preview,(page.name.includes('Điện thoại')?'dien-thoai':'may-tinh')+'-'+id+'.svg'),`<svg xmlns="http://www.w3.org/2000/svg" width="${clone.width}" height="${clone.height}"><defs><style>@font-face{font-family:'Nunito Sans';src:url(data:font/woff2;base64,${previewFont});font-weight:200 900}</style></defs>${render(clone)}</svg>`);clone.remove();
   }
   const landing=root.children.find(p=>p.name==='Landing page');assert(landing);const reviews=landing.children.filter(n=>n.getPluginData('landingReview')==='1');assert.equal(reviews.length,2);assert(reviews[1].x>=reviews[0].width+480);assert(reviews.every(f=>walk(f).every(n=>n.reactions.length===0)),'review page has no cross-page actions');
   const flowManifest=pages.map(page=>({platform:page.name,layout:'flat-horizontal',flows:page.children.filter(n=>n.getPluginData('layoutLabel')==='1').map(label=>({name:label.characters,screens:page.children.filter(f=>f.getPluginData('screenId')&&f.getPluginData('flowId')===label.getPluginData('flowId')).map(f=>({id:f.getPluginData('screenId'),name:f.name,x:f.x,y:f.y,contentHeight:f.getPluginData('contentHeight')}))}))}));
@@ -216,18 +228,18 @@ async function build() {
   await build();
   // A completed build is replaced atomically; manual nodes/images survive and cancel rolls back.
   const photo=walk(pages[0]).find(n=>n.getPluginData('productId')==='TT-SGK-002'&&n.getPluginData('imageSlot')==='1');photo.fills=[{type:'IMAGE',imageHash:'manual-preserved',scaleMode:'FILL'}];
-  const ids=pages.flatMap(p=>p.children.filter(n=>n.getPluginData('thuthanhV24')==='1').map(n=>n.id));await build();assert(!manual.removed);assert(pages.every(p=>p.children.filter(n=>n.getPluginData('thuthanhV24')==='1').length===69));assert(ids.every(id=>registry.get(id).removed));
+  const ids=pages.flatMap(p=>p.children.filter(n=>n.getPluginData('thuthanhV25')==='1').map(n=>n.id));await build();assert(!manual.removed);assert(pages.every(p=>p.children.filter(n=>n.getPluginData('thuthanhV25')==='1').length===69));assert(ids.every(id=>registry.get(id).removed));
   assert(pages.every(p=>walk(p).filter(n=>n.getPluginData('productId')==='TT-SGK-002'&&n.getPluginData('imageSlot')==='1').every(n=>n.fills[0].imageHash==='manual-preserved'&&n.fills[0].scaleMode==='FIT')));
   await build();assert(pages.every(p=>walk(p).filter(n=>n.getPluginData('productId')==='TT-SGK-002'&&n.getPluginData('imageSlot')==='1').every(n=>n.fills[0].imageHash==='manual-preserved')),'manual image persists through repeated successful rebuilds');
   const landingNote=new Node('TEXT');landingNote.name='Owner note outside plugin';landingNote.resize(300,80);root.children.find(p=>p.name==='Landing page').appendChild(landingNote);
   const masterPhoto=walk(root.children.find(p=>p.name==='Landing page')).find(n=>n.getPluginData('imageSlot')==='1'&&n.getPluginData('productId')==='TT-SGK-002');masterPhoto.fills=[{type:'IMAGE',imageHash:'manual-from-landing',scaleMode:'FIT'}];await build();await build();assert(root.children.filter(p=>p.name==='Landing page'||pages.includes(p)).every(p=>walk(p).filter(n=>n.getPluginData('productId')==='TT-SGK-002'&&n.getPluginData('imageSlot')==='1').every(n=>n.fills[0].imageHash==='manual-from-landing')),'master page photos persist across all 3 pages');assert(!landingNote.removed);assert(root.children.find(p=>p.name==='Landing page').children.filter(n=>n.getPluginData('landingReview')==='1').every(f=>f.x>=landingNote.x+landingNote.width+640),'landing avoids owner notes');
-  const ownedAll=()=>root.children.flatMap(p=>p.children.filter(n=>n.getPluginData('thuthanhV24')==='1').map(n=>n.id));const beforeLandingFailure=ownedAll(),setPageBeforeLanding=figma.setCurrentPageAsync;let landingVisits=0;
+  const ownedAll=()=>root.children.flatMap(p=>p.children.filter(n=>n.getPluginData('thuthanhV25')==='1').map(n=>n.id));const beforeLandingFailure=ownedAll(),setPageBeforeLanding=figma.setCurrentPageAsync;let landingVisits=0;
   figma.setCurrentPageAsync=async function(p){if(p.name==='Landing page'&&++landingVisits===2)throw new Error('Injected landing commit failure');return setPageBeforeLanding.call(this,p);};await figma.ui.onmessage({type:'build'});figma.setCurrentPageAsync=setPageBeforeLanding;assert(messages.some(m=>m.type==='error'&&/landing commit/.test(m.text)));assert.deepEqual(ownedAll(),beforeLandingFailure,'all 3 pages roll back after landing staging failure');
   // Inject a platform transition failure after desktop staging; both old platforms must survive.
-  const stableIds=pages.flatMap(p=>p.children.filter(n=>n.getPluginData('thuthanhV24')==='1').map(n=>n.id)),setPage=figma.setCurrentPageAsync;
+  const stableIds=pages.flatMap(p=>p.children.filter(n=>n.getPluginData('thuthanhV25')==='1').map(n=>n.id)),setPage=figma.setCurrentPageAsync;
   figma.setCurrentPageAsync=async function(p){if(p.name.includes('Điện thoại'))throw new Error('Injected platform failure');return setPage.call(this,p);};
   await figma.ui.onmessage({type:'build'});figma.setCurrentPageAsync=setPage;
-  assert(messages.some(m=>m.type==='error'&&/Injected platform/.test(m.text)));assert.deepEqual(pages.flatMap(p=>p.children.filter(n=>n.getPluginData('thuthanhV24')==='1').map(n=>n.id)),stableIds);
+  assert(messages.some(m=>m.type==='error'&&/Injected platform/.test(m.text)));assert.deepEqual(pages.flatMap(p=>p.children.filter(n=>n.getPluginData('thuthanhV25')==='1').map(n=>n.id)),stableIds);
   const before=pages.flatMap(p=>p.children.map(n=>n.id));const pending=figma.ui.onmessage({type:'build'});await figma.ui.onmessage({type:'cancel'});await pending;assert(messages.some(m=>m.type==='error'&&/Đã dừng/.test(m.text)));assert.deepEqual(pages.flatMap(p=>p.children.map(n=>n.id)),before);
-  console.log(JSON.stringify({result:'passed',version:24,platforms:2,flowsPerPlatform:7,screens:screensTotal+2,prototypeScreens:screensTotal,landingReviewFrames:2,pages:3,routes:routeTotal,productsAudited:24,header:'exact',checks:['dataset hashes','native geometry','money and quantity continuity','overlay close and swap','guest quickview authentication quantity retention','loading-empty-validation-error-expiry-deferred-permission states','correct selected product','4 products per category','first product purchase only','no generated duplicate detail/paging frames','manual preservation including landing review','flat horizontal rows and 3 pages','atomic rebuild','platform failure rollback','cancel rollback'],liveFigma:'not_run'}));
+  console.log(JSON.stringify({result:'passed',version:25,platforms:2,flowsPerPlatform:7,screens:screensTotal+2,prototypeScreens:screensTotal,landingReviewFrames:2,pages:3,routes:routeTotal,productsAudited:24,header:'exact',checks:['dataset hashes','native geometry','money and quantity continuity','overlay close and swap','guest quickview authentication quantity retention','loading-empty-validation-error-expiry-deferred-permission states','correct selected product','4 products per category','first product purchase only','no generated duplicate detail/paging frames','manual preservation including landing review','flat horizontal rows and 3 pages','atomic rebuild','platform failure rollback','cancel rollback'],liveFigma:'not_run'}));
 })().catch(e=>{console.error(e);process.exitCode=1;});

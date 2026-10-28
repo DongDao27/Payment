@@ -58,4 +58,18 @@ for banner in config.values():
     for variant in [banner, *([banner['mobile']] if banner.get('mobile') else [])]:
         asset = next(a for a in campaigns if a['local_path'] == 'frontend/public' + variant['src'])
         assert (asset['width'], asset['height']) == (variant['width'], variant['height'])
+for banner in data.get('webCampaigns', {}).values():
+    for variant in [banner, *([banner['mobile']] if banner.get('mobile') else [])]:
+        embedded = base64.b64decode(variant['image'])
+        assert hashlib.sha256(embedded).hexdigest() == variant['image_sha256']
+        with Image.open(io.BytesIO(embedded)) as image, Image.open(ROOT / ('frontend/public' + variant['src'])) as original:
+            assert image.format in ['JPEG', 'PNG', 'GIF']
+            assert image.size == original.size == (variant['width'], variant['height'])
+            assert image.convert('RGBA').tobytes() == original.convert('RGBA').tobytes()
+if data.get('store'):
+    map_content = base64.b64decode(data['store']['mapImage'])
+    assert hashlib.sha256(map_content).hexdigest() == data['store']['map_sha256']
+    with Image.open(io.BytesIO(map_content)) as image:
+        assert image.size == (300, 164)
+        assert len(image.convert('RGB').getcolors(100000)) > 100
 print(json.dumps({'result': 'passed', 'originals': 136, 'figma_lossless_png': 24, 'banners': 1 + len(metadata.get('additional_banners', [])), 'campaign_variants': len(campaigns), 'brand_variants': 2, 'manufacturers': len(metadata.get('manufacturers', []))}))

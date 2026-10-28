@@ -5,6 +5,7 @@ import json
 import re
 import zipfile
 import xml.etree.ElementTree as ET
+from datetime import datetime, timezone, timedelta
 
 ROOT = Path(__file__).resolve().parents[1]
 source = ROOT / 'thu-thanh-figma-clicon'
@@ -21,7 +22,8 @@ if version>=22:
     files=[source/name for name in ['manifest.json','code.js','ui.html','HUONG-DAN.md','ICONS-LICENSE.txt','LUONG-THIET-KE.json']]
 else:
     files.extend(previews)
-output = ROOT / f'output/figma/thuthanh-figma-clicon-v{version}-2026-10-23.zip'
+package_date = datetime.now(timezone(timedelta(hours=7))).date().isoformat()
+output = ROOT / f'output/figma/thuthanh-figma-clicon-v{version}-{package_date}.zip'
 with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
     for path in files:
         archive.write(path, path.relative_to(source).as_posix())

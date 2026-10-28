@@ -375,3 +375,15 @@ Kiểm thực:7 client tests, build21route và typecheck đạt trong copy .runt
 Giữ nguyên next-env.d.ts đang sửa từ trước và không đưa vào commit này. Không dừng process của chủ dự án; các server3000/8000 tự kết thúc trong phiên, QA riêng3100/18082 và browser do AI mở đã dừng, MySQL3307 giữ. Không reset/import/đổi env/schema/giá/tồn/payment; không sửa canvas hoặc claim WCAG/merchant/SMTP/deploy/10k đã nghiệm thu. check_pack/diff đạt; output tạm ở runtime/output bịignore.
 
 D58 source đã commit: 4a9b5242ffd147272575d8a8e9d9d0e40aa0c457. Staged24file đã quét secret/env/runtime/size và diff/check_pack đạt. Receipt chỉ cập nhật checkpoint; next-env.d.ts có từ trước vẫn được giữ riêng.
+
+D59 in_progress: web 7 client tests/build/typecheck/assets/check_pack vừa đạt; đang đồng bộ plugin V25 theo D59.
+
+D59 local_verified — 2026-10-28T21:48:31+07:00
+
+Web kiểm tra lại:7client tests/build21routes/typecheck/assets/check_pack đạt trong copy riêng; frontend/src khớp source đã kiểm D58, next-env.d.ts từ trước giữ nguyên. Không đổi web/API/DB/env hoặc provider gate.
+
+Plugin offline V25 giữ IDmanifest v16,3page/126frame/7flow mỗi nền tảng/24SKU và chỉ TT-SGK-002 mua số lượng1–2. Đồng bộ Nunito/tokens/card text/header, banner văn học+manga+kids/mobile, một khối liên hệ/map300×164 dưới logo, footer/nhãn hàng/bản tin, không footer mua sắm ở admin. Nút48px opacity0.7 ở hàng bản quyền dùng SCROLL_TO chính header trong màn, map/địa chỉ dùng URL Google. Chỉ nội dung ảnh là raster; không có screenshot toàn UI làm wrapper. Giữ luồng demo/QR vô hại/giá và điều kiện retry trước đây.
+
+Mock đạt126frame/2518reaction; layer bounds/flow không chồng, footer/banner/font, Scroll to/URL, tiền/số lượng5outcome3channel, nâng cấpV24, ảnh sửa tay/node ngoài plugin, rollback/cancel3page. Browser SVG desktop1920/mobile390 đã xem header/footer, có font Nunito nhúng; chỉfavicon404 từserverpreview, largeSVGloadtimeout lần đầu đã chuyển DOM/font-ready. Native canvas không chạy, không gọi mock là nghiệm thu canvas. Bốn campaign nhúng khớp pixel ảnh web, JPEG gốc/WEBP→PNG; map là ảnh iframe riêng, cùng pin và attributionGoogle, không phải map vẽ giả.
+
+Gói output/figma/thuthanh-figma-clicon-v25-2026-10-28.zip:6file,14837477byte,SHA256 08fbf133dd1c1b9c0e25830c6aaed16349e7b9ae946d92d43b1b426377ba5aa5;CRC/source byte match/manifest duy nhất đạt.60SVG xem trước không bỏ vào ZIP. Scriptpackage dùng ngày hiện tại UTC+7 thay ngày cũ hardcode. Guide/UI/manifest/flow manifest và tài liệu hiện hành đồng bộV25. QA browser/server18091 do phiên mở đã đóng; dữ liệu136SKU/env/upload/workbook và next-env có từ trước giữ. Owner cần chạy lạiplugin rồi Present để duyệt font/wrapping/hotspot; không cócloudfileKey nên không chỉnh fileCommunity hoặc tạocanvasmới.

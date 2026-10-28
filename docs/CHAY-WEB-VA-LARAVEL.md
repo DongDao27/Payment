@@ -98,4 +98,4 @@ Laravel demo dùng port18081, Next dùng3000; DB/cookie/key/storage riêng. `php
 
 Giữ env/APP_KEY, MySQL data, workbook và uploads. Ảnh thật ở backend/storage/app/public, ảnh demo ở .runtime/demo-storage/app/public; database giữ đường dẫn. Không sửa trực tiếp file mysql-data.
 
-[Import plugin Figma V24](../thu-thanh-figma-clicon/HUONG-DAN.md) không tự cập nhật canvas khi sửa web. [README](../README.md) ghi tổng quan/giới hạn; [deploy](../deploy/README.md) ghi cấu hình, backup, cache và tải. Chưa nghiệm thu production hoặc 10k người đồng thời.
+[Import plugin Figma V25](../thu-thanh-figma-clicon/HUONG-DAN.md) đã đồng bộ footer/banner D58; canvas không tự cập nhật khi sửa web, cần chạy lại builder. [README](../README.md) ghi tổng quan/giới hạn; [deploy](../deploy/README.md) ghi cấu hình, backup, cache và tải. Chưa nghiệm thu production hoặc 10k người đồng thời.
