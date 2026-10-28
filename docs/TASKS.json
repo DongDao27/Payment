@@ -1280,6 +1280,6 @@
       "merchant_SMTP_deploy": "not_run; unchanged external gates"
     },
     "limitations": "Figma shows docked footer scroll-to-top; web has visibility threshold/floating behavior. Native font/wrapping/hotspots still need owner Present review. No new cloud file/resource created.",
-    "source_commit": null
+    "source_commit": "a6f4282ff686c69fd968615ee6f4aab458b8c935"
   }
 }

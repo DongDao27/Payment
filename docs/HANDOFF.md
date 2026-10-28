@@ -1,5 +1,7 @@
 # D59 — Figma V25 đã đồng bộ và đóng gói (2026-10-28T21:48:31+07:00)
 
+Source đã kiểm tra: `a6f4282ff686c69fd968615ee6f4aab458b8c935`; receipt chỉ cập nhật checkpoint.
+
 Task D59 local hoàn tất: source/bundle/plugin UI/manifest V25, data nhúng campaign/map, mock+asset verifier, package script/guide/flow manifest đồng bộ web D57–D58. Giữ3page/126frame/7flow mỗi nền tảng/24SKU/first-SKU purchase; không đổi nghiệp vụ web. Fonte Nunito ưu tiên/fallback có hướng dẫn; footer một liên hệ, map300×164 dưới logo, banner đúng vị trí, nút48px SCROLL_TO same screen, admin không footer mua sắm. Không tạo cloud file; canvas chủ dự án chưa được thao tác.
 
 Web recheck7client/build21routes/typecheck/assets/check_pack đạt; plugin mock126frame2518reaction, bounds/nonoverlap/quantity/money5outcomes3channels/V24 upgrade/manual image/rollback/cancel đạt. SVG browser1920/390 header/footer đã xem; chỉ favicon404 của previewserver. Pixel/hash campaign và map PNG kiểm đạt. Package6file CRC/source byte match SHA08fbf133dd1c1b9c0e25830c6aaed16349e7b9ae946d92d43b1b426377ba5aa5; output tại `output/figma/thuthanh-figma-clicon-v25-2026-10-28.zip`.60SVG ở xem-truoc do test tạo, không nằm trong ZIP. Không coi SVG/mock là pixel-match canvas thật.

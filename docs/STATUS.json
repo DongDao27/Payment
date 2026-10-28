@@ -11,7 +11,7 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "a6f4282ff686c69fd968615ee6f4aab458b8c935",
   "git_dirty": true,
   "last_checkpoint_at": "2026-10-28T21:48:31+07:00",
   "last_test_run": {
@@ -238,7 +238,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "D59 source not yet committed; pre-existing frontend/next-env.d.ts preserved and excluded.",
+  "git_dirty_note": "D59 source committed; receipt being written. Existing frontend/next-env.d.ts remains intentionally uncommitted.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -528,6 +528,6 @@
       "merchant_SMTP_deploy": "not_run; unchanged external gates"
     },
     "limitations": "Figma shows docked footer scroll-to-top; web has visibility threshold/floating behavior. Native font/wrapping/hotspots still need owner Present review. No new cloud file/resource created.",
-    "source_commit": null
+    "source_commit": "a6f4282ff686c69fd968615ee6f4aab458b8c935"
   }
 }
