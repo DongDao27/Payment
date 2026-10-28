@@ -1,6 +1,6 @@
 # D61 — Web và pluginV26 đã kiểm tra local (2026-10-29T02:51:26+07:00)
 
-TaskD61 done trong phạm vi source/local; chưa có source commit tại checkpoint này. Sửa shell/carousel/catalog brand/filter, profileAPI/form/context, admin compact view, snapshot max7; gỡ demo source, cập nhật native pluginV26/test/package và hướng dẫn.130test/1777assertion/Pint;7client/build22route/typecheck; browser profileDB+carousel+report/CSV và route-smoke responsive đạt,0pageerror/warning. 67frontend source file khớp QA copy; next-env.d.ts owner giữ/khôngstage.
+TaskD61 done trong phạm vi source/local; source đã kiểm tra `7ebce1fb1ec1e4167659dd33f63eed45f32a0cc4`; receipt chỉ cập nhật checkpoint. Sửa shell/carousel/catalog brand/filter, profileAPI/form/context, admin compact view, snapshot max7; gỡ demo source, cập nhật native pluginV26/test/package và hướng dẫn.130test/1777assertion/Pint;7client/build22route/typecheck; browser profileDB+carousel+report/CSV và route-smoke responsive đạt,0pageerror/warning. 67frontend source file khớp QA copy; next-env.d.ts owner giữ/khôngstage.
 
 Main137sản phẩm,7discount11–17% đã chốt trongDECISIONS/auditprivate,136tồnnguồn và129giá không đổi;0paid thật nên bestselling trống và không gán fake. Đãbackup .runtime/archive/d61-thu-thanh-demo.sql, xóa1.000đơnDEMO/receiptgiả/dependencies, giữ1đơn khác; database cũ khôngDROP vì có dòng ngoài tập synthetic. Gỡ seeder/command/router/start/prepare vàflagdemo; giữ ordinary tests. Không reset main/env/key/uploads/workbook hoặc xóa sản phẩm owner vừa thêm.
 

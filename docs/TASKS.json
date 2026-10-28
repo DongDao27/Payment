@@ -1333,7 +1333,7 @@
     "decision": "D61",
     "status": "done",
     "verified_at": "2026-10-29T02:51:26+07:00",
-    "source_commit": null,
+    "source_commit": "7ebce1fb1ec1e4167659dd33f63eed45f32a0cc4",
     "scope": "Remove header strip, actual brand carousel/filter, DB-backed profile, concise admin, real-only bestseller max7, approved main discounts, synthetic-data removal, offline FigmaV26",
     "backend": {
       "tests": 130,
