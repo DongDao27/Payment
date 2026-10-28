@@ -119,14 +119,22 @@ export default function HomeStorefront() {
   );
 }
 function SectionHeading({ title, href }: { title: string; href: string }) {
+  const description = {
+    "Bán chạy nhất": "Những sản phẩm được bạn đọc lựa chọn nhiều nhất.",
+    "Sản phẩm mới": "Vừa có mặt trên kệ sách Thu Thanh.",
+    "Gợi ý cho bạn": "Thêm một lựa chọn cho lần đọc tiếp theo.",
+  }[title];
   return (
     <div className="section-heading">
-      <h2
-        className={title === "Bán chạy nhất" ? "bestseller-title" : undefined}
-      >
-        {title === "Bán chạy nhất" && <FlameIcon />}
-        {title}
-      </h2>
+      <div className="collection-heading-copy">
+        <h2
+          className={title === "Bán chạy nhất" ? "bestseller-title" : undefined}
+        >
+          {title === "Bán chạy nhất" && <FlameIcon />}
+          {title}
+        </h2>
+        {description && <p>{description}</p>}
+      </div>
       <Link href={href} className="collection-link">
         Xem tất cả <Icon name="arrow" size={18} />
       </Link>

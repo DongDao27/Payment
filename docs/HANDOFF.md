@@ -1,3 +1,11 @@
+# D57 — UI/UX Pro Max đã áp dụng và kiểm tra local (2026-10-28T15:54:38+07:00)
+
+Task F03: tinh chỉnh web hiện có, không đổi nghiệp vụ/backend/Figma. Skill cài tại Codex user skills, upstream28b3b8d; phiên Codex mới sẽ tự nhận, frontend/AGENTS.md hướng dẫn dùng lại. Font Nunito Sans tự host/OFL, token/style chung, card/quickview/nav/form/admin đã chỉnh. Source đổi ở frontend layout/globals/clicon/bookstore/styles, home/store-shell/admin-orders; font mới ở frontend/src/app/fonts; README/ASSET-SOURCES và checkpoint đồng bộ.
+
+Kiểm7clienttests/build21routes/typecheck đạt; browser home/dashboard4rộng375/768/1024/1440,6adminroutes375/1440,loginadmin/formdiscountpreview/Escape/quickview/landscape/nav/error-retry đạt. Hai console network errors là abort có chủ ý; intercept đã gỡ. Không có pageoverflow, không claim auditWCAG đầy đủ. Asset/catalog readonly audit giữ136SKU/giá/tồn,3banner/8brand/logo. Backend tests không chạy lại (D56:127/1773). Output QA ở .runtime/output/.playwright-cli bịignore; không thêm doc đề xuất mới. QA HTTP/browser đã đóng; MySQL3307 giữ.
+
+Tiếp theo: chủ dự án mở web để duyệt hình thức; chạy backend/frontend theo CHAY-WEB-VA-LARAVEL. Có thể dùng `python "$env:USERPROFILE/.codex/skills/ui-ux-pro-max/scripts/search.py" "keyboard focus modal" --domain ux` cho lần sửa UI sau. Không cài skill như package npm/Laravel. Payment merchant, SMTP thực, owner canvas, staging/deploy/load10k vẫn pending; giữ backend externally_blocked. Không seed/import lại hoặc đổi env/APP_KEY để sửa giao diện. Không rewrite author/commit cũ.
+
 # D56 — local hoàn tất, ngoại vi còn chờ (2026-10-28T15:17:52+07:00)
 
 Task hiện tạiF03;phầnadminD56đãkiểmAPItrướcUI. Cógiá/lịch sửtồnvàlầnthanhtoán/receipt/trạngtháiđơnphântrangđầyđủ,adminonly/whitelist/bounded;khôngmigrationhoặcđổiluậttiền/tồn. PaymentD55giữ;D56sửaerrorstylekhiURLfailurecũnhưngserverpaid. Người dùng xácnhậnchưamerchanttransaction,Windowschưacredentials;khônggiảclaimpayment/releasegatepassed.

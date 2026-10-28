@@ -103,7 +103,7 @@
 }
 .product-card .price,
 .quick-view-price .price {
-  color: #254fff;
+  color: var(--action);
 }
 .product-card .stock-label {
   position: static;

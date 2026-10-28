@@ -85,6 +85,7 @@ function AdminOrders() {
   }
   return (
     <>
+      <h2>Đơn hàng</h2>
       <div className="admin-toolbar">
         <form
           onSubmit={(event) => {

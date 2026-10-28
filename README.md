@@ -63,6 +63,8 @@ Ngày 28/10: **127 backend tests / 1.773 assertions**, **7 client tests**, build
 
 ## Bảo trì
 
+Giao diện áp dụng [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) theo D57: giữ nhận diện Thu Thanh, dùng token chung và font Nunito Sans tiếng Việt tự host. Hướng dẫn cho các lần sửa UI nằm ở [frontend/AGENTS.md](frontend/AGENTS.md); skill là công cụ của Codex, không phải dependency khi chạy/deploy web.
+
 Source ở `backend/`, `frontend/`; cấu hình triển khai ở `deploy/`; công cụ chạy/kiểm ở `scripts/`; plugin thiết kế ở `thu-thanh-figma-clicon/`; đặc tả và checkpoint ở `docs/`.
 
 [API](docs/API.md) · [OpenAPI](docs/openapi.json) · [Database](docs/DATABASE.md) · [Nghiệp vụ](docs/DOMAIN-RULES.md) · [PRD](docs/PRD.md) · [Đông/Thiện](docs/PHAN-CONG-VA-COMMIT.md) · [Nguồn asset](docs/ASSET-SOURCES.md) · [Import Figma](thu-thanh-figma-clicon/HUONG-DAN.md).

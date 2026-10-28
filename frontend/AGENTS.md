@@ -1,3 +1,9 @@
+## Giao diện Thu Thanh — D57
+
+Chủ dự án yêu cầu dùng [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) khi sửa UI. Skill được cài ở `$CODEX_HOME/skills/ui-ux-pro-max` (mặc định `~/.codex/skills/ui-ux-pro-max`); đọc `SKILL.md`, truy vấn đúng Next.js và ưu tiên yêu cầu đã chốt trong DECISIONS. Máy mới cần cài skill riêng, không copy bộ dữ liệu skill vào source ứng dụng.
+
+Giữ xanh–trắng, logo Thu Thanh, ba banner và ba feed hiện có. Font Nunito Sans variable tự host tại `src/app/fonts`, có OFL và tiếng Việt; token dùng chung ở `src/app/styles/storefront.css`. Sửa selector hiện có, tránh thêm lớp CSS override mới. Kiểm tra card/xem nhanh, form, admin, keyboard, reduced motion và các rộng 375/768/1024/1440; không thay nghiệp vụ bằng gợi ý từ skill.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know

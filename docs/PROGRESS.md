@@ -347,3 +347,15 @@ Full127tests1773assertions0fail/skip,CLI44.19s/JUnit38.233020s trênMySQL8.4.13W
 Dọn13filedoc/template trùng,CRC/SHAarchiveD:\ThuThanh-Archives theoCLEANUP-2026-10-28.json. GộpvềREADME,CHAYguide,deployREADME,assetrefs;giữenvmẫucanonical5fileđểclone/CI/Docker,đổiprepare-local-dbđọcbackendexample thaytemplates. Check_pack20files/27tasks/45paths/linkpassed;APIguidegộpmới,tasknotesrevenueOPEN/nofrontendlỗithờiđãsửa. RealDBreadonly136products6categories1admin,136giá/tồnkhớpnguồn;khôngdemo/env/upload/workbookmutation. TestfixtureschỉDBtest,rawQAbịignore,khôngthêmreportQA vàoGit.
 
 D56 source commit thật: d06556b2649a860c12afa78ba85daa320046936c. Staged33filethêm/sửa đãquét6giátrịsecretlocal/runtimesize/privateenv vàdiffcheck;đạt. Tree sạch sau sourcecommit;receiptcheckpoint chỉtài liệu. QAservers/browser đãdừng,MySQL giữ. Giao dịchmerchant/SMTP/hạ tầng thực tế vẫn chưa nghiệm thu.
+
+
+D57 in_progress — đã cài/đọc UI/UX Pro Max theo yêu cầu; tiêu chí và phạm vi ở D57/DECISIONS. Chuẩn bị tinh chỉnh UI hiện có, chưa thay đổi nghiệp vụ hoặc xác nhận acceptance mới.
+
+
+D57 local_verified — 2026-10-28T15:54:38+07:00
+
+Chủ dự án yêu cầu áp dụng UI/UX Pro Max. Cài vào Codex user skills từ upstream 28b3b8dee8c976df4fa3e94aed4e092ad43fcb03; SKILL.md/search design-system/Next.js và quick-reference đã đọc/chạy. Sau một lần thu hẹp truy vấn chưa có mẫu nhà sách khớp hoàn toàn: dùng UX chung + Next.js font guidance phù hợp, giữ bố cục/màu/banner/feed/nghiệp vụ đã chốt; không lưu design-system tự sinh không phù hợp.
+
+Source: Nunito Sans variable WOFF2 tự host 79.468 byte có OFL/tiếng Việt; token màu/khoảng cách, font/chữ, panel/nút/focus; mô tả ba feed, tên sản phẩm ba dòng và hàng giá đồng đều; nút xem nhanh; active nav; toolbar/table/admin menu; tiêu đề Đơn hàng; header admin gọn trên điện thoại; ô số lượng và +/- cùng48px, nút giỏ44px. Không thêm dependency runtime, CSS layer, API, schema hoặc thay logic tiền/tồn/quyền. README/frontend AGENTS/asset sources đồng bộ, không tạo báo cáo QA mới trong Git.
+
+Kiểm thực: 7 client tests, build21routes, typecheck đạt. Browser production build: home/dashboard375/768/1024/1440 không pageoverflow; sáu trang admin375/1440 không pageoverflow/pageerror; loginadmin DBtest, preview giảm15% của100k ra85k không lưu, Escape trảfocus; quickview375/landscape812x375, group50x48, dialog780x335; Xem tất cả sort=newest, Trang chủ về /; cố ý abort storefront có lỗi Việt/Thử lại và khôi phục, intercept đã gỡ (2console network errors dự kiến). Normal motion0.18s/reduced0s; 5cặp contrast4.69–15.51, không kết luận fullWCAG. verify-store-assets giữ136ảnh/24PNG/3banner/2logo/8brand; auditDBreadonly136SKU/6cat/1admin và136giá/tồn khớp. Backend suite không chạy lại vì UI-only; evidence127/1773 là D56. QA browser/HTTP do phiên mở đã dừng, MySQL3307 giữ. Real payment/SMTP/staging10k/canvas owner vẫn chưa nghiệm thu.

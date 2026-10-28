@@ -1134,5 +1134,48 @@
     "production_staging_load": "not_run",
     "schema_migrations": false,
     "source_commit": "d06556b2649a860c12afa78ba85daa320046936c"
+  },
+  "ui_ux_pro_max": {
+    "decision": "D57",
+    "status": "done",
+    "verified_at": "2026-10-28T15:54:38+07:00",
+    "scope": "Local Next.js UI polish only; owner visual review pending",
+    "skill": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+    "upstream_commit": "28b3b8dee8c976df4fa3e94aed4e092ad43fcb03",
+    "installation": "Codex user skills; not an application dependency; frontend/AGENTS.md records usage",
+    "recommendation_fit": "No exact bookstore system match after one retry; use applicable general UX defaults and verified Next.js guidance, preserving owner design decisions",
+    "font": "Self-hosted Nunito Sans variable WOFF2, 79468 bytes, OFL 1.1 included; Vietnamese glyphs verified",
+    "implementation": [
+      "shared visual tokens, spacing, buttons and focus",
+      "three feed headings and aligned product cards/quick view",
+      "active storefront navigation",
+      "admin toolbar/table/navigation and order heading",
+      "quantity controls aligned at 48px; cart buttons at least 44px"
+    ],
+    "checks": {
+      "frontend_api_tests": 7,
+      "frontend_build": "passed; 21 routes",
+      "frontend_typecheck": "passed",
+      "home_and_dashboard_widths": [
+        375,
+        768,
+        1024,
+        1440
+      ],
+      "admin_routes": "products/categories/inventory/orders/revenue/reconciliation: 375 and 1440; no page overflow or page errors",
+      "interactions": "admin login in isolated test DB; create-product form preview 100000 less 15% = 85000, no save; Escape/focus; quick view; all-products sort=newest; home navigation; aborted request error then successful retry",
+      "final_quick_view": "375 portrait / 812x375 landscape; quantity buttons/input each 50x48; landscape dialog 780x335 within viewport; Escape closes",
+      "motion": "normal transition 0.18s; reduced-motion 0s",
+      "contrast": "five selected text/background pairs 4.69 to 15.51; not a full WCAG audit",
+      "intentional_network_errors": "two browser console errors from deliberate storefront request abort; interception removed",
+      "assets": "136 originals, 24 Figma PNGs, 3 banners, 2 logos, 8 brands preserved",
+      "real_catalog_read_only": "136 products/6 categories/1 admin; all 136 source prices/stocks match",
+      "backend_tests": "not rerun; no PHP/API/business changes; D56 127 tests/1773 assertions remain prior evidence",
+      "pack_and_diff": "passed before source commit"
+    },
+    "schema_data_env_changes": false,
+    "figma_canvas_changed": false,
+    "deployment": "not_run",
+    "source_commit": null
   }
 }

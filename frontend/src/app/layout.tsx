@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { StoreProvider } from "@/components/store-provider";
 import { StoreShell } from "@/components/store-shell";
 import "./globals.css";
@@ -6,6 +7,14 @@ import "./clicon.css";
 import "./bookstore.css";
 import "./styles/storefront.css";
 import "./styles/experience.css";
+
+const storeFont = localFont({
+  src: "./fonts/nunito-sans-variable.woff2",
+  variable: "--font-store",
+  display: "swap",
+  weight: "200 900",
+  fallback: ["Arial", "sans-serif"],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +28,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="vi" data-scroll-behavior="smooth">
+    <html lang="vi" className={storeFont.variable} data-scroll-behavior="smooth">
       <body>
         <StoreProvider>
           <StoreShell>{children}</StoreShell>

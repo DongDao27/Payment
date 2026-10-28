@@ -3,6 +3,11 @@
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  min-height: 88px;
+  padding-block: 16px;
+}
+.admin-site-header {
+  padding-bottom: 0;
 }
 .admin-site-header .header-actions {
   margin-left: auto;
@@ -23,9 +28,58 @@
   flex: 0 0 auto;
 }
 .admin-content .button.primary {
-  background: #3559d9;
-  border-color: #3559d9;
+  background: var(--action);
+  border-color: var(--action);
   color: white;
+}
+.admin-content .button.primary:hover:not(:disabled) {
+  background: var(--action-hover);
+  border-color: var(--action-hover);
+}
+.admin-content > h2 {
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+.admin-toolbar {
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+}
+.admin-toolbar .button {
+  min-height: 48px;
+}
+.admin-content .data-table-wrap {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.admin-content table {
+  font-size: 14px;
+}
+.admin-content th {
+  background: #edf2f8;
+  color: #42536d;
+  font-weight: 750;
+}
+.admin-content tbody tr:hover {
+  background: #f7faff;
+}
+.admin-content th, .admin-content td {
+  padding: 16px;
+}
+.admin-content .row-actions .text-button {
+  min-height: 44px;
+  padding-inline: 8px;
+  border-radius: 8px;
+}
+.admin-content .row-actions .text-button:hover {
+  background: #edf3ff;
+}
+.admin-content .price,
+.dashboard-stat strong,
+.chart-reading strong {
+  font-variant-numeric: tabular-nums;
 }
 .chart-scroll-note {
   font-size: 11px;
@@ -35,14 +89,20 @@
 @media (max-width: 700px) {
   .admin-site-header .header-inner {
     gap: 12px;
+    min-height: 76px;
+    padding-block: 12px;
   }
   .admin-site-header .brand {
     max-width: 180px;
   }
 }
 :where(a, button, input, select, textarea, summary):focus-visible {
-  outline: 3px solid #3559d9;
+  outline: 3px solid var(--action);
   outline-offset: 4px;
+  scroll-margin-block: 24px 96px;
+}
+.site-header :where(a, button, summary):focus-visible {
+  outline-color: white;
 }
 .collection-link,
 .site-footer .footer-grid a,
@@ -204,6 +264,9 @@
 }
 .admin-nav a:hover {
   background: #f2f5fb;
+}
+.admin-nav a[aria-current="page"] {
+  box-shadow: inset 3px 0 var(--action);
 }
 .dashboard-stats {
   gap: 14px;
@@ -456,6 +519,8 @@ a.dashboard-stat:hover {
   }
   * {
     transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
   }
 }
 /* Read-only admin histories share the same touch targets and responsive table. */

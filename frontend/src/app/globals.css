@@ -5,7 +5,7 @@
   --color-ink: #1a1c2a;
   --color-sage: #d5e4e7;
   --color-lilac: #ecebf4;
-  --font-sans: "Inter", "Wix Madefor Text", Arial, sans-serif;
+  --font-sans: var(--font-store), Arial, sans-serif;
 }
 
 :root {
@@ -27,7 +27,7 @@ body {
   margin: 0;
   color: var(--ink);
   background: var(--paper);
-  font-family: "Inter", "Wix Madefor Text", Arial, sans-serif;
+  font-family: var(--font-store), Arial, sans-serif;
   font-size: 14px;
   line-height: 1.6;
 }

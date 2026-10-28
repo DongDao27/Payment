@@ -130,11 +130,14 @@ export function StoreShell({ children }: { children: ReactNode }) {
         <nav className="store-navigation" aria-label="Điều hướng mua sắm">
           <div className="container">
             <CategoryMenu />
-            <Link href="/">
+            <Link href="/" aria-current={path === "/" ? "page" : undefined}>
               <Icon name="home" size={20} />
               Trang chủ
             </Link>
-            <Link href="/orders">
+            <Link
+              href="/orders"
+              aria-current={path.startsWith("/orders") ? "page" : undefined}
+            >
               <Icon name="box" size={20} />
               Đơn hàng của tôi
             </Link>

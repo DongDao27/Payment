@@ -12,6 +12,8 @@ Kiểm `python scripts/verify-store-assets.py`: ảnh gốc136,PNG24,logo2,banne
 
 ## Tài liệu kỹ thuật tham chiếu
 
+D57: font giao diện Nunito Sans từ [Google Fonts](https://github.com/google/fonts/tree/main/ofl/nunitosans), giấy phép SIL OFL 1.1 giữ tại `frontend/src/app/fonts/OFL.txt`. File variable WOFF2 tự host 79.468 byte; giữ trục weight 200–900, các trục khác ở mặc định, đã kiểm glyph tiếng Việt và ký hiệu ₫. Font logo SVG riêng giữ nguyên. UI/UX Pro Max được cài cho Codex từ [upstream](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/28b3b8dee8c976df4fa3e94aed4e092ad43fcb03), không đóng gói dữ liệu skill vào ứng dụng.
+
 Laravel12: https://laravel.com/docs/12.x/sanctum, https://laravel.com/docs/12.x/database, https://laravel.com/docs/12.x/queries, https://laravel.com/docs/12.x/validation, https://laravel.com/docs/12.x/scheduling, https://laravel.com/docs/12.x/deployment.
 Next.js: https://nextjs.org/docs/app. VNPAY: https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html và https://sandbox.vnpayment.vn/apis/docs/truy-van-hoan-tien/querydr%26refund.html.
 Các link tham khảo không chứng minh merchant/callback/production đã nghiệm thu; kết quả thực tế ghi ởSTATUS/PROGRESS. Tài liệu cũ đãgộp/archivetheoCLEANUP-2026-10-28.json.
