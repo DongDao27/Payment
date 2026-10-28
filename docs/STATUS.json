@@ -11,7 +11,7 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "cc216f49d542e8c157b5fe60a5d519451e58ffaf",
   "git_dirty": true,
   "last_checkpoint_at": "2026-10-28T15:54:38+07:00",
   "last_test_run": {
@@ -231,7 +231,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "D57 checkpoint written before source commit; final git status is verified separately.",
+  "git_dirty_note": "D57 receipt written after tested source commit; use git status after receipt commit/push for final clean state.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -418,6 +418,6 @@
     "schema_data_env_changes": false,
     "figma_canvas_changed": false,
     "deployment": "not_run",
-    "source_commit": null
+    "source_commit": "cc216f49d542e8c157b5fe60a5d519451e58ffaf"
   }
 }
