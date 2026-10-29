@@ -11,6 +11,18 @@ Website bán sách và quản lý cửa hàng, cập nhật **29/10/2026**. Fron
 
 Giao hàng **25.000đ/đơn**, nhận tại cửa hàng **0đ**; phí chỉ hiện ở checkout/đơn. Không đổi trả/hoàn tiền. Doanh thu là tiền hàng sau giảm giá, phí giao thống kê riêng. Tạo đơn giữ hàng 5 phút khi giao, 24 giờ khi nhận cửa hàng; thanh toán lại không gia hạn.
 
+## Chạy VNPAY Sandbox sau khi mở lại máy
+
+Máy hiện tại đã lưu merchant trong workspace private, không cần đăng ký/nhập khóa lại. Chạy từ repo:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/sandbox.ps1 -Action start
+```
+
+Sau đó chạy frontend `npm run dev` như bên dưới, mở localhost3000. Launcher tự chạy MySQL/backend8000/queue/scheduler, có `-Action status` và `-Action stop`; không mở trùng và không đụng dữ liệu cửa hàng. Đừng chạy backend cửa hàng cùng port khi đang test Sandbox. Quick Tunnel/IPN có thể cần cập nhật URL khi mở lại. [Hướng dẫn Sandbox và kết quả kiểm thực tế](docs/CHAY-WEB-VA-LARAVEL.md).
+
+D65 đã qua thẻ NCB/OTP và Return00, hủy24; xác nhận paid phía ứng dụng vẫn bị chặn bởi QueryDr99/IPN chưa đăng ký. Không coi đã nghiệm thu toàn luồng.
+
 ## Chạy trên máy Windows hiện tại
 
 Terminal 1:
@@ -57,7 +69,7 @@ Ngày 29/10: **130 backend tests (kết quả mới nhất ở STATUS)**, **7 cl
 
 ## Cần cấu hình và nghiệm thu thêm
 
-- Payment đã hoàn tất code/cấu hình; chủ dự án xác nhận chưa chạy giao dịch merchant thật. D63 đã điền merchant trong env private của bản Sandbox,9readiness checks đạt; còn chờ kiểm success/hủy/query/IPN Sandbox. VNPAY Production và QR tại quầy chưa mở; không có nút fake-paid.
+- Payment đã hoàn tất code/cấu hình; D65 đã thử NCB/OTP nhận Return00 và hủy24; chưa có accepted receipt vì QueryDr99/IPN chưa đăng ký. Merchant/CA đã lưu private, launcher chạy lại không reset dữ liệu. VNPAY Production và QR tại quầy chưa mở; không có nút fake-paid.
 - Email recovery cần SMTP thật và worker; chưa có SMS cho tài khoản chỉ dùng điện thoại.
 - Canvas Figma cần duyệt riêng; user testing cần người dùng đại diện. Docker, staging, HTTPS, backup/restore và mục tiêu 10.000 người đồng thời chưa nghiệm thu. [Runbook deploy](deploy/README.md).
 

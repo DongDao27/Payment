@@ -5,17 +5,17 @@
   "phase": "FRONTEND",
   "current_task_id": "F03",
   "next_task_id": "B07",
-  "implementation_state": "D64_local_CA_fixed_provider_query99_payment_acceptance_pending",
+  "implementation_state": "D65_restart_verified_NCB00_cancel24_server_confirmation_external",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "82d2431b46c735225e868b3d01fe4981ab1ab85c",
+  "last_verified_commit": null,
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-29T10:14:35+07:00",
+  "last_checkpoint_at": "2026-10-29T11:30:13+07:00",
   "last_test_run": {
-    "at": "2026-10-29T03:47:15+07:00",
+    "at": "2026-10-29T10:44:25+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
     "result": "passed",
     "tests": 134,
@@ -56,13 +56,13 @@
     "web_sync_pending": "D62 curated bestseller selector/home; V26 unchanged"
   },
   "blockers": [
-    "VNPAY Sandbox merchant configured in private isolated env D63,9checks passed; actual success/cancel/query/public IPN not_run; strict gate remains externally_blocked.",
+    "D65: merchant/CA/launcher ready; actual NCB/OTP Return00 and cancellation24 verified. QueryDr99 and owner has not registered IPN; no accepted receipt, strict backend gate remains externally_blocked.",
     "10k concurrent capacity not verified; Docker/k6/staging unavailable.",
     "Owner canvas and course/deployment acceptance pending."
   ],
   "external_inputs_pending": [
     "Owner imports V25 plugin and reviews canvas",
-    "Owner tests real Sandbox success/cancel/query; public HTTPS IPN endpoint registration pending, merchant credentials now configured privately D63.",
+    "Owner registers IPN with VNPAY and requests QueryDr99 support for transaction15718352; need verified server callback/query and accepted receipt. Draft in CHAY guide.",
     "Owner has no hosting yet; production capacity acceptance waits for future staging infrastructure",
     "SMTP/from-address/HTTPS frontend origin and actual recovery email delivery acceptance"
   ],
@@ -147,7 +147,7 @@
     "backend_tests_rerun_this_task": false,
     "frontend_tests_rerun_this_task": true
   },
-  "payment_integration": "D64_Sandbox_CA_fixed_live_query99_no_verified_receipt_external_pending",
+  "payment_integration": "D65_real_NCB_OTP_Return00_cancel24_QueryDr99_IPN_not_registered",
   "owner_policy": {
     "delivery_fee_vnd": 25000,
     "pickup_fee_vnd": 0,
@@ -183,10 +183,10 @@
   "local_services": {
     "mysql": "running3307",
     "backend_http": "isolatedSandbox8000_running",
-    "frontend_http": "owner3000_running_preserved",
+    "frontend_http": "stopped_at_D65_resume; owner_start_npm_run_dev",
     "qa_http": "D58_owned3100_18082_browsers_stopped",
     "figma_preview_http": "D59_owned18091_stopped",
-    "sandbox_workers": "queue/scheduler running; private PID receipt and stop script"
+    "sandbox_workers": "running; scripts/sandbox.ps1 start/stop/status"
   },
   "backend_full_suite_previous": {
     "at": "2026-10-27T18:35:15+07:00",
@@ -752,5 +752,66 @@
     "new_attempts_or_orders_created": 0,
     "full_tests": "not_rerun; no application source changes",
     "source_commit": "82d2431b46c735225e868b3d01fe4981ab1ab85c"
+  },
+  "sandbox_e2e_D65": {
+    "decision": "D65",
+    "at": "2026-10-29T10:44:25+07:00",
+    "source_commit": null,
+    "scope": "launcher/docs; original main/PHP/UI untouched",
+    "launcher": "scripts/sandbox.ps1 start/stop/status",
+    "restart": "env/mainenv/owner-nextenv hashes and Sandbox snapshot identical",
+    "guards": "wrongDB/unknownport refused before app/DB boot",
+    "backend": {
+      "tests": 134,
+      "assertions": 1878,
+      "seconds": 31.84,
+      "cookie_checks": 11,
+      "ops": "passed",
+      "pint": "passed"
+    },
+    "ncbsandbox": {
+      "order": "01M62V4HG81MWVQ7D9WN8JMFA9",
+      "provider_transaction": "15718352",
+      "reference": "c1990952bf0045c384d0f54f5269bbd2",
+      "amount_vnd": 10560,
+      "return_code": "00",
+      "transaction_status": "00",
+      "signed_return": "verified by backend",
+      "accepted_receipts": 0,
+      "server_query": "99 Unexpected error",
+      "app_state": "reconciliation_required"
+    },
+    "cancellation": {
+      "order": "01M62VPSVVGVCEDME3XN76J64W",
+      "return_code": "24",
+      "transaction_status": "02",
+      "app_state": "unpaid",
+      "receipts": 0
+    },
+    "sandbox_counts": {
+      "products": 137,
+      "orders": 3,
+      "receipts": 0
+    },
+    "ipn": {
+      "owner_answer": "not_sent/not_saved",
+      "endpoint": "reachable97 for unsigned GET",
+      "valid_server_notification": "not_run",
+      "email": "draft only, not sent"
+    },
+    "browser": "actual customer/checkout/redirect/NCBcard/terms/OTP/return and cancellation; external provider icon404/aria-hidden warnings",
+    "provider_probes": "known transactionNo/numeric requestId/publicIP/Laravel+curl99, incorrectdatefield parameterrequired; adapter kept per official spec",
+    "gates": "not changed; accepted payment/publicIPN pending",
+    "resumed_verification": {
+      "at": "2026-10-29T11:30:13+07:00",
+      "cold_start": "passed after all ports were observed stopped",
+      "ca_fresh_download": "passed after fixing PowerShell5 byte[] decoding",
+      "guards": "wrongDB/occupiedport passed",
+      "idempotent_start": "passed",
+      "frontend": "not started; user instruction in guide",
+      "current_tunnel": "not assumed active; restart and register current URL",
+      "new_provider_calls": 0,
+      "application_source": "unchanged; D65 previous test evidence retained"
+    }
   }
 }

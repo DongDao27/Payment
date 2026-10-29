@@ -1,6 +1,41 @@
 # Chạy web, admin và VNPAY — 29/10/2026
 
-## Máy Windows hiện tại
+## Mở lại máy để thử VNPAY Sandbox
+
+Không đăng ký merchant, nhập khóa hoặc tạo database/APP_KEY lại. Thông tin đã lưu trong `.runtime/sandbox-backend/.env`, dữ liệu ở MySQL. Chỉ cần bật lại dịch vụ. Backend bắt buộc chạy, nhưng launcher sau chạy backend/queue/scheduler ở nền nên không cần mở thêm terminal backend:
+
+```powershell
+cd D:\ThuThanh-WebDesign
+powershell -ExecutionPolicy Bypass -File scripts/sandbox.ps1 -Action start
+```
+
+Lệnh kiểm đúng database Sandbox, chuẩn bị CA tin cậy nếu thiếu, kiểm cấu hình rồi chạy MySQL3307/backend8000/queue/scheduler; gọi lại không mở trùng dịch vụ. Không reset/import dữ liệu. Terminal frontend:
+
+```powershell
+cd D:\ThuThanh-WebDesign\frontend
+npm run dev
+```
+
+Mở **http://localhost:3000**. Nếu frontend đang chạy thì giữ nguyên, không mở npm lần hai. Không chạy `scripts/start-backend.ps1` cùng lúc vì đó là backend cửa hàng, dùng cùng port8000.
+
+```powershell
+# Xem các dịch vụ và port
+powershell -ExecutionPolicy Bypass -File D:\ThuThanh-WebDesign\scripts\sandbox.ps1 -Action status
+# Dừng riêng backend/queue/scheduler Sandbox; giữ dữ liệu/MySQL/frontend/tunnel
+powershell -ExecutionPolicy Bypass -File D:\ThuThanh-WebDesign\scripts\sandbox.ps1 -Action stop
+```
+
+Nếu đổi private env: stop rồi start lại. Launcher hiện dùng workspace private trên máy này; máy khác cần chuẩn bị workspace/database/env riêng trước, không có secret đi kèm Git.
+
+Nếu cần IPN public, chạy Cloudflare trong terminal riêng:
+
+```powershell
+& "D:\cloudflared-windows-amd64.exe" tunnel --url http://localhost:3000
+```
+
+Quick Tunnel có thể đổi URL sau khi tắt/mở. URL IPN là **URL_HTTPS_MOI/api/v1/payments/vnpay/ipn**, cần gửi/lưu lại ở VNPAY khi thay đổi; không phải đăng ký merchant mới. Giữ tunnel trong lúc test. Return URL local vẫn localhost3000, đăng nhập và thanh toán bằng localhost.
+
+## Chạy dữ liệu cửa hàng trên máy Windows hiện tại
 
 Không nhập lại sản phẩm hoặc tạo lại APP_KEY. MySQL portable dùng `127.0.0.1:3307`, dữ liệu ở `.runtime/mysql-data`. `thu_thanh` là dữ liệu cửa hàng, `thu_thanh_test` dành kiểm thử. Không cần XAMPP, MongoDB hoặc extension VS Code.
 
@@ -73,7 +108,7 @@ Worker xử lý email/xóa ảnh; scheduler xử lý hết hạn, đối soát v
 
 ## Thanh toán VNPAY Sandbox — máy hiện tại
 
-D63: đã nhận merchant và điền cấu hình private, mở VNPAY_DEFERRED=false; environment-check đúng database và9/9dòng check-sandbox [OK]. Chưa chạy giao dịch VNPAY thực tế. Đã chuẩn bị **`.runtime/sandbox-backend`**, database **thu_thanh_sandbox**, key/cookie/storage riêng,137sản phẩm và admin; **0 đơn, 0 receipt**, không sao chép khách hoặc lịch sử bán hàng. Database cửa hàng **thu_thanh** không đổi khi thử Sandbox. Workspace và env private không đi theo Git; máy mới dùng phần Máy mới với database thử riêng, không trỏ vào DB cửa hàng.
+D65: cấu hình merchant private và9/9readiness checks đạt; đã thực hiện NCB/OTP trên cổng Sandbox và nhận signed Return00, đã thử hủy24. Chưa có receipt hợp lệ do QueryDr trả99 và IPN chưa được người dùng đăng ký. Không gọi đây là toàn luồng thành công. Đã chuẩn bị **`.runtime/sandbox-backend`**, database **thu_thanh_sandbox**, key/cookie/storage riêng,137sản phẩm và admin; Ban đầu0đơn/0receipt; D65 có3đơn Sandbox (1owner,2đơn kiểm giao thức),0receipt. Không sao chép lịch sử cửa hàng; đây là giao dịch thử Sandbox thực, không tạo doanh số giả. Database cửa hàng **thu_thanh** không đổi khi thử Sandbox. Workspace và env private không đi theo Git; máy mới dùng phần Máy mới với database thử riêng, không trỏ vào DB cửa hàng.
 
 ### 1. Merchant đã đăng ký trên máy hiện tại
 
@@ -129,7 +164,7 @@ Frontend giữ cách chạy cũ (`cd D:\ThuThanh-WebDesign\frontend`, `npm run d
 D63 đã khởi động backend8000, queue và scheduler của bản Sandbox ở nền, frontend3000 của người dùng giữ nguyên. Có thể thử ngay tại **http://localhost:3000**. Không chạy thêm backend trùng port. Khi muốn dừng đúng ba dịch vụ Sandbox do phiên này mở:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File D:\ThuThanh-WebDesign\.runtime\stop-sandbox.ps1
+powershell -ExecutionPolicy Bypass -File D:\ThuThanh-WebDesign\scripts\sandbox.ps1 -Action stop
 ```
 
 Sau khi dừng, có thể mở các terminal và chạy thủ công theo lệnh phía trên. Script và workspace private chỉ có trên máy hiện tại.
@@ -144,7 +179,7 @@ Mở web bằng **localhost3000** để cookie/phiên trùng Return URL, chưa d
 4. Chỉ khi Laravel kiểm chữ ký và query trực tiếp VNPAY xác nhận đúng giao dịch mới hiện **Đã thanh toán**. Kiểm đơn và báo cáo trong database Sandbox; tải lại trang không được thu/ghi doanh thu lần hai.
 5. Tạo một đơn Sandbox khác, sang VNPAY rồi chọn hủy: phải trở về **Chưa thanh toán/không thành công**, không tăng doanh thu; có thể thử lại khi còn hạn. Retry không gia hạn5phút. Scheduler xử lý hết hạn; kết quả chưa rõ giữ tồn và chờ đối soát.
 
-D63 đã kiểm tra URL IPN public qua tunnel frontend hiện tại (Next proxy tới bản Sandbox8000):
+D63 đã kiểm tra URL IPN public qua tunnel frontend tại thời điểm đó (địa chỉ lịch sử, không dùng lại nếu tunnel đã đổi) (Next proxy tới bản Sandbox8000):
 
 ```text
 https://airport-midlands-edmonton-pull.trycloudflare.com/api/v1/payments/vnpay/ipn
@@ -157,6 +192,31 @@ IPN là thông báo server-to-server: localhost không nhận được từ VNPA
 Luồng này thử VNPAY online; QR thu tại quầy cần adapter merchant riêng. Không có nút manual-paid. Nếu thấy lỗi chữ ký, kiểm lại đúng TMN/secret/URL, config:clear và restart; không tắt kiểm chữ ký/TLS hoặc sửa DB thành paid. Sandbox không phải doanh thu tiền thật.
 
 Kết thúc test: dừng server/worker/scheduler Sandbox, chạy lại scripts/start-backend.ps1 từ repo gốc để trở về DB cửa hàng. Không chép env/key/database Sandbox đè lên backend chính.
+
+### Kết quả kiểm thực tế D65 và việc cần làm với VNPAY
+
+- Đơn `01M62V4HG81MWVQ7D9WN8JMFA9`: nhận cửa hàng,10.560đ, thẻ NCB test → đồng ý điều khoản → OTP test → VNPAY Return00/TransactionStatus00, giao dịch VNPAY `15718352`, tham chiếu `c1990952bf0045c384d0f54f5269bbd2`. Backend kiểm chữ ký nhưng không lấy Return làm bằng chứng thu tiền. QueryDr vẫn99, chưa IPN,0receipt; hệ thống chuyển chờ đối soát, không trả lại đơn này.
+- Đơn `01M62VPSVVGVCEDME3XN76J64W`: hủy trên cổng trả24/status02, web hiển thị Chưa thanh toán và lời nhắc hủy,0receipt. Không tăng doanh thu.
+- QueryDr đã đối chiếu field với tài liệu VNPAY và thử bằng Laravel/curl độc lập:99/Unexpected error. Probe có transaction-no đúng, request-id số, IP công khai vẫn99; đổi tên date sang field khác trả Parameter required nên giữ nguyên field đúng spec. Không sửa adapter theo phỏng đoán, không hạ kiểm chữ ký/TLS.
+- User xác nhận **chưa gửi/chưa lưu IPN**. Endpoint public qua Next proxy trả97 khi không có chữ ký (đúng kiểm kết nối), chưa có callback server hợp lệ. Đây là bước chưa hoàn thành, không phải thiếu terminal khibackend8000 đang chạy.
+
+Trả lời email VNPAY hoặc cấu hình ô IPN trong Merchant Admin nếu có; không cần cung cấp password/hash secret. Có thể sao chép nội dung sau (thay URL nếu tunnel đã đổi):
+
+```text
+Nhờ VNPAY cấu hình IPN Sandbox:
+[URL_HTTPS_MOI_LAY_TU_TERMINAL]/api/v1/payments/vnpay/ipn
+
+Đã thực hiện thẻ NCB/OTP trên Sandbox, ReturnCode=00, TransactionStatus=00.
+Mã giao dịch VNPAY: 15718352
+Mã tham chiếu: c1990952bf0045c384d0f54f5269bbd2
+Số tiền: 10.560 VND
+Thời gian trả kết quả: 29/10/2026 10:28:33 (giờ Việt Nam).
+API QueryDr đang trả HTTP200, vnp_ResponseCode=99, vnp_Message=Unexpected error.
+Nhờ kiểm tra quyền/cấu hình truy vấn của merchant, giao dịch trên Merchant Admin
+và hỗ trợ gửi lại IPN hợp lệ. TMN code có trong email kết nối của tôi.
+```
+
+Chưa gửi email thay người dùng. Sau khi VNPAY xác nhận, giữ các dịch vụ/tunnel chạy để nhận IPN. Đơn chỉ paid khi xác minh hợp lệ và thỏa luật tiền/tồn/thời điểm; không thao tác manual-paid. Không giả callback bằng cách lấy querystring Return gửi vào IPN. Không tái thanh toán đơn đang đối soát. Khởi động lại máy không làm mất cấu hình; chỉ tunnel URL tạm có thể đổi.
 
 ### Khi kết quả vẫn “Đang xử lý” — kiểm tra D64
 
