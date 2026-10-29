@@ -1,6 +1,9 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useOrderPolling } from "@/lib/use-order-polling";
+import { useStore } from "@/components/store-provider";
+import type { Order } from "@/lib/types";
 import { Loading, Notice } from "@/components/ui";
 import { api } from "@/lib/api-client";
 import type { VnpayReturn } from "@/lib/types";
@@ -11,6 +14,11 @@ import { errorMessage, statusLabel } from "@/lib/format";
 export default function VnpayReturnPage() {
   const [result, setResult] = useState<VnpayReturn | null>(null);
   const [error, setError] = useState("");
+  const { user } = useStore();
+  const updateOrder = useCallback((order: Order) => {
+    setResult((current) => current ? { ...current, payment_status: order.payment_status } : current);
+  }, []);
+  useOrderPolling(result?.order_code, user?.role === "customer" && result !== null && result.payment_status !== "paid" && result.result !== "failed", updateOrder);
   useEffect(() => {
     let active = true;
     const signed = new URLSearchParams(

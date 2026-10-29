@@ -244,3 +244,34 @@ Trong backend/.env private, cấu hình MAIL_MAILER=smtp, MAIL_HOST, MAIL_PORT, 
 Giữ env/APP_KEY, MySQL data, workbook và uploads. Ảnh thật ở backend/storage/app/public, database giữ đường dẫn. Không sửa trực tiếp file mysql-data.
 
 [Import plugin Figma V26](../thu-thanh-figma-clicon/HUONG-DAN.md) đã đồng bộ D60–D61; flow tối đa12màn/hàng, landing riêng; canvas không tự cập nhật khi sửa web, cần chạy lại builder. [README](../README.md) ghi tổng quan/giới hạn; [deploy](../deploy/README.md) ghi cấu hình, backup, cache và tải. Chưa nghiệm thu production hoặc 10k người đồng thời.
+# Cập nhật D66 — giao diện và kiểm thử FE–BE (29/10/2026)
+
+Bán chạy nhất hiển thị danh sách xếp hạng bên trái và sản phẩm được chọn bên phải, có ngọn lửa, giá giảm và nút thêm giỏ. Số đã bán chỉ lấy dữ liệu thật; không tạo số bán trong tuần. Nút số lượng được căn đều, kiểm tra giới hạn tồn. Khách không còn thấy “Cập nhật trạng thái”; trang đơn và kết quả thanh toán tự đọc lại trạng thái từ Laravel, không tự xác nhận thanh toán.
+
+## Chạy kiểm thử tự động
+
+Sau khi cài dependencies frontend/backend, chuẩn bị `backend/.env.testing` theo cấu hình MySQL test trong hướng dẫn này. Chỉ dùng database `thu_thanh_test`, không dùng database cửa hàng hoặc Sandbox. Chạy:
+
+```powershell
+cd D:\ThuThanh-WebDesign\frontend
+npx playwright install chromium
+npm run test:e2e
+```
+
+Lệnh đầu cài trình duyệt một lần. Lệnh test chuẩn bị sản phẩm/tài khoản kiểm thử trong MySQL test, chạy Laravel cổng 18082 và Next.js cổng 3100 trong thư mục riêng rồi đóng hai server khi xong. Nếu cổng đang có chương trình khác, lệnh dừng để tránh dùng nhầm server. Không chạy đồng thời PHPUnit và E2E vì cùng dùng database test. Giữ backend/Sandbox và frontend đang dùng của bạn ở cổng 8000/3000.
+
+Báo cáo HTML: `output/e2e/report/index.html`. Mở bằng `npx playwright show-report ../output/e2e/report` từ frontend. Bộ test bao gồm đăng ký/tìm kiếm/giỏ/hồ sơ, checkout giao hàng và nhận tại quầy, giá/phí giao, callback thành công/hủy/chờ, chống callback lặp/sai chữ ký, phân quyền khách/admin, sản phẩm có ảnh/giảm giá/xóa/khôi phục, tồn kho, trạng thái giao hàng, trang admin và responsive. Cổng thanh toán được giả lập trong tiến trình testing riêng; không gửi giao dịch đến merchant thật, không chứng minh VNPAY đã đăng ký IPN. SMTP và tải production cần nghiệm thu riêng.
+
+## IPN có phải đăng ký lại mỗi lần test?
+
+Không cần tạo merchant lại. Theo email VNPAY đã gửi, bạn trả lời email đó, cung cấp URL HTTPS công khai kết thúc bằng `/api/v1/payments/vnpay/ipn`, nhờ xác nhận đã gắn đúng merchant; gửi kèm mã tham chiếu/mã giao dịch và lỗi QueryDr 99 trong mẫu hỗ trợ bên dưới. Không gửi hash secret. IPN phải truy cập trực tiếp được từ máy chủ VNPAY, không có trang đăng nhập, CAPTCHA hoặc Cloudflare email gate.
+
+Quick Tunnel tạo hostname mới khi khởi chạy lại; khi hostname đổi bạn phải cập nhật URL IPN với VNPAY, không phải đăng ký merchant mới. Giải pháp ổn định là domain HTTPS cố định trên staging hoặc Cloudflare Tunnel có hostname cố định. Khi tắt máy cần chạy lại backend/queue/scheduler, frontend và tunnel; env/merchant/APP_KEY/database đã lưu vẫn giữ nguyên.
+
+Cách xác minh khác là QueryDr từ server. Dự án đã có nhưng lần kiểm thật gần nhất trả 99, nên chưa có xác nhận thanh toán. Return 00 trên trình duyệt không đủ để bỏ qua xác minh server. Có thể deploy staging rồi test bằng Sandbox; thanh toán tiền thật cần merchant production và nghiệm thu riêng, không dùng khóa Sandbox. Adapter hiện chỉ cho môi trường Sandbox. Chưa deploy hay mở thanh toán thật trong lần sửa này.
+
+Tài liệu: [VNPAY IPN và Return](https://sandbox.vnpayment.vn/apis/docs/faqs/), [Quick Tunnel](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/).
+
+## Figma đồng bộ V27
+
+Gói local: `output/figma/thuthanh-figma-clicon-v27-2026-10-29.zip`. Giải nén, import development plugin bằng `manifest.json`, chạy trong file thiết kế của bạn rồi kiểm tra Present. Giữ landing riêng, các flow ngoài khung bao, trái sang phải tối đa 12 màn/hàng, 4 sản phẩm/danh mục và chỉ một sản phẩm đi hết luồng mua. V27 cập nhật bảng xếp hạng và nút số lượng; bộ kiểm tra native đã chạy, chưa xác nhận canvas Figma thật trên tài khoản của bạn.

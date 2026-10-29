@@ -26,6 +26,7 @@ export function Brand({ light = false }: { light?: boolean }) {
         width={310}
         height={82}
         priority={light}
+        loading="eager"
       />
     </Link>
   );

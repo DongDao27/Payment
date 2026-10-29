@@ -8,14 +8,14 @@
         "name": "Landing page · Máy tính",
         "x": 0,
         "y": 0,
-        "contentHeight": "4187.042410203019"
+        "contentHeight": "4751.042410203019"
       },
       {
         "id": "landingMobile",
         "name": "Landing page · Điện thoại",
         "x": 2400,
         "y": 0,
-        "contentHeight": "4887.740833333333"
+        "contentHeight": "5875.740833333333"
       }
     ]
   },
@@ -31,7 +31,7 @@
             "name": "Landing page · Máy tính",
             "x": 740,
             "y": 0,
-            "contentHeight": "4187.042410203019"
+            "contentHeight": "4751.042410203019"
           },
           {
             "id": "catalog",
@@ -527,7 +527,7 @@
             "name": "Landing page · Điện thoại",
             "x": 0,
             "y": 0,
-            "contentHeight": "4887.740833333333"
+            "contentHeight": "5875.740833333333"
           },
           {
             "id": "catalog",

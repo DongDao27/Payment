@@ -1,6 +1,6 @@
 # Bắt đầu và tiếp tục dự án
 
-Hiện hành29/10/2026: D65 thêm scripts/sandbox.ps1 start/stop/status, NCB/OTP Return00 và hủy24 đã kiểm thật; chưa accepted receipt vì QueryDr99/IPN chưa đăng ký.  web D61 có hồ sơ tài khoản, footer thương hiệu thật, header/nav/admin gọn; pluginV26 đồng bộ, flow tối đa12màn/hàng và landing riêng. README là trang giới thiệu/cách chạy mới nhất; [hướng dẫn web/admin](docs/CHAY-WEB-VA-LARAVEL.md).
+Hiện hành29/10/2026: D66 bảng xếp hạng Bán chạy/quantity/customer polling, E2E10 và FigmaV27 local verified; merchant IPN vẫn external.  D65 thêm scripts/sandbox.ps1 start/stop/status, NCB/OTP Return00 và hủy24 đã kiểm thật; chưa accepted receipt vì QueryDr99/IPN chưa đăng ký.  web D61 có hồ sơ tài khoản, footer thương hiệu thật, header/nav/admin gọn; pluginV27 đồng bộ, flow tối đa12màn/hàng và landing riêng. README là trang giới thiệu/cách chạy mới nhất; [hướng dẫn web/admin](docs/CHAY-WEB-VA-LARAVEL.md).
 
 ## Đọc đầu phiên
 

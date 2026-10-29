@@ -1,13 +1,16 @@
-# Nhà sách Thu Thanh · Figma V26
+# Nhà sách Thu Thanh · Figma V27
+
+V27 đồng bộ web D66: Bán chạy dạng xếp hạng và chi tiết, 7 sản phẩm theo snapshot catalog hiện có, không tạo số bán tuần/rating; bộ chọn số lượng tách nút giảm/ô số/nút tăng cùng cao48px. Giữ3page/7flow/132frame, landing riêng, tối đa12màn/hàng từ trái sang phải, không thêm board bao. Chỉ SKU TT-SGK-002 chạy mua mẫu như trước; các sản phẩm khác dùng xem bố cục. Plugin nhận và nâng bản V26, giữ ảnh/nodes sửa tay theo quy tắc đã có; cần chạy lại plugin và Present trong file của bạn.
+
 
 ## Import bản mới
 
-1. Giải nén `thuthanh-figma-clicon-v26-2026-10-29.zip` vào thư mục riêng.
+1. Giải nén `thuthanh-figma-clicon-v27-2026-10-29.zip` vào thư mục riêng.
 2. Figma Desktop → Plugins → Development → Import plugin from manifest… → chọn **manifest.json ở gốc thư mục vừa giải nén**.
-3. Đóng plugin cũ, mở **THUTHANH · Clicon V26**, chọn kịch bản thanh toán và bấm **Tạo bản demo gọn**.
+3. Đóng plugin cũ, mở **THUTHANH · Clicon V27**, chọn kịch bản thanh toán và bấm **Tạo bản demo gọn**.
 4. Plugin mở trang **Landing page**, gồm hai bản duyệt máy tính/điện thoại đặt cạnh nhau. Dùng nút Máy tính/Điện thoại và chọn flow trong UI plugin để Present prototype.
 
-Có thể import trực tiếp `D:\ThuThanh-WebDesign\thu-thanh-figma-clicon\manifest.json`. ID `thu-thanh-clicon-v16` giữ ổn định để nâng cấp; tên hiển thị phải là **V26**. Canvas không tự cập nhật khi source đổi: cần chạy lại builder. Không cần extension VS Code hoặc Python để import.
+Có thể import trực tiếp `D:\ThuThanh-WebDesign\thu-thanh-figma-clicon\manifest.json`. ID `thu-thanh-clicon-v16` giữ ổn định để nâng cấp; tên hiển thị phải là **V27**. Canvas không tự cập nhật khi source đổi: cần chạy lại builder. Không cần extension VS Code hoặc Python để import.
 
 ## Đồng bộ web D60–D61
 
@@ -32,10 +35,10 @@ Bản tin và thống kê trong Figma là trạng thái thiết kế, không g�
 
 ## Dựng lại an toàn và kiểm tra
 
-V26 nhận diện node plugin V17–V26 và chỉ thay bản cũ sau khi cả ba page dựng xong. Giữ node ngoài plugin và ảnh sản phẩm sửa tay, kể cả tại Landing page, qua nhiều lần dựng. Hủy/lỗi giữ bản trước. Chữ/layout sửa tay bên trong node plugin sẽ dựng lại: lưu bản sao trước khi chạy.
+V27 nhận diện node plugin V17–V27 và chỉ thay bản cũ sau khi cả ba page dựng xong. Giữ node ngoài plugin và ảnh sản phẩm sửa tay, kể cả tại Landing page, qua nhiều lần dựng. Hủy/lỗi giữ bản trước. Chữ/layout sửa tay bên trong node plugin sẽ dựng lại: lưu bản sao trước khi chạy.
 
 ZIP chỉ có **6 file** cần import/đọc. Source ở `src/`, `build.py`; 66 SVG xem trước ở `xem-truoc/` được tạo bởi `node scripts/test-figma-clicon.cjs` từ gốc repo. ZIP không chứa SVG để giữ gọn.
 
 Đã kiểm bằng mock API: cấu trúc/layer bounds, flow không chồng, banner/footer, Scroll to/map URL, 24 SKU, tiền/số lượng, 5 kịch bản thanh toán, ảnh sửa tay, nâng cấp V24, rollback/hủy trên 3 page. **Canvas thật của chủ dự án chưa được thao tác trong phiên này**; sau import cần Present để duyệt font, wrapping và hotspot thực tế. Mock/SVG không thay nghiệm thu canvas hay provider.
 
-V26: từng flow đi từ trái sang phải, tối đa12màn mỗi hàng; hàng kế tiếp nằm dưới, các flow có khoảng cách riêng và không đặt trong bảng bao. Landing page vẫn là page riêng. Có màn Hồ sơ/Lưu thành công, Gợi ý tìm kiếm; mức giảm11–17% lấy từ thay đổi D61 đã duyệt. Mục Bán chạy thể hiện trạng thái trống vì chưa có doanh số thật. Prototype thanh toán là trạng thái thiết kế, không tạo doanh số hay giao dịch trong DB.
+V27: từng flow đi từ trái sang phải, tối đa12màn mỗi hàng; hàng kế tiếp nằm dưới, các flow có khoảng cách riêng và không đặt trong bảng bao. Landing page vẫn là page riêng. Có màn Hồ sơ/Lưu thành công, Gợi ý tìm kiếm; mức giảm11–17% lấy từ thay đổi D61 đã duyệt. Mục Bán chạy thể hiện trạng thái trống vì chưa có doanh số thật. Prototype thanh toán là trạng thái thiết kế, không tạo doanh số hay giao dịch trong DB.

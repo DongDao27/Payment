@@ -7,6 +7,7 @@ import "./clicon.css";
 import "./bookstore.css";
 import "./styles/storefront.css";
 import "./styles/experience.css";
+import "./styles/bestseller.css";
 
 const storeFont = localFont({
   src: "./fonts/nunito-sans-variable.woff2",

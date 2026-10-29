@@ -4,6 +4,8 @@ Website bán sách và quản lý cửa hàng, cập nhật **29/10/2026**. Fron
 
 ## Chức năng hiện có
 
+Cập nhật D66: Bán chạy nhất có bảng xếp hạng và khung chi tiết, nút số lượng căn đều, khách tự nhận trạng thái đơn từ server. Bộ kiểm thử trình duyệt FE–Laravel–MySQL chạy bằng `cd frontend` → `npm run test:e2e`; cài Chromium lần đầu bằng `npx playwright install chromium`. Chỉ chạy trên `thu_thanh_test`, không chạy đồng thời PHPUnit; cổng thanh toán trong E2E là giả lập, nghiệm thu merchant Sandbox vẫn riêng. Xem hướng dẫn đầy đủ trong [CHAY-WEB-VA-LARAVEL](docs/CHAY-WEB-VA-LARAVEL.md). Figma local mới nhất là **V27**, giữ landing riêng và tối đa 12 màn/hàng.
+
 - Trang chủ gồm Bán chạy nhất, Sản phẩm mới, Gợi ý cho bạn; tìm kiếm gợi ý khi gõ, chọn để xem nhanh hoặc Enter mở kết quả; có lọc, sắp xếp và phân trang. Bán chạy gồm lựa chọn admin và sản phẩm đã có lượng bán paid/accepted; số bán thật vẫn xếp trước, sản phẩm mới xếp theo ngày tạo.
 - Tài khoản khách, chỉnh sửa hồ sơ lưu MySQL, khôi phục mật khẩu email, giỏ nhiều món, báo giá, đặt hàng, VNPAY Sandbox cho hai cách nhận hàng, theo dõi/hủy/đặt lại đơn.
 - Admin quản lý sản phẩm, chọn ảnh và tick Bán chạy ngay khi tạo/sửa, giảm giá, archive/restore, danh mục; slug tự sinh; giá và lịch sử tồn kho; đơn và lịch sử thanh toán/receipt/trạng thái; đối soát, biểu đồ doanh thu, bộ lọc và CSV.

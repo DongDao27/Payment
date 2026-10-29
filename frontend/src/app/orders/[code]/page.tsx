@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useOrderPolling } from "@/lib/use-order-polling";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AccountGate } from "@/components/account-gate";
@@ -21,6 +22,7 @@ function Detail() {
   const router = useRouter();
   const { refreshCart } = useStore();
   const [order, setOrder] = useState<Order | null>(null);
+  useOrderPolling(code, order !== null && order.lifecycle === "open" && order.payment_status !== "paid", setOrder);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -214,15 +216,6 @@ function Detail() {
                   onClick={() => action("reorder")}
                 >
                   Đặt lại sản phẩm
-                </button>
-                <button
-                  className="text-button"
-                  disabled={busy}
-                  onClick={() =>
-                    load().catch((error) => setError(errorMessage(error)))
-                  }
-                >
-                  Cập nhật trạng thái
                 </button>
               </div>
             </section>

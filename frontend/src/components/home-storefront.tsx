@@ -7,6 +7,7 @@ import { api } from "@/lib/api-client";
 import type { Product } from "@/lib/types";
 import { errorMessage } from "@/lib/format";
 import { ProductCard } from "./product-card";
+import { BestsellerShowcase } from "./bestseller-showcase";
 import { FlameIcon } from "./flame-icon";
 import { useStore } from "./store-provider";
 import { publicStorefront } from "@/lib/public-storefront";
@@ -165,7 +166,7 @@ function Collection({
     >
       <SectionHeading title={title} href={href} />
       {products.length ? (
-        <div className="product-grid">
+        title === "Bán chạy nhất" ? <BestsellerShowcase products={products} /> : <div className="product-grid">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

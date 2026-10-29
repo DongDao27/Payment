@@ -5,55 +5,56 @@
   "phase": "FRONTEND",
   "current_task_id": "F03",
   "next_task_id": "B07",
-  "implementation_state": "D65_restart_verified_NCB00_cancel24_server_confirmation_external",
+  "implementation_state": "D66_UI_E2E10_FigmaV27_verified_merchant_IPN_external",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "7fc2c3395de64df217cb419c5e0c09a3dd128bd1",
+  "last_verified_commit": null,
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-29T11:30:13+07:00",
+  "last_checkpoint_at": "2026-10-29T23:17:37+07:00",
   "last_test_run": {
-    "at": "2026-10-29T10:44:25+07:00",
+    "at": "2026-10-29T23:17:37+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
     "result": "passed",
     "tests": 134,
     "assertions": 1878,
     "database": "MySQL8.4.13 thu_thanh_test Windows127.0.0.1:3307",
-    "evidence": "backend/storage/logs/phpunit.xml"
+    "evidence": "backend/storage/logs/phpunit.xml",
+    "duration_seconds": 28.95
   },
   "figma": {
-    "status": "V26_local_verified_owner_canvas_pending",
+    "status": "V27_local_verified_owner_canvas_pending",
     "url": null,
     "node_ids": [],
     "source": "thu-thanh-figma-clicon",
-    "manifest_version": "V26",
-    "authorization_decision": "D61",
+    "manifest_version": "V27",
+    "authorization_decision": "D66",
     "reference_url": "https://nhasachphuongnam.com/",
     "reference_nodes": [],
     "flow_count_per_platform": 7,
     "screen_count": 132,
     "prototype_link_count": 2754,
     "products": 24,
-    "artifact": "output/figma/thuthanh-figma-clicon-v26-2026-10-29.zip",
+    "artifact": "output/figma/thuthanh-figma-clicon-v27-2026-10-29.zip",
     "products_per_category": 4,
     "purchase_demo_sku": "TT-SGK-002",
-    "artifact_sha256": "77d04fe6fff17d21638526b0f17ea41632d82ac07545219502c06545ffe96f54",
+    "artifact_sha256": "1452384157494b8568fcc5886e0a7b33ab262be4afdbf13afc322f6aa4986eba",
     "sample_qr_count": 3,
-    "prototype_screen_count": 124,
+    "prototype_screen_count": 130,
     "review_frame_count": 2,
     "page_count": 3,
     "layout": "flat_horizontal_rows_outside_sections",
     "landing_page": "Landing page",
-    "web_sync": "D57_D58",
+    "web_sync": "D66",
     "campaign_variants": 4,
     "font": "Nunito Sans preferred; fallback Inter/Roboto/Noto Sans/Arial",
     "map_size": [
       300,
       164
     ],
-    "web_sync_pending": "D62 curated bestseller selector/home; V26 unchanged"
+    "web_sync_pending": "owner canvas review not_run"
   },
   "blockers": [
     "D65: merchant/CA/launcher ready; actual NCB/OTP Return00 and cancellation24 verified. QueryDr99 and owner has not registered IPN; no accepted receipt, strict backend gate remains externally_blocked.",
@@ -813,5 +814,23 @@
       "new_provider_calls": 0,
       "application_source": "unchanged; D65 previous test evidence retained"
     }
+  },
+  "d66": {
+    "at": "2026-10-29T23:17:37+07:00",
+    "evidence": "D66: backend134 tests/1878 assertions; frontend API7, build and typecheck passed; Playwright10 passed (2.0m), real FE/Laravel/MySQL thu_thanh_test with isolated payment emulator. Responsive1440/768/375, quantity48px, image/page-error guards, search/profile/cart, delivery25000/pickup0, query/Return/IPN pending-to-paid/replay/tamper/cancel, customer403, admin image/discount/archive/restore, inventory ledger/fulfillment and admin routes verified. Bestseller ranked master-detail max7; customer status-action removed, read-only polling. FigmaV27 mock passed3managed pages/132frames/130prototype screens/2754links/7flows/platform/24products, max12 per row, landing separate, single demo SKU and manual edits preserved. Owner canvas not_run. Main/Sandbox data not mutated; no new merchant call. VNPAY QueryDr99/IPN registration acceptance remains external. E2E test provider success is not real merchant acceptance; SMTP/deploy/10k not verified.",
+    "e2e": {
+      "tests": 10,
+      "result": "passed",
+      "provider": "isolated emulator, not real merchant",
+      "report": "output/e2e/report/index.html"
+    },
+    "build": "passed",
+    "typecheck": "passed",
+    "api_client_tests": 7,
+    "pint": "passed",
+    "figma_mock": "passed",
+    "live_figma": "not_run",
+    "new_real_provider_calls": 0,
+    "remote_ci": "pending publication"
   }
 }

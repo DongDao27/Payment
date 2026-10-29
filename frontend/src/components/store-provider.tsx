@@ -406,13 +406,12 @@ function BuyDialog({
     }
   }
   const available = product.is_active && max > 0;
+  const invalidQuantity = !Number.isInteger(quantity) || quantity < 1 || quantity > max;
   const disabled =
     busy ||
     !available ||
     (user !== null && user.role !== "customer") ||
-    !Number.isInteger(quantity) ||
-    quantity < 1 ||
-    quantity > max;
+    invalidQuantity;
   const src = product.images[0] ? imageSrc(product.images[0].url) : "";
   return (
     <Modal
@@ -462,6 +461,9 @@ function BuyDialog({
               type="number"
               min={1}
               max={Math.max(1, max)}
+              disabled={busy || !available}
+              aria-invalid={available && invalidQuantity}
+              aria-describedby={available && invalidQuantity ? "quick-quantity-error" : undefined}
               value={quantity}
               onChange={(event) => setQuantity(Number(event.target.value))}
             />
@@ -473,6 +475,9 @@ function BuyDialog({
               +
             </button>
           </div>
+          {available && invalidQuantity && (
+            <p id="quick-quantity-error" className="error-text" role="alert">Nhập số nguyên từ 1 đến {max}.</p>
+          )}
           {user && user.role !== "customer" && (
             <p className="muted">Hãy dùng tài khoản khách hàng để đặt mua.</p>
           )}
