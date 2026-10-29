@@ -11,7 +11,7 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "a680fd1a35d01d4eeaff5fd74bcbe436144876a6",
   "git_dirty": true,
   "last_checkpoint_at": "2026-10-29T23:17:37+07:00",
   "last_test_run": {
@@ -831,6 +831,7 @@
     "figma_mock": "passed",
     "live_figma": "not_run",
     "new_real_provider_calls": 0,
-    "remote_ci": "pending publication"
+    "remote_ci": "pending publication",
+    "source_commit": "a680fd1a35d01d4eeaff5fd74bcbe436144876a6"
   }
 }

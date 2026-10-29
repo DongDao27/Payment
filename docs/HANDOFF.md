@@ -1,3 +1,5 @@
+D66 source verified commit `a680fd1a35d01d4eeaff5fd74bcbe436144876a6`. Local checks passed; remote CI pending push. Receipt-only follow-up, no application change.
+
 # D66 — giao diện và E2E local verified; merchant IPN vẫn chờ
 
 D66: backend134 tests/1878 assertions; frontend API7, build and typecheck passed; Playwright10 passed (2.0m), real FE/Laravel/MySQL thu_thanh_test with isolated payment emulator. Responsive1440/768/375, quantity48px, image/page-error guards, search/profile/cart, delivery25000/pickup0, query/Return/IPN pending-to-paid/replay/tamper/cancel, customer403, admin image/discount/archive/restore, inventory ledger/fulfillment and admin routes verified. Bestseller ranked master-detail max7; customer status-action removed, read-only polling. FigmaV27 mock passed3managed pages/132frames/130prototype screens/2754links/7flows/platform/24products, max12 per row, landing separate, single demo SKU and manual edits preserved. Owner canvas not_run. Main/Sandbox data not mutated; no new merchant call. VNPAY QueryDr99/IPN registration acceptance remains external. E2E test provider success is not real merchant acceptance; SMTP/deploy/10k not verified.
