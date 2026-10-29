@@ -11,7 +11,7 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "7fc2c3395de64df217cb419c5e0c09a3dd128bd1",
   "git_dirty": true,
   "last_checkpoint_at": "2026-10-29T11:30:13+07:00",
   "last_test_run": {
@@ -237,7 +237,7 @@
     "checkpoint_note": "Source hash verified on remote before this documentation-only checkpoint.",
     "archived_evidence": "docs/qa/source-publication.json"
   },
-  "git_dirty_note": "Owner frontend/next-env.d.ts retained/excluded; receipt records D62 source, remote CI pending push at checkpoint.",
+  "git_dirty_note": "Owner frontend/next-env.d.ts retained/excluded. Receipt records verified D65 launcher/docs source; remote CI pending push at checkpoint.",
   "team_commit_guide": {
     "decision": "D49",
     "status": "done",
@@ -756,7 +756,7 @@
   "sandbox_e2e_D65": {
     "decision": "D65",
     "at": "2026-10-29T10:44:25+07:00",
-    "source_commit": null,
+    "source_commit": "7fc2c3395de64df217cb419c5e0c09a3dd128bd1",
     "scope": "launcher/docs; original main/PHP/UI untouched",
     "launcher": "scripts/sandbox.ps1 start/stop/status",
     "restart": "env/mainenv/owner-nextenv hashes and Sandbox snapshot identical",

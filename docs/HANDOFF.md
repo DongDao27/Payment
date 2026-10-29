@@ -1,4 +1,4 @@
-D65 resumed 2026-10-29T11:30:13+07:00: launcher cold-start and fresh CA branch verified; fixed PowerShell5 byte[] checksum decoding. Sandbox backend/queue/scheduler/MySQL now running; frontend3000 and tunnel must be started by owner. Source/docs publication pending, provider IPN/QueryDr99 acceptance unchanged.
+D65 resumed 2026-10-29T11:30:13+07:00: launcher cold-start and fresh CA branch verified; fixed PowerShell5 byte[] checksum decoding. Sandbox backend/queue/scheduler/MySQL now running; frontend3000 and tunnel must be started by owner. Source verified commit `7fc2c3395de64df217cb419c5e0c09a3dd128bd1`; receipt only records source. Remote CI pending push at checkpoint; provider IPN/QueryDr99 acceptance unchanged.
 
 # D65 — Khởi động lại được; NCB00/hủy24 đã kiểm, chờ xác nhận server (2026-10-29T10:44:25+07:00)
 
