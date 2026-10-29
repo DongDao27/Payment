@@ -304,3 +304,8 @@ Chủ dự án đã chấp thuận cập nhật bản vá symfony/mime và xác 
 ## D63 — Nhận merchant và cấu hình Sandbox local (29/10/2026)
 
 Người dùng đã nhận email merchant Sandbox và yêu cầu hướng dẫn tiếp tục. Tiêu chí trước thay đổi: chỉ ghi credentials vào .runtime/sandbox-backend/.env private, mở VNPAY_DEFERRED=false trong bản thử, giữ database thu_thanh_sandbox/key/storage/cookie và main .env/dữ liệu; config:clear, environment-check và9readiness checks đạt mà không in secret. Chỉ kiểm HTTP/API read-only, không tạo đơn/receipt hoặc tự xác nhận paid. Đăng ký merchant không phải giao dịch đã thành công; B07 còn chờ success/cancel/query/IPN thật. Return local dùng localhost3000; IPN cần public HTTPS và gửi VNPAY, không tự gửi email. Cập nhật hướng dẫn/checkpoint theo bằng chứng; không commit secret.
+
+
+## D64 — Điều tra giao dịch Sandbox đang chờ (29/10/2026)
+
+Người dùng hỏi vì sao kết quả thanh toán chưa thành công. Kiểm read-only đúng đơn trong ảnh thấy pending/0receipt; gateway query thất bại cURL60/certificate. Tiêu chí trước sửa: dùng CA bundle từ HTTPS chính thức curl.se, kiểm SHA256 do nguồn công bố; chỉ cấu hình PHP của bản Sandbox, không tắt xác minh TLS/chữ ký; query chính giao dịch có thật, chỉ apply qua PaymentService nếu provider xác minh hợp lệ. Không sửa DB paid thủ công, không tạo giao dịch/đơn mới, không bỏ luật hết hạn/đối soát. Restart đúng ba dịch vụ có PID identity; giữ main env/data/key và owner frontend. Ghi riêng kết quả cấu hình, query/provider, receipt/order và IPN chưa kiểm. Source/UI không cần thay nếu lỗi chỉ ở PHP local; trang return hiện chỉ fetch một lần nên cần tải lại khi trạng thái thay đổi.

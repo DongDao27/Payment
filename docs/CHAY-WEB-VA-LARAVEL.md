@@ -158,6 +158,21 @@ Luồng này thử VNPAY online; QR thu tại quầy cần adapter merchant riê
 
 Kết thúc test: dừng server/worker/scheduler Sandbox, chạy lại scripts/start-backend.ps1 từ repo gốc để trở về DB cửa hàng. Không chép env/key/database Sandbox đè lên backend chính.
 
+### Khi kết quả vẫn “Đang xử lý” — kiểm tra D64
+
+Trang kết quả chỉ lấy trạng thái một lần khi mở, không tự chuyển chữ sau khi backend cập nhật. Bấm **Xem chi tiết đơn** hoặc tải lại trang để xem trạng thái mới. Chỉ IPN hợp lệ hoặc server query có kết quả xác minh được mới ghi paid; không dựa vào ảnh chụp hoặc chữ thành công trên cổng để sửa DB.
+
+Ngày29/10 đã thấy PHP local thiếu CA gây `cURL error60`. Đã tải [Mozilla CA bundle do curl cung cấp](https://curl.se/docs/caextract.html), đối chiếu SHA256 và cấu hình private `.runtime/sandbox-backend/docker/php/cacert.ini`:
+
+```ini
+curl.cainfo="D:/ThuThanh-WebDesign/.runtime/certs/cacert.pem"
+openssl.cafile="D:/ThuThanh-WebDesign/.runtime/certs/cacert.pem"
+```
+
+Ba dịch vụ Sandbox đã restart với `PHP_INI_SCAN_DIR` theo phần chạy phía trên. Máy mới phải chuẩn bị CA tin cậy phù hợp PHP/OS; không chép đường dẫn Windows này sang Docker/Linux. Không dùng verify=false hoặc tắt kiểm chữ ký. [Giải thích TLS của curl](https://curl.se/docs/sslcerts.html).
+
+Sau sửa CA, VNPAY query đang trả HTTP200/mã99/Unexpected error cho giao dịch được hỏi; đây không phải xác nhận thành công. Đơn hết hạn chuyển chờ đối soát và giữ tồn theo luật sẵn có. Không thanh toán lại đơn đó. Kiểm trạng thái giao dịch trong Merchant Admin VNPAY; gửi URL IPN cho VNPAY và yêu cầu kiểm cấu hình/kết quả query99 với mã tham chiếu giao dịch. Không gửi hash secret/mật khẩu hoặc tự sửa đơn paid. IPN/query hợp lệ còn phải qua luật amount/merchant/reference/thời điểm/tồn; giao dịch trả muộn có thể cần đối soát thay vì tự paid. Mã99 không đủ để kết luận ngân hàng đã trừ tiền hoặc giao dịch đã thất bại. [Đặc tả QueryDr](https://sandbox.vnpayment.vn/apis/docs/truy-van-hoan-tien/querydr%26refund.html).
+
 ## Email recovery
 
 `/forgot-password` nhận email khách, `/reset-password` mở từ link riêng dùng một lần/60 phút. Token được hash; có CSRF, throttle, generic response và thu hồi phiên cũ sau đổi mật khẩu. Phone-only liên hệ nhà sách, chưa có SMS; admin dùng CLI riêng.

@@ -5,7 +5,7 @@
   "phase": "FRONTEND",
   "current_task_id": "F03",
   "next_task_id": "B07",
-  "implementation_state": "D63_sandbox_credentials_configured_local_checks_passed_transactions_pending",
+  "implementation_state": "D64_local_CA_fixed_provider_query99_payment_acceptance_pending",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
@@ -13,7 +13,7 @@
   "branch": "main",
   "last_verified_commit": "82d2431b46c735225e868b3d01fe4981ab1ab85c",
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-29T09:59:08+07:00",
+  "last_checkpoint_at": "2026-10-29T10:14:35+07:00",
   "last_test_run": {
     "at": "2026-10-29T03:47:15+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
@@ -147,7 +147,7 @@
     "backend_tests_rerun_this_task": false,
     "frontend_tests_rerun_this_task": true
   },
-  "payment_integration": "D63_isolated_sandbox_configured_9checks_passed_real_transactions_pending",
+  "payment_integration": "D64_Sandbox_CA_fixed_live_query99_no_verified_receipt_external_pending",
   "owner_policy": {
     "delivery_fee_vnd": 25000,
     "pickup_fee_vnd": 0,
@@ -728,5 +728,29 @@
     "current_services": "Sandbox8000/queue/scheduler and MySQL3307 running; ownerfrontend3000 preserved",
     "source_commit": "e3fd0b2f04d43728d03daa61480ac0a2fc0fb1c3",
     "secrets_in_git": false
+  },
+  "sandbox_payment_diagnosis": {
+    "decision": "D64",
+    "at": "2026-10-29T10:14:35+07:00",
+    "order_code": "01M62T01E2H52JBR82QZ23BZA6",
+    "amount_vnd": 113200,
+    "before": "pending",
+    "after": "reconciliation_required",
+    "receipts": 0,
+    "cause_confirmed": "cURL60 missing CA trust file",
+    "local_fix": "private Sandbox CA bundle/hash verified; curl.cainfo/openssl.cafile set;3services restarted",
+    "tls_verification": "enabled",
+    "live_query": {
+      "http": 200,
+      "response_code": "99",
+      "message": "Unexpected error",
+      "verified_payment": false
+    },
+    "optional_field_probe": "empty TransactionNo also99; source unchanged",
+    "provider_final_status": "unknown; owner merchant admin confirmation needed",
+    "ipn_registration": "pending owner/provider",
+    "new_attempts_or_orders_created": 0,
+    "full_tests": "not_rerun; no application source changes",
+    "source_commit": "82d2431b46c735225e868b3d01fe4981ab1ab85c"
   }
 }
