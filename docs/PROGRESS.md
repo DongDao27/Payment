@@ -424,3 +424,12 @@ New payments:check-sandbox checks9local settings without provider calls or secre
 QA browsers and servers3100/18082/18083 stopped, MySQL retained. FigmaV26 unchanged; new curated selector/home await design sync. Source commit=null, remote CI pending push. Gates unchanged; B07 actual success/cancel/query/IPN needs merchant registration, SMTP/staging/Docker remain external. Next: publish reviewed source and inspect both Actions, then owner registers merchant and follows Sandbox section in CHAY-WEB-VA-LARAVEL.
 
 D62 source committed: 82d2431b46c735225e868b3d01fe4981ab1ab85c.19files reviewed, secret/runtime/env/size scan passed. Owner next-env excluded. Remote CI to verify after push; this receipt only records source hash.
+
+
+## 2026-10-29T09:59:08+07:00 — D63 Sandbox configuration verified
+
+D63 2026-10-29T09:59:08+07:00: merchant received/configured only in ignored Sandbox .env; config:clear/environment-check passed MySQL8.4.13 thu_thanh_sandbox;9/9 local checks passed, not merchant/transaction acceptance. Read-only counts137products/0orders/0receipts. Frontend localhost3000 /api/v1/storefront proxy returned7bestsellers from Sandbox8000. No payment attempt/network provider call/order/receipt created. Success/cancel/query/IPN pending owner test; main .env/data/key and owner next-env preserved.
+
+No source/schema changes; no full test rerun required for private env/docs only. Initial GET /api/v1/health probe returned404 because route does not exist; actual /api/v1/storefront returned200 through frontend, not an application failure. D62 remote Backend40766470185 and Frontend40766470154 completed success at e3fd0b2; checked previous turn. Started local MySQL3307 and SandboxHTTP8000/queue/scheduler (private PID receipt .runtime/sandbox-services.json, stop script checks process identity). No public tunnel/IPN registration or outbound message performed. Next owner opens localhost3000, registers customer, tests email-provided Sandbox card then cancellation; verify DB/provider receipt before changing B07 gate. Source/docs commit=null for D63.
+
+D63 public IPN connectivity: existing frontend Cloudflare URL https://airport-midlands-edmonton-pull.trycloudflare.com/api/v1/payments/vnpay/ipn reached Sandbox controller through Next proxy and returned97 Invalid signature to unsigned GET; no payment data changed. Callback registration at VNPAY and signed real callback still pending; no second tunnel required.

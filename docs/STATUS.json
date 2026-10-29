@@ -5,7 +5,7 @@
   "phase": "FRONTEND",
   "current_task_id": "F03",
   "next_task_id": "B07",
-  "implementation_state": "D62_curated_bestseller_and_sandbox_setup_locally_verified",
+  "implementation_state": "D63_sandbox_credentials_configured_local_checks_passed_transactions_pending",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
@@ -13,7 +13,7 @@
   "branch": "main",
   "last_verified_commit": "82d2431b46c735225e868b3d01fe4981ab1ab85c",
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-29T03:47:15+07:00",
+  "last_checkpoint_at": "2026-10-29T09:59:08+07:00",
   "last_test_run": {
     "at": "2026-10-29T03:47:15+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
@@ -56,13 +56,13 @@
     "web_sync_pending": "D62 curated bestseller selector/home; V26 unchanged"
   },
   "blockers": [
-    "VNPAY Sandbox code ready (D55) but real Sandbox transaction not_run: merchant TMN code/hash secret pending; Production deferred; strict backend gate not passed.",
+    "VNPAY Sandbox merchant configured in private isolated env D63,9checks passed; actual success/cancel/query/public IPN not_run; strict gate remains externally_blocked.",
     "10k concurrent capacity not verified; Docker/k6/staging unavailable.",
     "Owner canvas and course/deployment acceptance pending."
   ],
   "external_inputs_pending": [
     "Owner imports V25 plugin and reviews canvas",
-    "VNPAY Sandbox merchant TMN code/hash secret in private backend/.env (D55); public IPN URL when hosting/tunnel exists",
+    "Owner tests real Sandbox success/cancel/query; public HTTPS IPN endpoint registration pending, merchant credentials now configured privately D63.",
     "Owner has no hosting yet; production capacity acceptance waits for future staging infrastructure",
     "SMTP/from-address/HTTPS frontend origin and actual recovery email delivery acceptance"
   ],
@@ -147,7 +147,7 @@
     "backend_tests_rerun_this_task": false,
     "frontend_tests_rerun_this_task": true
   },
-  "payment_integration": "D55_code_configuration_only_D56_user_confirmed_real_merchant_not_run",
+  "payment_integration": "D63_isolated_sandbox_configured_9checks_passed_real_transactions_pending",
   "owner_policy": {
     "delivery_fee_vnd": 25000,
     "pickup_fee_vnd": 0,
@@ -181,11 +181,12 @@
     "all_prices_stock_hashes_compared": "passed"
   },
   "local_services": {
-    "mysql": "running_existing_local3307",
-    "backend_http": "owner8000_not_stopped_by_agent_final_not_listening",
-    "frontend_http": "owner3000_not_stopped_by_agent_final_not_listening",
+    "mysql": "running3307",
+    "backend_http": "isolatedSandbox8000_running",
+    "frontend_http": "owner3000_running_preserved",
     "qa_http": "D58_owned3100_18082_browsers_stopped",
-    "figma_preview_http": "D59_owned18091_stopped"
+    "figma_preview_http": "D59_owned18091_stopped",
+    "sandbox_workers": "queue/scheduler running; private PID receipt and stop script"
   },
   "backend_full_suite_previous": {
     "at": "2026-10-27T18:35:15+07:00",
@@ -704,5 +705,28 @@
     },
     "runtime": "QA3100/18082/18083/browser stopped; MySQL retained",
     "owner_next_env": "preserved/excluded"
+  },
+  "sandbox_merchant_setup": {
+    "decision": "D63",
+    "at": "2026-10-29T09:59:08+07:00",
+    "credentials": "configured privately; values omitted",
+    "configuration_checks": "9/9 passed; no provider call",
+    "database": "thu_thanh_sandbox",
+    "products": 137,
+    "orders": 0,
+    "receipts": 0,
+    "frontend_proxy": "localhost3000/api/v1/storefront200,7bestsellers",
+    "return_url": "http://localhost:3000/payment/vnpay-return",
+    "ipn": {
+      "url": "https://airport-midlands-edmonton-pull.trycloudflare.com/api/v1/payments/vnpay/ipn",
+      "connectivity": "HTTP200/RspCode97 expected for unsigned GET",
+      "registration": "not_done; owner sends VNPAY",
+      "signed_callback": "not_run"
+    },
+    "actual_transactions": "not_run; owner card test pending",
+    "full_suite": "not_rerun; private env/docs only; D62 tests retained",
+    "current_services": "Sandbox8000/queue/scheduler and MySQL3307 running; ownerfrontend3000 preserved",
+    "source_commit": "e3fd0b2f04d43728d03daa61480ac0a2fc0fb1c3",
+    "secrets_in_git": false
   }
 }

@@ -73,15 +73,15 @@ Worker xử lý email/xóa ảnh; scheduler xử lý hết hạn, đối soát v
 
 ## Thanh toán VNPAY Sandbox — máy hiện tại
 
-Chưa có merchant nên chưa chạy giao dịch VNPAY thực tế. Đã chuẩn bị **`.runtime/sandbox-backend`**, database **thu_thanh_sandbox**, key/cookie/storage riêng,137sản phẩm và admin; **0 đơn, 0 receipt**, không sao chép khách hoặc lịch sử bán hàng. Database cửa hàng **thu_thanh** không đổi khi thử Sandbox. Workspace và env private không đi theo Git; máy mới dùng phần Máy mới với database thử riêng, không trỏ vào DB cửa hàng.
+D63: đã nhận merchant và điền cấu hình private, mở VNPAY_DEFERRED=false; environment-check đúng database và9/9dòng check-sandbox [OK]. Chưa chạy giao dịch VNPAY thực tế. Đã chuẩn bị **`.runtime/sandbox-backend`**, database **thu_thanh_sandbox**, key/cookie/storage riêng,137sản phẩm và admin; **0 đơn, 0 receipt**, không sao chép khách hoặc lịch sử bán hàng. Database cửa hàng **thu_thanh** không đổi khi thử Sandbox. Workspace và env private không đi theo Git; máy mới dùng phần Máy mới với database thử riêng, không trỏ vào DB cửa hàng.
 
-### 1. Đăng ký merchant
+### 1. Merchant đã đăng ký trên máy hiện tại
 
-Mở [đăng ký Sandbox của VNPAY](https://sandbox.vnpayment.vn/devreg/). Điền tên website, URL website chạy thử và email bạn truy cập được; hoàn tất form/captcha. Nếu portal yêu cầu URL public, dùng địa chỉ HTTPS bạn quản lý. Kiểm tra hộp thư và spam để nhận thông tin kết nối. Giữ TMN code và hash secret ở file private, không gửi chat hoặc commit. [Tài liệu kết nối chính thức](https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html) mô tả URL và thông tin merchant.
+Máy hiện tại đã hoàn thành bước đăng ký, không cần đăng ký lại. Khi thiết lập merchant mới, mở [đăng ký Sandbox của VNPAY](https://sandbox.vnpayment.vn/devreg/). Điền tên website, URL website chạy thử và email bạn truy cập được; hoàn tất form/captcha. Nếu portal yêu cầu URL public, dùng địa chỉ HTTPS bạn quản lý. Kiểm tra hộp thư và spam để nhận thông tin kết nối. Giữ TMN code và hash secret ở file private, không gửi chat hoặc commit. [Tài liệu kết nối chính thức](https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html) mô tả URL và thông tin merchant.
 
 ### 2. Điền đúng env của Sandbox
 
-Mở **D:\ThuThanh-WebDesign\.runtime\sandbox-backend\.env**, không sửa env của backend chính. Chỉ thay hai giá trị được cấp và mở deferred:
+Máy hiện tại đã điền credentials trong **D:\ThuThanh-WebDesign\.runtime\sandbox-backend\.env**; không cần dán lại hoặc sửa env của backend chính. Khi đổi khóa, chỉ sửa file private này. Mẫu dưới đây là cấu trúc tham khảo, không chép placeholder đè lên giá trị đã cấu hình:
 
 ```dotenv
 VNPAY_ENV=sandbox
@@ -126,13 +126,31 @@ php artisan schedule:work
 
 Frontend giữ cách chạy cũ (`cd D:\ThuThanh-WebDesign\frontend`, `npm run dev`), proxy mặc định tới localhost8000. Mở localhost3000 và Ctrl+F5 sau khi đổi backend. Không chạy đồng thời hai Next từ cùng thư mục. Không cần extension hoặc XAMPP. Mail Sandbox dùng array, không gửi email thật.
 
+D63 đã khởi động backend8000, queue và scheduler của bản Sandbox ở nền, frontend3000 của người dùng giữ nguyên. Có thể thử ngay tại **http://localhost:3000**. Không chạy thêm backend trùng port. Khi muốn dừng đúng ba dịch vụ Sandbox do phiên này mở:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File D:\ThuThanh-WebDesign\.runtime\stop-sandbox.ps1
+```
+
+Sau khi dừng, có thể mở các terminal và chạy thủ công theo lệnh phía trên. Script và workspace private chỉ có trên máy hiện tại.
+
 ### 4. Thử thành công và hủy
+
+Mở web bằng **localhost3000** để cookie/phiên trùng Return URL, chưa dùng URL Cloudflare để đăng nhập/thanh toán ở lượt local này. Tunnel đăng ký không tự đăng ký IPN.
 
 1. Đăng ký một tài khoản **khách** trong Sandbox; admin không dùng giỏ mua hàng. Admin Sandbox dùng thông tin đăng nhập admin đã có của cửa hàng, không có mật khẩu mặc định mới.
 2. Chọn một sản phẩm còn tồn, ví dụ Bữa Tối; thêm1món → checkout giao hàng → nhập thông tin → tạo đơn. Phí giao25.000đ; đơn giao giữ5phút, nên chuẩn bị sẵn thẻ test trước khi đặt.
 3. Trong đơn nhấn **Thanh toán qua VNPAY**, nhập **thẻ thử nghiệm** từ [danh sách test chính thức](https://sandbox.vnpayment.vn/apis/vnpay-demo/) hoặc tài liệu VNPAY cấp. Không dùng thẻ thật. Hoàn tất rồi quay lại website.
 4. Chỉ khi Laravel kiểm chữ ký và query trực tiếp VNPAY xác nhận đúng giao dịch mới hiện **Đã thanh toán**. Kiểm đơn và báo cáo trong database Sandbox; tải lại trang không được thu/ghi doanh thu lần hai.
 5. Tạo một đơn Sandbox khác, sang VNPAY rồi chọn hủy: phải trở về **Chưa thanh toán/không thành công**, không tăng doanh thu; có thể thử lại khi còn hạn. Retry không gia hạn5phút. Scheduler xử lý hết hạn; kết quả chưa rõ giữ tồn và chờ đối soát.
+
+D63 đã kiểm tra URL IPN public qua tunnel frontend hiện tại (Next proxy tới bản Sandbox8000):
+
+```text
+https://airport-midlands-edmonton-pull.trycloudflare.com/api/v1/payments/vnpay/ipn
+```
+
+Gửi URL này cho VNPAY theo email họ yêu cầu hoặc nhập vào hệ thống SIT khi có trường cấu hình IPN. Phiên này chưa đăng ký thay bạn hoặc gửi email. Mở URL trực tiếp không có chữ ký sẽ trả `97 / Invalid signature`; đây chỉ là kiểm kết nối và từ chối callback giả, không phải giao dịch đã thành công. Giữ terminal Cloudflare/frontend/backend chạy khi test. URL Quick Tunnel tạm thời; nếu đổi URL phải báo lại VNPAY. Có thể dùng tunnel frontend vì Next đã proxy /api/v1 tới backend; không cần tunnel thứ hai cho lượt này. Return URL vẫn localhost3000, hãy dùng localhost khi đăng nhập/thanh toán.
 
 IPN là thông báo server-to-server: localhost không nhận được từ VNPAY. Lần thử local dùng browser Return URL và server query. Để nghiệm thu IPN, cần HTTPS public và đăng ký URL **/api/v1/payments/vnpay/ipn** ở phía merchant; chỉ điền VNPAY_IPN_URL trong env không tự đăng ký endpoint với VNPAY. Xem [hướng dẫn IPN/Return](https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html). Chưa cấu hình tunnel hoặc deploy trong bước này.
 

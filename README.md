@@ -57,7 +57,7 @@ Ngày 29/10: **130 backend tests (kết quả mới nhất ở STATUS)**, **7 cl
 
 ## Cần cấu hình và nghiệm thu thêm
 
-- Payment đã hoàn tất code/cấu hình; chủ dự án xác nhận chưa chạy giao dịch merchant thật. Máy Windows chưa có TMN/hash secret. Cần tự điền env private và kiểm success/hủy/query/IPN Sandbox. VNPAY Production và QR tại quầy chưa mở; không có nút fake-paid.
+- Payment đã hoàn tất code/cấu hình; chủ dự án xác nhận chưa chạy giao dịch merchant thật. D63 đã điền merchant trong env private của bản Sandbox,9readiness checks đạt; còn chờ kiểm success/hủy/query/IPN Sandbox. VNPAY Production và QR tại quầy chưa mở; không có nút fake-paid.
 - Email recovery cần SMTP thật và worker; chưa có SMS cho tài khoản chỉ dùng điện thoại.
 - Canvas Figma cần duyệt riêng; user testing cần người dùng đại diện. Docker, staging, HTTPS, backup/restore và mục tiêu 10.000 người đồng thời chưa nghiệm thu. [Runbook deploy](deploy/README.md).
 
