@@ -24,25 +24,25 @@ export function BrandCarousel() {
     observer.observe(el);
     measure();
     return () => observer.disconnect();
-  }, [brands]);
-  if (!brands.length) return null;
+  }, []);
   function move(direction: number) {
     const el = track.current;
-    if (el)
+    if (el) {
+      const tile = el.querySelector<HTMLElement>(".brand-tile");
+      const step = (tile?.getBoundingClientRect().width ?? el.clientWidth) + parseFloat(getComputedStyle(el).columnGap || "0");
+      const count = Math.max(1, Math.round(el.clientWidth / step));
       el.scrollBy({
-        left: direction * el.clientWidth * 0.8,
+        left: direction * step * count,
         behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
           ? "instant"
           : "smooth",
       });
+    }
   }
-  const sorted = [...brands].sort(
-    (a, b) => Number(b.name === "Thiên Long") - Number(a.name === "Thiên Long"),
-  );
   return (
     <section
       className="container footer-brands brand-carousel"
-      aria-label="Thương hiệu và nhà xuất bản có sản phẩm"
+      aria-label="Thương hiệu"
     >
       <button
         type="button"
@@ -52,36 +52,29 @@ export function BrandCarousel() {
         aria-label="Thương hiệu trước"
         aria-controls="footer-brand-track"
       >
-        ‹
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m14 6-6 6 6 6" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </button>
       <div
         className="brand-track"
         id="footer-brand-track"
         ref={track}
         onScroll={measure}
+        tabIndex={0}
+        role="group"
+        aria-label="Logo các thương hiệu"
       >
-        {sorted.map((brand) => {
-          const logo = logos.find((item) => item.name === brand.name);
+        {logos.map((logo) => {
+          const brand = brands.find(item => item.name.toLocaleLowerCase("vi-VN") === logo.name.toLocaleLowerCase("vi-VN"));
+          const picture = <Image src={logo.src} alt={logo.name} width={logo.width} height={logo.height} sizes="(max-width: 600px) 40vw, 220px" />;
           return (
-            <Link
+            brand ? <Link
               href={`/products?${new URLSearchParams({ brand: brand.name })}`}
               className="brand-tile"
-              key={brand.name}
-              aria-label={`${brand.name}, ${brand.product_count} sản phẩm`}
+              key={logo.name}
+              aria-label={`Xem sản phẩm ${brand.name}`}
             >
-              {logo ? (
-                <Image
-                  src={logo.src}
-                  alt={brand.name}
-                  width={logo.width}
-                  height={logo.height}
-                  sizes="220px"
-                />
-              ) : (
-                <strong className="brand-name">{brand.name}</strong>
-              )}
-              <small>{brand.product_count} sản phẩm</small>
-            </Link>
+              {picture}
+            </Link> : <div className="brand-tile" key={logo.name}>{picture}</div>
           );
         })}
       </div>
@@ -93,7 +86,7 @@ export function BrandCarousel() {
         aria-label="Thương hiệu tiếp theo"
         aria-controls="footer-brand-track"
       >
-        ›
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m10 6 6 6-6 6" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </button>
     </section>
   );

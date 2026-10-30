@@ -3,90 +3,44 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useOrderPolling } from "@/lib/use-order-polling";
 import { useStore } from "@/components/store-provider";
-import type { Order } from "@/lib/types";
-import { Loading, Notice } from "@/components/ui";
+import { PaymentResult } from "@/components/payment-result";
+import type { Order, VnpayReturn } from "@/lib/types";
+import { Loading } from "@/components/ui";
 import { api } from "@/lib/api-client";
-import type { VnpayReturn } from "@/lib/types";
-import { errorMessage, statusLabel } from "@/lib/format";
+import { errorMessage } from "@/lib/format";
 
-// VNPAY redirects here. Laravel verifies the signature and may query VNPAY;
-// this page never decides that an order is paid.
+// Only Laravel's verified payment state can display a successful payment.
 export default function VnpayReturnPage() {
   const [result, setResult] = useState<VnpayReturn | null>(null);
+  const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState("");
   const { user } = useStore();
-  const updateOrder = useCallback((order: Order) => {
-    setResult((current) => current ? { ...current, payment_status: order.payment_status } : current);
+  const updateOrder = useCallback((updated: Order) => {
+    setOrder(updated);
+    setResult(current => current ? { ...current, payment_status: updated.payment_status } : current);
   }, []);
   useOrderPolling(result?.order_code, user?.role === "customer" && result !== null && result.payment_status !== "paid" && result.result !== "failed", updateOrder);
   useEffect(() => {
-    let active = true;
-    const signed = new URLSearchParams(
-      [...new URLSearchParams(window.location.search)].filter(([key]) =>
-        key.startsWith("vnp_"),
-      ),
-    );
-    api<VnpayReturn>(`/payments/vnpay/return?${signed}`)
-      .then(({ data }) => {
-        if (active) setResult(data);
-      })
-      .catch((error) => {
-        if (active) setError(errorMessage(error));
-      });
-    return () => {
-      active = false;
-    };
+    const abort = new AbortController();
+    const signed = new URLSearchParams([...new URLSearchParams(window.location.search)].filter(([key]) => key.startsWith("vnp_")));
+    api<VnpayReturn>(`/payments/vnpay/return?${signed}`, { signal: abort.signal })
+      .then(({ data }) => { if (!abort.signal.aborted) setResult(data); })
+      .catch(error => { if (!abort.signal.aborted) setError(errorMessage(error)); });
+    return () => abort.abort();
   }, []);
-  const message = !result
-    ? ""
-    : result.payment_status === "paid"
-      ? "Thanh toán thành công. Đơn hàng đã được xác minh."
-      : result.result === "failed"
-        ? "Giao dịch không thành công hoặc đã bị hủy. Bạn có thể thanh toán lại khi đơn còn thời gian giữ hàng."
-        : result.payment_status === "reconciliation_required"
-          ? "Giao dịch đang chờ nhà sách đối soát. Vui lòng không thanh toán lại."
-          : "Hệ thống đang chờ VNPAY xác nhận giao dịch. Vui lòng kiểm tra lại trạng thái đơn sau ít phút.";
+  useEffect(() => {
+    if (!result?.order_code || user?.role !== "customer") return;
+    const abort = new AbortController();
+    api<Order>(`/orders/${encodeURIComponent(result.order_code)}`, { signal: abort.signal })
+      .then(({ data }) => { if (!abort.signal.aborted) updateOrder(data); })
+      .catch(() => { /* Private order details require ownership. */ });
+    return () => abort.abort();
+  }, [result?.order_code, user?.role, updateOrder]);
   return (
-    <div className="container page-section">
-      <div className="breadcrumb">
-        <Link href="/orders">Đơn hàng của tôi</Link>
-        <span>/</span>Kết quả thanh toán
-      </div>
-      <h1>Kết quả thanh toán VNPAY</h1>
-      {error && <Notice error>{error}</Notice>}
-      {!result ? (
-        !error && <Loading />
-      ) : (
-        <div className="detail-panel">
-          <h2>Đơn {result.order_code}</h2>
-          <p>
-            Trạng thái:{" "}
-            <strong>
-              {statusLabel[result.payment_status] ?? result.payment_status}
-            </strong>
-          </p>
-          <Notice
-            error={
-              result.payment_status !== "paid" && result.result === "failed"
-            }
-          >
-            {message}
-          </Notice>
-        </div>
-      )}
-      <div className="button-row">
-        {result && (
-          <Link
-            className="button primary"
-            href={`/orders/${encodeURIComponent(result.order_code)}`}
-          >
-            Xem chi tiết đơn
-          </Link>
-        )}
-        <Link className="button" href="/orders">
-          Về danh sách đơn
-        </Link>
-      </div>
+    <div className="container page-section payment-result-page">
+      <div className="breadcrumb"><Link href="/orders">Đơn hàng của tôi</Link><span>/</span>Kết quả thanh toán</div>
+      <h1 className="sr-only">Kết quả thanh toán VNPAY</h1>
+      {!result && !error ? <Loading /> : <PaymentResult result={result} order={order} error={error} />}
     </div>
   );
 }

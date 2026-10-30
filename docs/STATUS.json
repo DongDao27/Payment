@@ -5,15 +5,15 @@
   "phase": "FRONTEND",
   "current_task_id": "F03",
   "next_task_id": "B07",
-  "implementation_state": "D66_UI_E2E10_FigmaV27_verified_merchant_IPN_external",
+  "implementation_state": "D67_payment_feedback_and_brand_logos_verified_real_Sandbox_receipt_accepted",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "a680fd1a35d01d4eeaff5fd74bcbe436144876a6",
+  "last_verified_commit": null,
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-29T23:17:37+07:00",
+  "last_checkpoint_at": "2026-10-31T03:35:14+07:00",
   "last_test_run": {
     "at": "2026-10-29T23:17:37+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
@@ -54,20 +54,20 @@
       300,
       164
     ],
-    "web_sync_pending": "owner canvas review not_run"
+    "web_sync_pending": "D67 payment-result/10logo carousel visual sync not performed; V27 layout/source preserved."
   },
   "blockers": [
-    "D65: merchant/CA/launcher ready; actual NCB/OTP Return00 and cancellation24 verified. QueryDr99 and owner has not registered IPN; no accepted receipt, strict backend gate remains externally_blocked.",
+    "D67 real Sandbox accepted receipt/paid order verified read-only. Full QueryDr/expiry/reconciliation provider acceptance remains pending;2historical orders still reconciliation_required.",
     "10k concurrent capacity not verified; Docker/k6/staging unavailable.",
     "Owner canvas and course/deployment acceptance pending."
   ],
   "external_inputs_pending": [
-    "Owner imports V25 plugin and reviews canvas",
-    "Owner registers IPN with VNPAY and requests QueryDr99 support for transaction15718352; need verified server callback/query and accepted receipt. Draft in CHAY guide.",
+    "Owner reviews V27 Figma canvas; D67 web feedback/logo visual sync not performed.",
+    "Resolve2historic reconciliation orders/QueryDr99 with VNPAY; real accepted receipt exists in Sandbox. Do not manually mark older orders paid.",
     "Owner has no hosting yet; production capacity acceptance waits for future staging infrastructure",
     "SMTP/from-address/HTTPS frontend origin and actual recovery email delivery acceptance"
   ],
-  "notes": "D45 local source verified; 1000 synthetic orders isolated in demo DB; archive149 files recoverable. 10k acceptance pending. No deployment, real payment or canvas verification claim.",
+  "notes": "D67 frontend feedback/footer verified, real Sandbox receipt accepted; no deploy/production/10k/canvas acceptance claim. Historical D45/D65/D66 notes are snapshots, not current data.",
   "environment": {
     "php": "8.4.25",
     "laravel": "12.70.0",
@@ -833,5 +833,32 @@
     "new_real_provider_calls": 0,
     "remote_ci": "pending publication",
     "source_commit": "a680fd1a35d01d4eeaff5fd74bcbe436144876a6"
+  },
+  "d67": {
+    "at": "2026-10-31T03:35:14+07:00",
+    "evidence": "D67 2026-10-31T03:35:14+07:00: UI UX Pro Max applied. Large SVG tick/red X/pending clock, real owned order summary/paid_at/items/totals, safe invalid-return error, no paid inference from query string; removed reorder UI only. Footer10 original PNG logos, no text fallback/count, 5 desktop/2 mobile, SVG44px arrows, group scrolling/reduced-motion; linked only brands with actual products. API7 passed, build22routes/typecheck passed; Playwright12 passed2.1m including success/failure/pending/tamper/replay, profile/cart/CRUD/image/discount/inventory/fulfillment/role, responsive1440/768/375 and all10images loaded. No browser JS/image warnings in tested flows. Styles split per component without changing declarations. Read-only real Sandbox proof: transaction15720805,213235VND,receipt accepted/verified,order paid;4orders/1receipt. No payment/stock API/schema/credentials/main/Sandbox data changes. Backend134/1878 previous D66 evidence retained, not rerun locally for UI-only changes. QueryDr not retried,2historic reconciliation orders remain. Production/SMTP/10k not accepted. FigmaV27 untouched; D67 visual sync not performed.",
+    "real_sandbox_proof": {
+      "database": "thu_thanh_sandbox",
+      "provider": "vnpay",
+      "transaction": "15720805",
+      "order": "01M67706ZYE0DV019JJ95Y6AMG",
+      "amount": 213235,
+      "allocation": "accepted",
+      "payment_status": "paid",
+      "verified_at": "2026-10-30T20:13:28+00:00",
+      "orders": 4,
+      "receipts": 1,
+      "inspection": "read-only, no new provider calls or DB mutation"
+    },
+    "checks": {
+      "e2e": 12,
+      "e2e_result": "passed",
+      "api_client": 7,
+      "build": "passed22routes",
+      "typecheck": "passed",
+      "backend": "unchanged; D66 local134/1878 retained; remote CI pending"
+    },
+    "source_commit": null,
+    "remote_ci": "pending publication"
   }
 }

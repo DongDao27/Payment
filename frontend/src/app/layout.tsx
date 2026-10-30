@@ -8,6 +8,8 @@ import "./bookstore.css";
 import "./styles/storefront.css";
 import "./styles/experience.css";
 import "./styles/bestseller.css";
+import "./styles/payment-result.css";
+import "./styles/brand-carousel.css";
 
 const storeFont = localFont({
   src: "./fonts/nunito-sans-variable.woff2",

@@ -21,3 +21,6 @@ D57: font giao diện Nunito Sans từ [Google Fonts](https://github.com/google/
 Laravel12: https://laravel.com/docs/12.x/sanctum, https://laravel.com/docs/12.x/database, https://laravel.com/docs/12.x/queries, https://laravel.com/docs/12.x/validation, https://laravel.com/docs/12.x/scheduling, https://laravel.com/docs/12.x/deployment.
 Next.js: https://nextjs.org/docs/app. VNPAY: https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html và https://sandbox.vnpayment.vn/apis/docs/truy-van-hoan-tien/querydr%26refund.html.
 Các link tham khảo không chứng minh merchant/callback/production đã nghiệm thu; kết quả thực tế ghi ởSTATUS/PROGRESS. Tài liệu cũ đãgộp/archivetheoCLEANUP-2026-10-28.json.
+## D67 — Bộ logo ảnh footer (31/10/2026)
+
+Theo yêu cầu chủ dự án, carousel dùng đủ 10 logo ảnh của [Phương Nam](https://nhasachphuongnam.com/): Thiên Long, Faber-Castell, KEYROAD, Maped, MILAN, Pentel, Pilot, Sakos, BITEX, TOTY. Giữ ảnh gốc, tự host, không vẽ lại chữ thương hiệu. Bổ sung Sakos/TOTY; URL và SHA256 từng ảnh trong `frontend/src/lib/brands.json`. Logo dùng để trình bày; chỉ nhãn hàng thực sự có sản phẩm trong API mới có liên kết lọc. Không tự công bố quan hệ đối tác/chứng nhận hoặc số sản phẩm. Carousel 5 logo desktop/2 mobile, mũi tên SVG và hỗ trợ giảm chuyển động.

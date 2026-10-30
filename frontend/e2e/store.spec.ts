@@ -66,8 +66,8 @@ async function finish(page: Page, outcome: "success" | "cancel" | "unknown") {
   await page.getByRole("button", { name: "Thanh toán qua VNPAY", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Cổng kiểm thử tự động" })).toBeVisible();
   await page.getByRole("button", { name: { success: "Xác nhận thành công", cancel: "Hủy thanh toán", unknown: "Chưa xác định" }[outcome], exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Kết quả thanh toán VNPAY", exact: true })).toBeVisible();
-  await expect(page.locator("main h2")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Kết quả thanh toán VNPAY", exact: true })).toBeAttached();
+  await expect(page.locator("#payment-outcome-title")).toBeVisible();
 }
 async function evidence(request: APIRequestContext, code: string) {
   return (await request.get(backend + "/__e2e/evidence?order_code=" + code)).json();
@@ -119,22 +119,33 @@ test("search, quantity boundaries, cart and profile persist through real API", a
 test("delivery fee, verified provider query, replay and tamper protection", async ({ page, request }) => {
   await register(page); const code = await checkout(page, true);
   await expect(page.getByRole("button", { name: "Cập nhật trạng thái", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Đặt lại sản phẩm", exact: true })).toHaveCount(0);
   const order = (await (await page.request.get(base + "/api/v1/orders/" + code)).json()).data;
   expect(order.totals.shipping_fee).toBe(25000); expect(order.totals.payable_total).toBe(110000);
   await finish(page, "success");
-  await expect(page.getByText("Thanh toán thành công. Đơn hàng đã được xác minh.", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Thanh toán thành công", exact: true })).toBeVisible();
+  await expect(page.locator(".payment-outcome--success .payment-outcome-icon")).toBeVisible();
+  await expect(page.locator(".payment-overview")).toContainText("110.000");
+  await expect(page.locator(".payment-items")).toContainText("Sách kiểm thử E2E 1");
+  await page.locator(".payment-result-page").screenshot({ path: resolve(root, "output/e2e/payment-success-desktop.png") });
+  await page.setViewportSize({ width: 375, height: 900 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+  await page.screenshot({ path: resolve(root, "output/e2e/payment-success-mobile.png"), fullPage: true });
   const before = await evidence(request, code); expect(before.payment_status).toBe("paid"); expect(before.receipts).toBe(1);
   const signed = new URL(page.url()).searchParams;
   expect((await (await request.get(backend + "/api/v1/payments/vnpay/ipn?" + signed)).json()).RspCode).toBe("02");
   signed.set("vnp_Amount", "1");
   expect((await (await request.get(backend + "/api/v1/payments/vnpay/ipn?" + signed)).json()).RspCode).toBe("97");
-  await page.reload(); await expect(page.getByText("Thanh toán thành công. Đơn hàng đã được xác minh.", { exact: true })).toBeVisible();
+  await page.reload(); await expect(page.getByRole("heading", { name: "Thanh toán thành công", exact: true })).toBeVisible();
   expect(await evidence(request, code)).toEqual(before);
 });
 
 test("provider cancellation stays unpaid and customer cannot use admin endpoints", async ({ page, request }) => {
   await register(page); const code = await checkout(page); await finish(page, "cancel");
-  await expect(page.getByText(/Giao dịch không thành công hoặc đã bị hủy/)).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Thanh toán không thành công", exact: true })).toBeVisible();
+  await expect(page.locator(".payment-outcome--failure .payment-outcome-icon")).toBeVisible();
+  await expect(page.locator(".payment-items")).toContainText("Sách kiểm thử E2E 1");
+  await page.locator(".payment-result-page").screenshot({ path: resolve(root, "output/e2e/payment-failure-desktop.png") });
   expect((await evidence(request, code)).receipts).toBe(0); expect((await evidence(request, code)).payment_status).toBe("unpaid");
   expect((await page.request.get(base + "/api/v1/admin/products")).status()).toBe(403);
   expect((await mutation(page, "/admin/products", "POST", { name: "Unauthorized" })).status()).toBe(403);
@@ -143,12 +154,13 @@ test("provider cancellation stays unpaid and customer cannot use admin endpoints
 
 test("uncertain return stays pending; backend IPN updates customer automatically", async ({ page, request }) => {
   await register(page); const code = await checkout(page); await finish(page, "unknown");
+  await expect(page.locator(".payment-outcome--pending .payment-outcome-icon")).toBeVisible();
   const before = await evidence(request, code); expect(before.receipts).toBe(0); expect(before.payment_status).toBe("pending");
   const ref = new URL(page.url()).searchParams.get("vnp_TxnRef")!;
   const confirmation = await request.get(backend + "/__e2e/finish?reference=" + ref + "&outcome=success", { maxRedirects: 0 });
   const callback = new URL(confirmation.headers().location).searchParams;
   expect((await (await request.get(backend + "/api/v1/payments/vnpay/ipn?" + callback)).json()).RspCode).toBe("00");
-  await expect(page.getByText("Thanh toán thành công. Đơn hàng đã được xác minh.", { exact: true })).toBeVisible({ timeout: 20000 });
+  await expect(page.getByRole("heading", { name: "Thanh toán thành công", exact: true })).toBeVisible({ timeout: 20000 });
   expect((await evidence(request, code)).receipts).toBe(1);
 });
 
@@ -252,4 +264,28 @@ test("ranked product adds one item to cart without fabricating sales", async ({ 
     const cart = (await (await page.request.get(base + "/api/v1/cart")).json()).data;
     return cart.items.some((item: { product: { name: string }; quantity: number }) => item.product.name === selectedName && item.quantity === 1);
   }).toBeTruthy();
+});
+
+test("footer uses ten original image logos and accessible carousel arrows", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const width of [1440, 768, 375]) {
+    await page.setViewportSize({ width, height: 900 }); await page.goto("/");
+    const brands = page.getByRole("region", { name: "Thương hiệu", exact: true });
+    await expect(brands.locator("img")).toHaveCount(10);
+    await brands.scrollIntoViewIfNeeded();
+    await expect.poll(() => brands.locator("img").evaluateAll(nodes => nodes.every(n => (n as HTMLImageElement).complete && (n as HTMLImageElement).naturalWidth > 0))).toBeTruthy();
+    await expect(brands.locator(".brand-name, small")).toHaveCount(0);
+    await brands.getByRole("button", { name: "Thương hiệu tiếp theo", exact: true }).click();
+    await expect.poll(() => brands.locator(".brand-track").evaluate(n => n.scrollLeft)).toBeGreaterThan(0);
+    await expect(brands.getByRole("button", { name: "Thương hiệu trước", exact: true })).toBeEnabled();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+    await brands.screenshot({ path: resolve(root, `output/e2e/brand-logos-${width}.png`) });
+  }
+});
+
+test("invalid payment return never displays a paid confirmation", async ({ page }) => {
+  await page.goto("/payment/vnpay-return?vnp_SecureHash=invalid");
+  await expect(page.getByRole("heading", { name: "Không thể xác minh giao dịch", exact: true })).toBeVisible();
+  await expect(page.locator(".payment-outcome--failure .payment-outcome-icon")).toBeVisible();
+  await expect(page.locator(".payment-outcome--success, .payment-overview, .payment-items")).toHaveCount(0);
 });

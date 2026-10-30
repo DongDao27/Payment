@@ -1,10 +1,9 @@
 "use client";
 import Link from "next/link";
 import { useOrderPolling } from "@/lib/use-order-polling";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AccountGate } from "@/components/account-gate";
-import { useStore } from "@/components/store-provider";
 import { Loading, Notice } from "@/components/ui";
 import { api } from "@/lib/api-client";
 import type { Order, PaymentAttempt } from "@/lib/types";
@@ -19,8 +18,6 @@ export default function OrderPage() {
 }
 function Detail() {
   const { code } = useParams<{ code: string }>();
-  const router = useRouter();
-  const { refreshCart } = useStore();
   const [order, setOrder] = useState<Order | null>(null);
   useOrderPolling(code, order !== null && order.lifecycle === "open" && order.payment_status !== "paid", setOrder);
   const [error, setError] = useState("");
@@ -45,33 +42,14 @@ function Detail() {
       clearInterval(timer);
     };
   }, [load]);
-  async function action(type: "cancel" | "reorder") {
-    if (
-      lock.current ||
-      !window.confirm(
-        type === "cancel"
-          ? "Bạn muốn hủy đơn chưa thanh toán này?"
-          : "Thêm lại sản phẩm vào giỏ theo giá và tồn hiện tại?",
-      )
-    )
-      return;
-    lock.current = true;
-    setBusy(true);
-    setError("");
+  async function cancel() {
+    if (lock.current || !window.confirm("Bạn muốn hủy đơn chưa thanh toán này?")) return;
+    lock.current = true; setBusy(true); setError("");
     try {
-      await api(`/orders/${encodeURIComponent(code)}/${type}`, {
-        method: "POST",
-      });
-      if (type === "reorder") {
-        await refreshCart();
-        router.push("/cart");
-      } else await load();
-    } catch (error) {
-      setError(errorMessage(error));
-    } finally {
-      setBusy(false);
-      lock.current = false;
-    }
+      await api(`/orders/${encodeURIComponent(code)}/cancel`, { method: "POST" });
+      await load();
+    } catch (error) { setError(errorMessage(error)); }
+    finally { setBusy(false); lock.current = false; }
   }
   async function pay() {
     if (lock.current) return;
@@ -205,19 +183,12 @@ function Detail() {
                     <button
                       className="button"
                       disabled={busy}
-                      onClick={() => action("cancel")}
+                      onClick={cancel}
                     >
                       Hủy đơn chưa thanh toán
                     </button>
                   )}
-                <button
-                  className="button"
-                  disabled={busy}
-                  onClick={() => action("reorder")}
-                >
-                  Đặt lại sản phẩm
-                </button>
-              </div>
+</div>
             </section>
             <aside className="order-summary">
               <h2>Tổng thanh toán</h2>

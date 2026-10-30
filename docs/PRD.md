@@ -34,7 +34,7 @@ Giao diện theo Figma thật. Mặc định dùng card → popup số lượng,
 | F12 | Pickup đặt trước có mã đơn, chưa thanh toán, hạn 24 giờ |
 | F13 | Admin mở yêu cầu QR đúng đơn pickup còn hiệu lực, không thu lặp |
 | F14 | Khách xem list/detail đơn riêng và trạng thái |
-| F15 | Hủy unpaid hợp lệ, expiry, release một lần, đặt lại với giá/tồn mới |
+| F15 | Hủy unpaid hợp lệ, expiry, release một lần; D67 bỏ thao tác đặt lại khỏi UI, API cũ giữ tương thích |
 | F16 | Callback lặp/sai thứ tự, nhiều attempts, late money và đối soát |
 | F17 | Tổng quan/report theo thời gian, dữ liệu từ giao dịch verified |
 | F18 | Admin list/search/filter sản phẩm |

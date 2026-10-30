@@ -18,7 +18,7 @@ Deadlock retry hữu hạn cho transaction thuần DB; không lặp HTTP payment
 ## Giỏ
 Customer authenticated, một giỏ nhiều món. POST item thêm quantity vào dòng có sẵn; PATCH đặt quantity tuyệt đối; DELETE xóa. Request lặp add không mặc định idempotent; FE khóa submit và có thể thêm request key nếu cần.
 Add/cart validation không reserve. available luôn recheck checkout. Nếu item đã inactive, hiển thị unavailable và chặn quote cho dòng đó; không xóa âm thầm.
-Clear cart sau tạo đơn, không sau thanh toán. Đặt lại tạo quote/order mới dựa giá/tồn hiện tại.
+Clear cart sau tạo đơn, không sau thanh toán. D67 bỏ thao tác đặt lại khỏi giao diện theo yêu cầu chủ dự án; API đặt lại giữ tương thích và vẫn dùng giá/tồn hiện tại nếu được gọi.
 
 ## Tồn và ledger
 available = on_hand - reserved.

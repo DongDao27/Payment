@@ -275,3 +275,10 @@ Tài liệu: [VNPAY IPN và Return](https://sandbox.vnpayment.vn/apis/docs/faqs/
 ## Figma đồng bộ V27
 
 Gói local: `output/figma/thuthanh-figma-clicon-v27-2026-10-29.zip`. Giải nén, import development plugin bằng `manifest.json`, chạy trong file thiết kế của bạn rồi kiểm tra Present. Giữ landing riêng, các flow ngoài khung bao, trái sang phải tối đa 12 màn/hàng, 4 sản phẩm/danh mục và chỉ một sản phẩm đi hết luồng mua. V27 cập nhật bảng xếp hạng và nút số lượng; bộ kiểm tra native đã chạy, chưa xác nhận canvas Figma thật trên tài khoản của bạn.
+## Hiện hành D67 — 31/10/2026
+
+Giao dịch Sandbox của người dùng đã được kiểm tra đọc trong `thu_thanh_sandbox`: provider VNPAY, transaction `15720805`, đơn `01M67706ZYE0DV019JJ95Y6AMG`, số tiền 213.235đ, receipt `allocation=accepted`, `verified_at` có giá trị và đơn `payment_status=paid`. Không tạo thêm giao dịch hoặc sửa dữ liệu trong lần kiểm này. Các mô tả “chưa có receipt” ở D65/D66 bên dưới là lịch sử trước đó; hai đơn cũ đang đối soát vẫn cần xử lý với VNPAY, không tự trả lại hoặc ép paid. QueryDr chưa được thử lại trong D67, không khẳng định lỗi99 đã hết.
+
+Giao diện kết quả mới có tick xanh lớn khi Laravel xác nhận paid, X đỏ khi thất bại/hủy, đồng hồ khi chưa xác định/đối soát. Mã đơn, tổng tiền, thời gian trả tiền và bảng chi tiết lấy từ API đơn có kiểm quyền; không hiển thị dữ liệu cá nhân nếu không được cấp quyền. Nút Đặt lại sản phẩm đã bỏ khỏi giao diện đơn. Footer hiển thị 10 logo ảnh gốc, không còn chữ thương hiệu thay logo/số sản phẩm/thanh cuộn lộ; mũi tên chuyển nhóm 5 logo desktop, 2 mobile.
+
+Nếu đang chạy `npm run dev`, tải lại trang bằng Ctrl+F5 để nhận giao diện. Nếu dùng bản build, chạy lại `npm run build` rồi khởi động lại frontend. Không cần thanh toán thêm để kiểm tra giao diện của giao dịch đã thành công; có thể tải lại trang kết quả đang mở hoặc xem đơn trong tài khoản khách sở hữu đơn. Giữ backend/queue/scheduler/tunnel khi thử Sandbox. Không cần đổi merchant, env hoặc database để nhận bản sửa UI.
