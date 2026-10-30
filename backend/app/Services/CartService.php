@@ -96,6 +96,15 @@ class CartService
         }, 3);
     }
 
+    public function restoreCancelled(Cart $cart, Order $order): void
+    {
+        // Caller holds the user/cart and order locks. A saved cart never reserves stock.
+        foreach ($order->items()->orderBy('product_id')->get() as $line) {
+            $current = $cart->items()->where('product_id', $line->product_id)->first()?->quantity ?? 0;
+            $cart->items()->updateOrCreate(['product_id' => $line->product_id], ['quantity' => min(99, $current + $line->quantity)]);
+        }
+    }
+
     private function validateQuantity(Product $product, int $quantity): void
     {
         if ($quantity < 1 || $quantity > 99) {

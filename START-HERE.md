@@ -1,6 +1,6 @@
 # Bắt đầu và tiếp tục dự án
 
-Hiện hành31/10/2026: D67 thanh toán có tick xanh/X đỏ/đồng hồ chờ và chi tiết đơn thật, bỏ Đặt lại sản phẩm, footer10logo ảnh; API7/E2E12/build/typecheck local passed. Sandbox đã có receipt accepted/đơn paid213.235đ; QueryDr/hai đơn đối soát cũ còn chờ. FigmaV27 giữ nguyên, D67 chưa đồng bộ canvas/plugin. Xem [hướng dẫn web/admin](docs/CHAY-WEB-VA-LARAVEL.md).
+Hiện hành31/10/2026: D68 hủy unpaid hợp lệ đưa hàng về giỏ một lần và mở /cart; giỏ dùng giá/tồn hiện tại khi tạo đơn mới. Màn kết quả giữ thông báo thanh toán, bỏ bảng chi tiết bên dưới. Backend140/1923, E2E13, API7/build/typecheck/Pint local passed. Receipt Sandbox accepted trước đó giữ nguyên; provider/ops/Figma sync còn chờ. Xem [hướng dẫn web/admin](docs/CHAY-WEB-VA-LARAVEL.md).
 
 ## Đọc đầu phiên
 

@@ -4,6 +4,8 @@ Website bán sách và quản lý cửa hàng, cập nhật **29/10/2026**. Fron
 
 ## Chức năng hiện có
 
+Cập nhật **D68 — 31/10/2026**: bỏ bảng chi tiết dưới màn kết quả thanh toán; hủy đơn hợp lệ đưa hàng về giỏ một lần và mở giỏ để đặt mới sau này. Giỏ không giữ giá/tồn; backend kiểm lại khi đặt đơn mới.
+
 Cập nhật **31/10/2026 — D67**: kết quả thanh toán có tick xanh/X đỏ/đồng hồ chờ, thông tin và chi tiết đơn lấy từ Laravel; bỏ nút Đặt lại sản phẩm; footer dùng 10 logo ảnh gốc với mũi tên chuyển nhóm. Đã kiểm tra đọc Sandbox có receipt VNPAY `accepted` và đơn `paid` cho giao dịch 213.235đ của người dùng; việc này không thay thế nghiệm thu deploy/production hay các tình huống provider còn lại.
 
 Cập nhật D66: Bán chạy nhất có bảng xếp hạng và khung chi tiết, nút số lượng căn đều, khách tự nhận trạng thái đơn từ server. Bộ kiểm thử trình duyệt FE–Laravel–MySQL chạy bằng `cd frontend` → `npm run test:e2e`; cài Chromium lần đầu bằng `npx playwright install chromium`. Chỉ chạy trên `thu_thanh_test`, không chạy đồng thời PHPUnit; cổng thanh toán trong E2E là giả lập, nghiệm thu merchant Sandbox vẫn riêng. Xem hướng dẫn đầy đủ trong [CHAY-WEB-VA-LARAVEL](docs/CHAY-WEB-VA-LARAVEL.md). Figma local mới nhất là **V27**, giữ landing riêng và tối đa 12 màn/hàng.

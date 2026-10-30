@@ -36,17 +36,6 @@ export function PaymentResult({ result, order, error = "" }: { result: VnpayRetu
           <Link className="payment-orders-link" href="/orders">Về danh sách đơn</Link>
         </div>
       </section>
-      {order && <section className="payment-items" aria-labelledby="payment-items-title">
-        <h2 id="payment-items-title">Chi tiết đơn hàng</h2>
-        <div className="payment-item-heading"><span>Sản phẩm</span><span>Thành tiền</span></div>
-        <ul>{order.items.map(item => <li key={item.product_id}><span>{item.name} <strong>× {item.quantity}</strong></span><strong>{money(item.line_total)}</strong></li>)}</ul>
-        <dl className="payment-totals">
-          <div><dt>Tiền hàng</dt><dd>{money(order.totals.items_subtotal)}</dd></div>
-          <div><dt>Giảm giá</dt><dd>−{money(order.totals.discount_total)}</dd></div>
-          <div><dt>Phí giao hàng</dt><dd>{money(order.totals.shipping_fee)}</dd></div>
-          <div className="payment-grand-total"><dt>Tổng cộng</dt><dd>{money(order.totals.payable_total)}</dd></div>
-        </dl>
-      </section>}
     </>
   );
 }

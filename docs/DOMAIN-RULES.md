@@ -10,6 +10,7 @@ Mặc định tính revenue xem DECISIONS; không gọi báo cáo là toàn doan
 
 ## Transaction và lock order
 Với order đã có: lock order → products theo id tăng dần → reservations/attempts/receipts liên quan. Tất cả expiry/cancel/payment/admin dùng chung service và cùng thứ tự khóa.
+D68: khách hủy chủ động khóa user/cart trước order để gộp giỏ, rồi tuân thủ thứ tự order → products như trên; không gọi provider khi đang giữ bất kỳ khóa nào.
 Checkout mới: lock user/cart + idempotency row trong transaction → tạo order chưa commit → products tăng dần → items/reservations/movements → consume quote → clear đúng cart rows đã checkout → commit.
 Unique constraint + DB transaction là hàng rào cuối. Tranh chấp idempotency insert dùng unique-retry, đọc kết quả của transaction thắng; không trả 500 vì duplicate key thông thường.
 Không gọi HTTP provider/email trong DB transaction. Kết quả provider query ngoài transaction, sau đó lock và re-check version/state trước transition.
@@ -19,6 +20,7 @@ Deadlock retry hữu hạn cho transaction thuần DB; không lặp HTTP payment
 Customer authenticated, một giỏ nhiều món. POST item thêm quantity vào dòng có sẵn; PATCH đặt quantity tuyệt đối; DELETE xóa. Request lặp add không mặc định idempotent; FE khóa submit và có thể thêm request key nếu cần.
 Add/cart validation không reserve. available luôn recheck checkout. Nếu item đã inactive, hiển thị unavailable và chặn quote cho dòng đó; không xóa âm thầm.
 Clear cart sau tạo đơn, không sau thanh toán. D67 bỏ thao tác đặt lại khỏi giao diện theo yêu cầu chủ dự án; API đặt lại giữ tương thích và vẫn dùng giá/tồn hiện tại nếu được gọi.
+D68: hủy đơn unpaid hợp lệ đồng thời phục hồi sản phẩm vào giỏ trong transaction đóng đơn/release. Lưu event `cart_restored` dưới khóa order; request hủy lặp không cộng thêm kể cả sau khi giỏ đã được mua/xóa. Gộp món hiện có, tối đa99/món, giữ món inactive/thiếu tồn để hiển thị unavailable thay vì bỏ âm thầm. Giỏ không giữ tồn hoặc giá; quote/đơn mới kiểm lại toàn bộ. Expiry tự động không đưa hàng về giỏ; khách chủ động gọi hủy đơn đã đóng unpaid được phục hồi một lần. Paid, pending/đối soát chưa xác minh không được phục hồi qua hủy.
 
 ## Tồn và ledger
 available = on_hand - reserved.

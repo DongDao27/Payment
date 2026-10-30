@@ -39,7 +39,7 @@ Mật khẩu12–128ký tự, không trim/log; email/phone normalize server, pho
 | POST | /checkout/quotes | Customer; cách nhận,tên,phone,địa chỉ nếu giao |
 | POST | /orders | quote_id và Idempotency-Key; lần đầu201,replay200/meta.replayed |
 | GET | /orders, /orders/{order} | Customer owner; order là order_code |
-| POST | /orders/{order}/cancel | Chỉ đơn chưa thanh toán và đủ điều kiện |
+| POST | /orders/{order}/cancel | Chỉ đơn chưa thanh toán và đủ điều kiện; D68 phục hồi sản phẩm về giỏ một lần cùng transaction hủy/release; response Order giữ nguyên |
 | POST | /orders/{order}/reorder | Kiểm giá/tồn mới, cập nhật giỏ; không tự tạo đơn |
 
 Quote trả snapshot giá,cart_fingerprint,pricing_version,expires_at và totals. Checkout khóa/kiểm lại dữ liệu; giá/giỏ đổi hoặc hết hạn trả409 để khách xác nhận lại. Delivery25.000đ,pickup0đ; hàng/giá/giảm/ship do server quyết định. Tạo đơn và giữ tồn cùng transaction; clear giỏ sau tạo thành công. Không đổi trả/hoàn tiền.

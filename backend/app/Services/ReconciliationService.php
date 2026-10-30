@@ -3,19 +3,21 @@
 namespace App\Services;
 
 use App\Exceptions\BusinessException;
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderStatusHistory;
 use App\Models\PaymentAttempt;
 use App\Models\PaymentEvent;
 use App\Models\ReconciliationCase;
 use App\Models\Refund;
+use App\Models\User;
 use App\Payments\PaymentGateway;
 use App\Payments\VerifiedPayment;
 use Illuminate\Support\Facades\DB;
 
 class ReconciliationService
 {
-    public function __construct(private PaymentGateway $gateway, private PaymentService $payments, private InventoryService $inventory) {}
+    public function __construct(private PaymentGateway $gateway, private PaymentService $payments, private InventoryService $inventory, private CartService $carts) {}
 
     public function refresh(Order $order): Order
     {
@@ -92,14 +94,20 @@ class ReconciliationService
 
     public function close(Order $order, bool $cancel = false, ?int $actorId = null): Order
     {
-        if ($order->lifecycle !== 'open' || $order->payment_status === 'paid') {
+        if (! $cancel && ($order->lifecycle !== 'open' || $order->payment_status === 'paid')) {
             return $order->load('items');
         }
-        $this->refresh($order);
+        if ($order->lifecycle === 'open' && $order->payment_status !== 'paid') {
+            $this->refresh($order);
+        }
 
         return DB::transaction(function () use ($order, $cancel, $actorId) {
+            // Match checkout's user -> order -> product lock order; provider I/O is above.
+            $cart = $cancel ? $this->carts->lockedCart(User::findOrFail($order->user_id)) : null;
             $order = Order::whereKey($order->id)->lockForUpdate()->firstOrFail();
             if ($order->lifecycle !== 'open' || $order->payment_status === 'paid') {
+                $this->restoreCartOnce($order, $cart, $actorId);
+
                 return $order->load('items');
             }
             if (! $cancel && now()->lt($order->expires_at)) {
@@ -116,8 +124,23 @@ class ReconciliationService
             $order->update(['lifecycle' => $target, 'cancelled_at' => $target === 'cancelled' ? now() : null, 'version' => $order->version + 1]);
             OrderStatusHistory::create(['order_id' => $order->id, 'actor_id' => $actorId, 'event' => $target, 'before' => ['lifecycle' => 'open'], 'after' => ['lifecycle' => $target], 'reason' => $cancel ? 'Customer cancellation' : 'Reservation deadline reached', 'request_id' => request()->attributes->get('request_id')]);
 
+            $this->restoreCartOnce($order, $cart, $actorId);
+
             return $order->load('items');
         }, 3);
+    }
+
+    private function restoreCartOnce(Order $order, ?Cart $cart, ?int $actorId): void
+    {
+        if (! $cart || $order->payment_status !== 'unpaid' || ! in_array($order->lifecycle, ['cancelled', 'expired'], true)
+            || OrderStatusHistory::where('order_id', $order->id)->where('event', 'cart_restored')->exists()) {
+            return;
+        }
+        $this->carts->restoreCancelled($cart, $order);
+        OrderStatusHistory::create(['order_id' => $order->id, 'actor_id' => $actorId, 'event' => 'cart_restored',
+            'before' => [], 'after' => ['cart_id' => $cart->id],
+            'reason' => 'Cancelled order items saved in cart; current prices and stock apply at checkout.',
+            'request_id' => request()->attributes->get('request_id')]);
     }
 
     public function resolve(ReconciliationCase $case, array $data, int $actorId): ReconciliationCase

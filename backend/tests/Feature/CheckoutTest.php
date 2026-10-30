@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\CartService;
 use App\Services\CheckoutService;
 use App\Services\QuoteService;
+use App\Services\ReconciliationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -110,7 +111,98 @@ class CheckoutTest extends TestCase
         $this->assertSame(0, $product->fresh()->stock_reserved);
         $this->assertSame(10, $product->fresh()->stock_on_hand);
         $this->assertDatabaseCount('inventory_movements', 2);
+        $this->assertDatabaseHas('cart_items', ['product_id' => $product->id, 'quantity' => 2]);
+        $this->assertDatabaseCount('cart_items', 1);
+        $this->assertDatabaseHas('order_status_histories', ['order_id' => Order::firstOrFail()->id, 'event' => 'cart_restored']);
         $this->submit($quote, 'another-checkout-key')->assertConflict()->assertJsonPath('error.code', 'QUOTE_CONSUMED');
+    }
+
+    public function test_cancellation_merges_cart_once_and_uses_current_prices(): void
+    {
+        [$user, $product, $quote] = $this->prepare();
+        $code = $this->submit($quote)->assertCreated()->json('data.order_code');
+        $other = Product::factory()->create();
+        app(CartService::class)->add($user, $other->id, 1);
+        app(CartService::class)->add($user, $product->id, 1);
+        $product->update(['list_price' => 50000]);
+        $this->postJson('/api/v1/orders/'.$code.'/cancel')->assertOk();
+        $this->postJson('/api/v1/orders/'.$code.'/cancel')->assertOk();
+        $cart = $this->getJson('/api/v1/cart')->assertOk()->json('data');
+        $items = collect($cart['items'])->keyBy('product.id');
+        $this->assertSame(3, $items[$product->id]['quantity']);
+        $this->assertSame(150000, $items[$product->id]['line_total']);
+        $this->assertSame(1, $items[$other->id]['quantity']);
+        $this->assertSame(0, $product->fresh()->stock_reserved);
+    }
+
+    public function test_cancellation_retry_after_new_checkout_does_not_restore_old_items_again(): void
+    {
+        [$user, $product, $quote] = $this->prepare();
+        $code = $this->submit($quote)->assertCreated()->json('data.order_code');
+        $this->postJson('/api/v1/orders/'.$code.'/cancel')->assertOk();
+        $newQuote = app(QuoteService::class)->create($user, $quote->payload);
+        $this->submit($newQuote, 'replacement-order-key')->assertCreated();
+        $this->postJson('/api/v1/orders/'.$code.'/cancel')->assertOk();
+        $this->assertDatabaseCount('cart_items', 0);
+        $this->assertSame(2, $product->fresh()->stock_reserved);
+        $this->assertDatabaseCount('orders', 2);
+    }
+
+    public function test_cancelled_cart_keeps_unavailable_products_for_later_without_reserving_stock(): void
+    {
+        [$user, $product, $quote] = $this->prepare();
+        $code = $this->submit($quote)->assertCreated()->json('data.order_code');
+        $product->update(['is_active' => false]);
+        $this->postJson('/api/v1/orders/'.$code.'/cancel')->assertOk();
+        $this->getJson('/api/v1/cart')->assertOk()->assertJsonPath('data.items.0.quantity', 2)->assertJsonPath('data.items.0.is_available', false);
+        $this->assertSame(0, $product->fresh()->stock_reserved);
+        $this->postJson('/api/v1/checkout/quotes', ['fulfillment_method' => 'pickup', 'recipient_name' => 'Test recipient', 'recipient_phone' => '+84912345678'])
+            ->assertConflict()->assertJsonPath('error.code', 'PRODUCT_UNAVAILABLE');
+    }
+
+    public function test_cart_restore_failure_rolls_back_cancellation_and_stock_release(): void
+    {
+        [$user, $product, $quote] = $this->prepare();
+        $code = $this->submit($quote)->assertCreated()->json('data.order_code');
+        CartItem::creating(function () {
+            throw new \RuntimeException('Restore failed');
+        });
+        try {
+            $this->withoutExceptionHandling()->postJson('/api/v1/orders/'.$code.'/cancel');
+            $this->fail('Restore failure was swallowed.');
+        } catch (\RuntimeException $error) {
+            $this->assertSame('Restore failed', $error->getMessage());
+        } finally {
+            CartItem::flushEventListeners();
+        }
+        $this->assertSame('open', Order::firstOrFail()->lifecycle);
+        $this->assertSame(2, $product->fresh()->stock_reserved);
+        $this->assertDatabaseCount('inventory_movements', 1);
+        $this->assertDatabaseCount('cart_items', 0);
+        $this->assertDatabaseMissing('order_status_histories', ['event' => 'cart_restored']);
+    }
+
+    public function test_restored_cart_respects_the_quantity_limit(): void
+    {
+        [$user, $product, $quote] = $this->prepare();
+        $code = $this->submit($quote)->assertCreated()->json('data.order_code');
+        $product->update(['stock_on_hand' => 200]);
+        app(CartService::class)->add($user, $product->id, 98);
+        $this->postJson('/api/v1/orders/'.$code.'/cancel')->assertOk();
+        $this->getJson('/api/v1/cart')->assertOk()->assertJsonPath('data.items.0.quantity', 99);
+    }
+
+    public function test_scheduler_expiry_does_not_restore_but_customer_cancellation_restores_once(): void
+    {
+        [$user, $product, $quote] = $this->prepare();
+        $code = $this->submit($quote)->assertCreated()->json('data.order_code');
+        $this->travel(2)->days();
+        app(ReconciliationService::class)->close(Order::firstOrFail());
+        $this->assertDatabaseCount('cart_items', 0);
+        $this->postJson('/api/v1/orders/'.$code.'/cancel')->assertOk();
+        $this->postJson('/api/v1/orders/'.$code.'/cancel')->assertOk();
+        $this->getJson('/api/v1/cart')->assertOk()->assertJsonPath('data.items.0.quantity', 2);
+        $this->assertSame(0, $product->fresh()->stock_reserved);
     }
 
     public function test_mid_reservation_exception_rolls_back_order_items_stock_quote_and_cart(): void
@@ -162,7 +254,7 @@ class CheckoutTest extends TestCase
         $code = $this->submit($quote)->assertCreated()->json('data.order_code');
         $this->postJson('/api/v1/orders/'.$code.'/cancel')->assertOk();
         $product->update(['list_price' => 50000]);
-        app(CartService::class)->add($user, $product->id, 1);
+        $this->patchJson('/api/v1/cart/items/'.CartItem::firstOrFail()->id, ['quantity' => 1])->assertOk();
         $this->postJson('/api/v1/orders/'.$code.'/reorder')->assertOk()->assertJsonPath('data.items.0.quantity', 3)->assertJsonPath('data.estimated_total', 150000);
         $this->assertDatabaseCount('orders', 1);
         $this->assertSame(0, $product->fresh()->stock_reserved);

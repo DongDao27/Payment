@@ -126,7 +126,7 @@ test("delivery fee, verified provider query, replay and tamper protection", asyn
   await expect(page.getByRole("heading", { name: "Thanh toán thành công", exact: true })).toBeVisible();
   await expect(page.locator(".payment-outcome--success .payment-outcome-icon")).toBeVisible();
   await expect(page.locator(".payment-overview")).toContainText("110.000");
-  await expect(page.locator(".payment-items")).toContainText("Sách kiểm thử E2E 1");
+  await expect(page.locator(".payment-items")).toHaveCount(0);
   await page.locator(".payment-result-page").screenshot({ path: resolve(root, "output/e2e/payment-success-desktop.png") });
   await page.setViewportSize({ width: 375, height: 900 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
@@ -144,7 +144,7 @@ test("provider cancellation stays unpaid and customer cannot use admin endpoints
   await register(page); const code = await checkout(page); await finish(page, "cancel");
   await expect(page.getByRole("heading", { name: "Thanh toán không thành công", exact: true })).toBeVisible();
   await expect(page.locator(".payment-outcome--failure .payment-outcome-icon")).toBeVisible();
-  await expect(page.locator(".payment-items")).toContainText("Sách kiểm thử E2E 1");
+  await expect(page.locator(".payment-items")).toHaveCount(0);
   await page.locator(".payment-result-page").screenshot({ path: resolve(root, "output/e2e/payment-failure-desktop.png") });
   expect((await evidence(request, code)).receipts).toBe(0); expect((await evidence(request, code)).payment_status).toBe("unpaid");
   expect((await page.request.get(base + "/api/v1/admin/products")).status()).toBe(403);
@@ -288,4 +288,30 @@ test("invalid payment return never displays a paid confirmation", async ({ page 
   await expect(page.getByRole("heading", { name: "Không thể xác minh giao dịch", exact: true })).toBeVisible();
   await expect(page.locator(".payment-outcome--failure .payment-outcome-icon")).toBeVisible();
   await expect(page.locator(".payment-outcome--success, .payment-overview, .payment-items")).toHaveCount(0);
+});
+
+test("cancel returns items to the saved cart and allows a fresh checkout without replay duplication", async ({ page }) => {
+  page.on("dialog", dialog => dialog.accept());
+  await register(page); const code = await checkout(page);
+  const product = (await (await page.request.get(base + "/api/v1/products?q=" + encodeURIComponent("Sách kiểm thử E2E 1"))).json()).data[0];
+  expect((await mutation(page, "/cart/items", "POST", { product_id: product.id, quantity: 2 })).ok()).toBeTruthy();
+  await page.getByRole("button", { name: "Hủy đơn chưa thanh toán", exact: true }).click();
+  await expect(page).toHaveURL(/\/cart$/);
+  await expect(page.getByRole("heading", { name: "Sách kiểm thử E2E 1", exact: true })).toBeVisible();
+  const cart = async () => (await (await page.request.get(base + "/api/v1/cart")).json()).data;
+  expect((await cart()).items[0].quantity).toBe(3);
+  expect((await (await page.request.get(base + "/api/v1/orders/" + code)).json()).data.lifecycle).toBe("cancelled");
+  expect((await mutation(page, "/orders/" + code + "/cancel", "POST", {})).ok()).toBeTruthy();
+  expect((await cart()).items[0].quantity).toBe(3);
+  await page.reload(); await expect(page.getByRole("heading", { name: "Sách kiểm thử E2E 1", exact: true })).toBeVisible();
+  await page.getByRole("link", { name: /Tiến hành đặt hàng/ }).click();
+  await page.getByRole("radio", { name: /Nhận tại cửa hàng/ }).check();
+  await page.getByLabel("Số điện thoại", { exact: true }).fill("0900000001");
+  await page.getByRole("button", { name: "Kiểm tra và lấy báo giá", exact: true }).click();
+  await page.getByRole("button", { name: "Xác nhận đặt hàng", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Thanh toán qua VNPAY", exact: true })).toBeVisible();
+  const newCode = page.url().split("/").pop()!;
+  expect(newCode).not.toBe(code); expect((await cart()).items).toHaveLength(0);
+  expect((await mutation(page, "/orders/" + code + "/cancel", "POST", {})).ok()).toBeTruthy();
+  expect((await cart()).items).toHaveLength(0);
 });

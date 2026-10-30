@@ -1,3 +1,11 @@
+## Hiện hành D68 — Hủy đơn và giữ giỏ (31/10/2026)
+
+Màn kết quả thanh toán chỉ giữ thông tin và thông báo tick xanh/X đỏ/đồng hồ chờ, không còn bảng chi tiết đơn bên dưới. Trên đơn chưa thanh toán có hai thao tác thanh toán và hủy. Hủy hợp lệ đồng thời đưa sản phẩm về giỏ trong database và chuyển về `/cart`; tải lại hoặc đăng nhập lại vẫn còn hàng. Món đang có được gộp, tối đa99/món; bấm/gửi lại hủy không cộng trùng. Hàng hết tồn/ngừng bán vẫn hiển thị cảnh báo, không xóa âm thầm.
+
+Bạn có thể quay lại giỏ để đặt khi muốn. Giỏ không giữ tồn hoặc giá cũ; lần mua tiếp theo cần báo giá và đơn mới, kiểm giá/giảm giá/tồn hiện hành. Không phục hồi đơn đã hủy hoặc gia hạn thời gian giữ hàng cũ. Đơn đã trả tiền hoặc đang chờ xác minh/đối soát không được hủy qua thao tác này. Expiry tự động không cộng hàng vào giỏ.
+
+Nếu đang chạy frontend dev, Ctrl+F5 để nhận giao diện. Laravel HTTP đọc source mới theo request; khi deploy dùng bản build cần cập nhật cả frontend/backend và khởi động lại worker theo quy trình vận hành. Không cần đổi merchant/env/key hay reset/import database. Test tự động chỉ dùng thu_thanh_test; không hủy đơn thật để kiểm giao diện.
+
 # Chạy web, admin và VNPAY — 29/10/2026
 
 ## Mở lại máy để thử VNPAY Sandbox

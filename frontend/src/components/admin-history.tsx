@@ -52,6 +52,7 @@ const labels: Record<string, string> = {
   expired: "Hết hạn",
   completed: "Hoàn tất",
   cancellation: "Hủy đơn",
+  cart_restored: "Đưa sản phẩm về giỏ",
 };
 const label = (value?: string) => (value ? (labels[value] ?? value) : "—");
 const dateTime = (value: string) =>
@@ -68,6 +69,7 @@ const reasonLabel = (value: string | null | undefined) =>
       "Order sale": "Xuất kho khi xác minh thanh toán",
       "Order release": "Trả tồn giữ khi đóng đơn",
       "Customer cancellation": "Khách hàng yêu cầu hủy",
+      "Cancelled order items saved in cart; current prices and stock apply at checkout.": "Đã đưa sản phẩm về giỏ. Giá và tồn được kiểm tra lại khi đặt đơn mới.",
       "Reservation deadline reached": "Đã hết thời gian giữ hàng",
     }) as Record<string, string>
   )[value ?? ""] ??

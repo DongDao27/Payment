@@ -3,26 +3,26 @@
   "project": "Thu Thanh Bookstore",
   "spec_version": "2.0",
   "phase": "FRONTEND",
-  "current_task_id": "F03",
+  "current_task_id": "F02",
   "next_task_id": "B07",
-  "implementation_state": "D67_payment_feedback_and_brand_logos_verified_real_Sandbox_receipt_accepted",
+  "implementation_state": "D68_cancel_restores_cart_once_and_payment_result_simplified_verified",
   "backend_gate": "externally_blocked",
   "frontend_gate": "authorized_scoped",
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": "71e222000e232399870b463b830165760d3fb823",
+  "last_verified_commit": null,
   "git_dirty": true,
-  "last_checkpoint_at": "2026-10-31T03:35:14+07:00",
+  "last_checkpoint_at": "2026-10-31T04:13:11+07:00",
   "last_test_run": {
-    "at": "2026-10-29T23:17:37+07:00",
+    "at": "2026-10-31T04:13:11+07:00",
     "command": "php artisan test --log-junit=storage/logs/phpunit.xml",
     "result": "passed",
-    "tests": 134,
-    "assertions": 1878,
+    "tests": 140,
+    "assertions": 1923,
     "database": "MySQL8.4.13 thu_thanh_test Windows127.0.0.1:3307",
     "evidence": "backend/storage/logs/phpunit.xml",
-    "duration_seconds": 28.95
+    "duration_seconds": 24.4
   },
   "figma": {
     "status": "V27_local_verified_owner_canvas_pending",
@@ -54,7 +54,7 @@
       300,
       164
     ],
-    "web_sync_pending": "D67 payment-result/10logo carousel visual sync not performed; V27 layout/source preserved."
+    "web_sync_pending": "D67/D68 payment-result/10logo/cancel-to-cart visual sync not performed; V27 layout/source preserved."
   },
   "blockers": [
     "D67 real Sandbox accepted receipt/paid order verified read-only. Full QueryDr/expiry/reconciliation provider acceptance remains pending;2historical orders still reconciliation_required.",
@@ -860,5 +860,21 @@
     },
     "source_commit": "71e222000e232399870b463b830165760d3fb823",
     "remote_ci": "pending publication"
+  },
+  "d68": {
+    "at": "2026-10-31T04:13:11+07:00",
+    "evidence": "D68 2026-10-31T04:13:11+07:00: cancel and cart restoration atomically committed after provider queries outside locks; user/cart->order->products locks, cart_restored history marker prevents repeated restoration even after a replacement checkout. Preserve other cart items, merge quantities max99, retain inactive/unavailable products for warnings, current prices, no cart reservation. Scheduler expiry does not restore; explicit cancel of closed unpaid can restore once. Paid/uncertain/reconciliation rules unchanged. Customer redirect /cart with refreshed badge/toast after successful cancel; unpaid order actions only pay/cancel. Removed payment result item/totals table and unused CSS; result summary/tick/X/pending preserved. Checkout15/122, full backend140/1923 passed24.40s, Pint passed; API7, E2E13 passed2.4m including cancel->saved cart->reload->fresh checkout and old-cancel replay; build22routes/typecheck passed. No schema/provider call/main/Sandbox data/env/key/credential changes. Actual Sandbox uses shared main app service paths via Composer vendor junction, verified by Reflection; no private source overwrite required. Previous accepted Sandbox receipt retained; full provider/staging/SMTP/10k and Figma D67/D68 sync still pending.",
+    "source_commit": null,
+    "remote_ci": "pending publication",
+    "checks": {
+      "checkout": 15,
+      "backend": 140,
+      "assertions": 1923,
+      "e2e": 13,
+      "api_client": 7,
+      "pint": "passed",
+      "build": "passed22routes",
+      "typecheck": "passed"
+    }
   }
 }
