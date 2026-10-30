@@ -11,7 +11,7 @@
   "release_gate": "not_started",
   "repository_audited": true,
   "branch": "main",
-  "last_verified_commit": null,
+  "last_verified_commit": "71e222000e232399870b463b830165760d3fb823",
   "git_dirty": true,
   "last_checkpoint_at": "2026-10-31T03:35:14+07:00",
   "last_test_run": {
@@ -858,7 +858,7 @@
       "typecheck": "passed",
       "backend": "unchanged; D66 local134/1878 retained; remote CI pending"
     },
-    "source_commit": null,
+    "source_commit": "71e222000e232399870b463b830165760d3fb823",
     "remote_ci": "pending publication"
   }
 }
